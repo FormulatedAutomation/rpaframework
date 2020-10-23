@@ -731,7 +731,7 @@ class Windows(OperatingSystem):
             Mouse Click  image=myimage.png  tolerance=0.8
 
         Arguments:
-            image (str): image to click on desktop
+            template (str): image to click on desktop
             off_x (int): horizontal offset from top left corner to click on
             off_y (int): vertical offset from top left corner to click on
             ctype (str): type of mouse click
@@ -1086,7 +1086,7 @@ class Windows(OperatingSystem):
         or `criteria` field in the window items.
 
         Arguments:
-            itemDict (dict): element items
+            itemdict (dict): element items
             locator (str): name of the locator
             criteria (str): criteria on which to match element
             wildcard (bool): whether to do reg exp match or not, default False
