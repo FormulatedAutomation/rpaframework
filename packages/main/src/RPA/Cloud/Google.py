@@ -227,7 +227,7 @@ class ServiceVision(GoogleBase):
         """Annotate image
 
         Arguments:
-            image_file (str): source image file
+            image_uri (str): source image file
             json_file (str): json target to save result, defaults to None
 
         Returns:

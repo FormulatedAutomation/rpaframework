@@ -22,7 +22,7 @@ class Notifier:
             message (str): notification message
             user (str): target user for the notification
             token (str): service token
-            kwargs (dict): other arguments to pass to notify method
+            **kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -43,7 +43,7 @@ class Notifier:
             message (str): notification message
             channel (str): target channel for the notification
             webhook_url (str): Slack webhook url
-            kwargs (dict): other arguments to pass to notify method
+            **kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -70,7 +70,7 @@ class Notifier:
             message (str): notification message
             chat_id (str): target chat id for the notification
             token (str): service token
-            kwargs (dict): other arguments to pass to notify method
+            **kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -95,7 +95,7 @@ class Notifier:
             to (str): target of email message
             username (str): GMail service username
             password (str): GMail service password
-            kwargs (dict): other arguments to pass to notify method
+            **kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -125,7 +125,7 @@ class Notifier:
             to (str): target of email message
             username (str): email service username
             password (str): email service password
-            kwargs (dict): other arguments to pass to notify method
+            **kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -157,7 +157,7 @@ class Notifier:
             number_to (str): number where the messages goes to
             account_sid (str): Twilio account SID
             token (str): Twilio account token
-            kwargs (dict): other arguments to pass to notify method
+            **kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
