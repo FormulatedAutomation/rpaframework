@@ -445,11 +445,12 @@ class Docgen:
 
         output = []
         errors = set()
-        kwcount = 0
+        libcount, kwcount = 0, 0
         for path in files:
             try:
                 converted = self.convert_file(root, path)
                 output.append(converted)
+                libcount += 1
                 kwcount += len(converted["keywords"])
             except Exception as err:
                 errors.add(path)
@@ -457,7 +458,8 @@ class Docgen:
                 if logging.getLogger().isEnabledFor(logging.DEBUG):
                     traceback.print_exc()
 
-        print(f"Keyword count: {kwcount}")
+        logging.debug("Total library count: %d", libcount)
+        logging.debug("Total keyword count: %d", kwcount)
 
         if errors:
             logging.error(
@@ -485,9 +487,28 @@ class Docgen:
         docs = {}
         for keyword in libdoc.keywords:
             doc = Docstring().parse(keyword.doc)
-            defaults = (arg.partition("=")[2] for arg in keyword.args)
-            for arg, default in zip(doc["args"], defaults):
-                arg["default"] = default
+
+            args = []
+            for arg in keyword.args:
+                name, _, default = arg.partition("=")
+                fields = {"name": name, "default": default}
+
+                for arg in doc["args"]:
+                    if name == arg["name"]:
+                        fields["type"] = arg["type"]
+                        fields["desc"] = arg["desc"]
+                        break
+                else:
+                    logging.warning(
+                        "No argument docstring for: %s -> %s -> %s",
+                        libdoc.name,
+                        keyword.name,
+                        name,
+                    )
+
+                args.append(fields)
+
+            doc["args"] = args
             docs[keyword.name] = doc
 
         writer = htmlwriter.JsonConverter(NullFormatter())

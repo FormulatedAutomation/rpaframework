@@ -638,7 +638,7 @@ class Items:
             ${password}=    Get Work Item Variable    password    default=${EMPTY}
 
         Arguments:
-            key (str): Name of variable
+            name (str):    Name of variable
             default (any): Default value if key does not exist
         """
         variables = self.get_work_item_variables()
@@ -672,7 +672,7 @@ class Items:
             Save work item
 
         Arguments:
-            key (str): Name of variable
+            name (str): Name of variable
             value (any): Value of variable
         """
         variables = self.get_work_item_variables()
@@ -686,7 +686,8 @@ class Items:
             Set work item variables    username=MarkyMark    email=mark@example.com
             Save work item
 
-        :param kwargs: Pairs of variable names and values
+        Arguments:
+            **kwargs: Pairs of variable names and values
         """
         variables = self.get_work_item_variables()
         for name, value in kwargs.items():
@@ -822,7 +823,7 @@ class Items:
             Add work item files    %{ROBOT_ROOT}/generated/*.csv
             Save work item
 
-        Argumens:
+        Arguments:
             pattern: Path wildcard pattern
         """
         matches = FileSystem().find_files(pattern, include_dirs=False)
