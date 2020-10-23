@@ -38,9 +38,9 @@ class OperatingSystem:
             ${boottime}  Get Boot Time   as_datetime=True  datetime_format=%d.%m.%Y
 
         Arguments:
-            as_datetime: if True returns datetime string, otherwise seconds,
+            as_datetime (bool): if True returns datetime string, otherwise seconds,
                          defaults to False
-            datetime_format: datetime string format, defaults to "%Y-%m-%d %H:%M:%S"
+            datetime_format (str): datetime string format, defaults to "%Y-%m-%d %H:%M:%S"
 
         Returns:
             seconds from Epoch or datetime string
@@ -105,10 +105,10 @@ class OperatingSystem:
             ${process}  Process Exists  calc  strict=False
 
         Arguments:
-            process_name: search for this process
-            strict: defines how match is made, default `True`
-                    which means that process name needs to be exact match
-                    and `False` does inclusive matching
+            process_name (str): search for this process
+            strict (bool): defines how match is made, default `True`
+                           which means that process name needs to be exact match
+                           and `False` does inclusive matching
 
         Returns:
             process instance or False
@@ -130,7 +130,7 @@ class OperatingSystem:
             ${status}   Kill Process    ${process.name()}
 
         Arguments:
-            process_name: name of the process
+            process_name (str): name of the process
 
         Returns:
             `True` if succeeds `False` if not
@@ -150,7 +150,7 @@ class OperatingSystem:
             ${status}   Kill Process    ${process.pid}
 
         Arguments:
-            pid: process identifier
+            pid (int): process identifier
         """
         os.kill(pid, signal.SIGTERM)
 
@@ -164,8 +164,8 @@ class OperatingSystem:
             &{mem}     Get Memory Stats   humanized=False
 
         Arguments:
-            humanized: if `False` returns memory information in bytes,
-                       defaults to `True`
+            humanized (bool): if `False` returns memory information in bytes,
+                              defaults to `True`
 
         Returns:
             memory information in dictionary format
