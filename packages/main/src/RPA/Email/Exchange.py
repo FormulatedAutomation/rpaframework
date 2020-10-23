@@ -39,13 +39,14 @@ class Exchange:
     ) -> None:
         """Connect to Exchange account
 
-        :param username: account username
-        :param password: account password
-        :param autodiscover: use autodiscover or set it off
-        :param accesstype: default "DELEGATE", other option "IMPERSONATION"
-        :param server: required for configuration options
-        :param primary_smtp_address: by default set to username, but can be
-            set to be different than username
+        Arguments:
+            username: account username
+            password: account password
+            autodiscover: use autodiscover or set it off
+            access_type: default "DELEGATE", other option "IMPERSONATION"
+            server: required for configuration options
+            primary_smtp_address: by default set to username, but can be
+                                  set to be different than username
         """
         kwargs = {}
         kwargs["autodiscover"] = autodiscover
@@ -68,7 +69,9 @@ class Exchange:
         """List messages in the account inbox. Order by descending
         received time.
 
-        :param count: number of messages to list
+        Arguments:
+            folder_name: target folder
+            count: number of messages to list
         """
         # pylint: disable=no-member
         messages = []
@@ -110,16 +113,17 @@ class Exchange:
 
         Recipients is ``required`` parameter.
 
-        :param recipients: list of email addresses, defaults to []
-        :param subject: message subject, defaults to ""
-        :param body: message body, defaults to ""
-        :param attachments: list of filepaths to attach, defaults to []
-        :param html: if message content is in HTML, default `False`
-        :param images: list of filepaths for inline use, defaults to []
-        :param cc: list of email addresses, defaults to []
-        :param bcc: list of email addresses, defaults to []
-        :param save: is sent message saved to Sent messages folder or not,
-            defaults to False
+        Arguments:
+            recipients: list of email addresses, defaults to []
+            subject: message subject, defaults to ""
+            body: message body, defaults to ""
+            attachments: list of filepaths to attach, defaults to []
+            html: if message content is in HTML, default `False`
+            images: list of filepaths for inline use, defaults to []
+            cc: list of email addresses, defaults to []
+            bcc: list of email addresses, defaults to []
+            save: is sent message saved to Sent messages folder or not,
+                  defaults to False
         """
         recipients, cc, bcc, attachments, images = self._handle_message_parameters(
             recipients, cc, bcc, attachments, images
@@ -206,9 +210,12 @@ class Exchange:
     def create_folder(self, folder_name: str = None, parent_folder: str = None) -> bool:
         """Create email folder
 
-        :param folder_name: name for the new folder
-        :param parent_folder: name for the parent folder, by default INBOX
-        :return: True if operation was successful, False if not
+        Arguments:
+            folder_name: name for the new folder
+            parent_folder: name for the parent folder, by default INBOX
+
+        Returns:
+            True if operation was successful, False if not
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for create folder")
@@ -226,9 +233,12 @@ class Exchange:
     def delete_folder(self, folder_name: str = None, parent_folder: str = None) -> bool:
         """Delete email folder
 
-        :param folder_name: current folder name
-        :param parent_folder: name for the parent folder, by default INBOX
-        :return: True if operation was successful, False if not
+        Arguments:
+            folder_name: current folder name
+            parent_folder: name for the parent folder, by default INBOX
+
+        Returns:
+            True if operation was successful, False if not
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for delete folder")
@@ -247,10 +257,13 @@ class Exchange:
     ) -> bool:
         """Rename email folder
 
-        :param oldname: current folder name
-        :param newname: new name for the folder
-        :param parent_folder: name for the parent folder, by default INBOX
-        :return: True if operation was successful, False if not
+        Arguments:
+            oldname: current folder name
+            newname: new name for the folder
+            parent_folder: name for the parent folder, by default INBOX
+
+        Returns:
+            True if operation was successful, False if not
         """
         if oldname is None or newname is None:
             raise KeyError("'oldname' and 'newname' are required for rename folder")
@@ -278,10 +291,13 @@ class Exchange:
     ) -> bool:
         """Empty email folder of all items
 
-        :param folder_name: current folder name
-        :param parent_folder: name for the parent folder, by default INBOX
-        :param delete_sub_folders: delete sub folders or not, by default False
-        :return: True if operation was successful, False if not
+        Arguments:
+            folder_name: current folder name
+            parent_folder: name for the parent folder, by default INBOX
+            delete_sub_folders: delete sub folders or not, by default False
+
+        Returns:
+            True if operation was successful, False if not
         """
         if folder_name is None:
             raise KeyError("'folder_name' is required for empty folder")
@@ -307,12 +323,15 @@ class Exchange:
             - body:something in body
             - sender:sender@domain.com
 
-        :param criterion: move messages matching this criterion
-        :param source: source folder
-        :param target: target folder
-        :param contains: if matching should be done using `contains` matching
-             and not `equals` matching, default `False` is means `equals` matching
-        :return: boolean result of operation, True if 1+ items were moved else False
+        Arguments:
+            criterion: move messages matching this criterion
+            source: source folder
+            target: target folder
+            contains: if matching should be done using `contains` matching and not
+                      `equals` matching, default `False` is means `equals` matching
+
+        Returns:
+            boolean result of operation, True if 1+ items were moved else False
         """
         source_folder = self._get_folder_object(source)
         target_folder = self._get_folder_object(target)
@@ -362,12 +381,15 @@ class Exchange:
     ) -> Any:
         """Wait for email matching `criterion` to arrive into INBOX.
 
-        :param criterion: wait for message matching criterion
-        :param timeout: total time in seconds to wait for email, defaults to 5.0
-        :param interval: time in seconds for new check, defaults to 1.0
-        :param contains: if matching should be done using `contains` matching
-             and not `equals` matching, default `False` is means `equals` matching
-        :return: list of messages
+        Arguments:
+            criterion: wait for message matching criterion
+            timeout: total time in seconds to wait for email, defaults to 5.0
+            interval: time in seconds for new check, defaults to 1.0
+            contains: if matching should be done using `contains` matching and not
+                      `equals` matching, default `False` is means `equals` matching
+
+        Returns:
+            list of messages
         """
         self.logger.info("Wait for messages")
         end_time = time.time() + float(timeout)

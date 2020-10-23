@@ -29,7 +29,8 @@ class RobotLogListener:
     def only_info_level(self, names: Any = None):
         """Register keywords that are allowed only INFO level logging
 
-        :param names: list of keywords to protect
+        Arguments:
+            names: list of keywords to protect
         """
         required_param(names, "only_info_level")
         if not isinstance(names, list):
@@ -42,7 +43,8 @@ class RobotLogListener:
     def register_protected_keywords(self, names: Any = None) -> None:
         """Register keywords that are not going to be logged into Robot Framework logs.
 
-        :param names: list of keywords to protect
+        Arguments:
+            names: list of keywords to protect
         """
         required_param(names, "register_protected_keywords")
         if not isinstance(names, list):
@@ -71,9 +73,10 @@ class RobotLogListener:
         on failure, but this can be set to override `SeleniumLibrary`
         default behaviour for a set of keywords.
 
-        :param keywords: list of keywords to mute
-        :param optional_keyword_to_run: name of the keyword to execute
-                                        if keyword defined by `keywords` fail
+        Arguments:
+            keywords: list of keywords to mute
+            optional_keyword_to_run: name of the keyword to execute
+                                     if keyword defined by `keywords` fail
         """
         required_param(keywords, "mute_run_on_failure")
         if not isinstance(keywords, list):
@@ -94,8 +97,9 @@ class RobotLogListener:
         If `name` exists in the protected keywords list then log level is
         temporarily set to NONE.
 
-        :param name: keyword name
-        :param attributes: keyword attributes
+        Arguments:
+            name: keyword name
+            attributes: keyword attributes
         """
         robotized_keyword = self._robotize_keyword(name)
         if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
@@ -117,8 +121,9 @@ class RobotLogListener:
         If `name` exists in the protected keywords list then log level is
         restored back to level it was before settings to NONE.
 
-        :param name: keyword name
-        :param attributes: keyword attributes
+        Arguments:
+            name: keyword name
+            attributes: keyword attributes
         """
         robotized_keyword = self._robotize_keyword(name)
         if any(k in robotized_keyword for k in self.KEYWORDS_TO_PROTECT):
@@ -135,7 +140,10 @@ class RobotLogListener:
 
         Keyword is lowercased and spaces are replaced by underscores.
 
-        :param kw_name: keyword name to robotize
-        :return: robotized keyword
+        Arguments:
+            kw_name: keyword name to robotize
+
+        Returns:
+            robotized keyword
         """
         return kw_name.lower().replace(" ", "_")

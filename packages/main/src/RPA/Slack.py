@@ -19,11 +19,12 @@ class Slack:
     ):
         """Send message to Slack channel using webhook.
 
-        :param webhook_url: needs to be configured for the Slack server
-        :param channel: channel needs to exist in the Slack server
-        :param sender: shown in the message post as sender
-        :param text: text for the message post
-        :param icon_emoji: icon for the message post, defaults to None
+        Arguments:
+            webhook_url: needs to be configured for the Slack server
+            channel: channel needs to exist in the Slack server
+            sender: shown in the message post as sender
+            text: text for the message post
+            icon_emoji: icon for the message post, defaults to None
         """
         headers = {"Content-Type": "application/json"}
         payload = {

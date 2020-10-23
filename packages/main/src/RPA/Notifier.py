@@ -18,10 +18,14 @@ class Notifier:
     ) -> bool:
         """Notify using Pushover service
 
-        :param message: notification message
-        :param user: target user for the notification
-        :param token: service token
-        :return: True is notification was success, False if not
+        Arguments:
+            message: notification message
+            user: target user for the notification
+            token: service token
+            kwargs: other arguments to pass to notify method
+
+        Returns:
+            True is notification was success, False if not
         """
         response = notify("pushover", message=message, user=user, token=token, **kwargs)
         return self._handle_response(response)
@@ -35,10 +39,14 @@ class Notifier:
     ) -> bool:
         """Notify using Slack service
 
-        :param message: notification message
-        :param channel: target channel for the notification
-        :param webhook_url: Slack webhook url
-        :return: True is notification was success, False if not
+        Arguments:
+            message: notification message
+            channel: target channel for the notification
+            webhook_url: Slack webhook url
+            kwargs: other arguments to pass to notify method
+
+        Returns:
+            True is notification was success, False if not
         """
         response = notify(
             "slack",
@@ -58,10 +66,14 @@ class Notifier:
     ) -> bool:
         """Notify using Telegram service
 
-        :param message: notification message
-        :param chat_id: target chat id for the notification
-        :param token: service token
-        :return: True is notification was success, False if not
+        Arguments:
+            message: notification message
+            chat_id: target chat id for the notification
+            token: service token
+            kwargs: other arguments to pass to notify method
+
+        Returns:
+            True is notification was success, False if not
         """
         response = notify(
             "telegram", message=message, chat_id=chat_id, token=token, **kwargs
@@ -78,11 +90,15 @@ class Notifier:
     ) -> bool:
         """Notify using Gmail service
 
-        :param message: notification message
-        :param to: target of email message
-        :param username: GMail service username
-        :param password: GMail service password
-        :return: True is notification was success, False if not
+        Arguments:
+            message: notification message
+            to: target of email message
+            username: GMail service username
+            password: GMail service password
+            kwargs: other arguments to pass to notify method
+
+        Returns:
+            True is notification was success, False if not
         """
         response = notify(
             "gmail",
@@ -104,11 +120,15 @@ class Notifier:
     ) -> bool:
         """Notify using email service
 
-        :param message: notification message
-        :param to: target of email message
-        :param username: email service username
-        :param password: email service password
-        :return: True is notification was success, False if not
+        Arguments:
+            message: notification message
+            to: target of email message
+            username: email service username
+            password: email service password
+            kwargs: other arguments to pass to notify method
+
+        Returns:
+            True is notification was success, False if not
         """
         response = notify(
             "email",
@@ -131,12 +151,16 @@ class Notifier:
     ) -> bool:
         """Notify using Twilio service
 
-        :param message: notification message
-        :param number_from: number where the message comes from
-        :param number_to: number where the messages goes to
-        :param account_sid: Twilio account SID
-        :param token: Twilio account token
-        :return: True is notification was success, False if not
+        Arguments:
+            message: notification message
+            number_from: number where the message comes from
+            number_to: number where the messages goes to
+            account_sid: Twilio account SID
+            token: Twilio account token
+            kwargs: other arguments to pass to notify method
+
+        Returns:
+            True is notification was success, False if not
         """
         response = notify(
             "twilio",

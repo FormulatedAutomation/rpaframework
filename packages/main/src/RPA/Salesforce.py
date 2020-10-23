@@ -49,9 +49,10 @@ class Salesforce:
         """Authorize to Salesforce with security token, username
         and password creating instance.
 
-        :param username: Salesforce API username
-        :param password: Salesforce API password
-        :param api_token: Salesforce API security token
+        Arguments:
+            username: Salesforce API username
+            password: Salesforce API password
+            api_token: Salesforce API security token
         """
         self.session = requests.Session()
         self.sf = SimpleSalesforce(
@@ -66,8 +67,11 @@ class Salesforce:
     def salesforce_query(self, sql_string: str) -> dict:
         """Perform SQL query.
 
-        :param sql_string: SQL clause to perform
-        :return: result of the SQL query
+        Arguments:
+            sql_string: SQL clause to perform
+
+        Returns:
+            result of the SQL query
         """
         self._require_authentication()
         return self.sf.query(sql_string)
@@ -75,8 +79,11 @@ class Salesforce:
     def salesforce_query_result_as_table(self, sql_string: str) -> Table:
         """Perform SQL query and return result as `RPA.Table`.
 
-        :param sql_string: SQL clause to perform
-        :return: result of the SQL query as Table
+        Arguments:
+            sql_string: SQL clause to perform
+
+        Returns:
+            result of the SQL query as Table
         """
         results = self.salesforce_query(sql_string)
         table = Table(results["records"])
@@ -87,12 +94,16 @@ class Salesforce:
         """Set account name and id by giving either parameter.
 
         Can be used together with keywords:
-            - get_opportunity_id
-            - create_new_opportunity
 
-        :param account_name: string, defaults to ""
-        :param account_id: string, defaults to ""
-        :return: True if account was found from Salesforce, else False
+            - ``Get Opportunity Id``
+            - ``Create New Opportunity``
+
+        Arguments:
+            account_name: string, defaults to ""
+            account_id: string, defaults to ""
+
+        Returns:
+            True if account was found from Salesforce, else False
         """
         result = self.salesforce_query(
             f"SELECT Id, Name FROM Account WHERE Name = '{account_name}' "
@@ -110,15 +121,19 @@ class Salesforce:
     def get_pricebook_entries(self) -> dict:
         """Get all pricebook entries.
 
-        :return: query result
+        Returns:
+            query result
         """
         return self.salesforce_query("SELECT Id, Name FROM Pricebook2")
 
     def get_opportunity_id(self, opportunity_name: str) -> Any:
         """Get ID of an Opportunity linked to set account.
 
-        :param opportunity_name: opportunity to query
-        :return: Id of the opportunity or False
+        Arguments:
+            opportunity_name: opportunity to query
+
+        Returns:
+            Id of the opportunity or False
         """
         sql_query = (
             f"SELECT Id, AccountId FROM Opportunity WHERE Name = '{opportunity_name}'"
@@ -137,8 +152,11 @@ class Salesforce:
 
         Returns False if unique Id is not found.
 
-        :param pricebook_name: pricelist to query
-        :return: Id of the pricelist or False
+        Arguments:
+            pricebook_name: pricelist to query
+
+        Returns:
+            Id of the pricelist or False
         """
         result = self.salesforce_query(
             f"SELECT Id FROM Pricebook2 WHERE Name = '{pricebook_name}'"
@@ -150,8 +168,11 @@ class Salesforce:
     def get_products_in_pricelist(self, pricebook_name: str) -> dict:
         """Get all products in a pricelist.
 
-        :param pricebook_name: pricelist to query
-        :return: products in dictionary
+        Arguments:
+            pricebook_name: pricelist to query
+
+        Returns:
+            products in dictionary
         """
         result = self.salesforce_query(
             f"SELECT PriceBook2.Name, Product2.Id, Product2.Name, UnitPrice, Name "
@@ -171,7 +192,8 @@ class Salesforce:
     def set_pricebook(self, pricebook_name: str) -> None:
         """Sets Pricebook to be used in Salesforce operations.
 
-        :param pricebook_name: pricelist to use
+        Arguments:
+            pricebook_name: pricelist to use
         """
         self.pricebook_name = pricebook_name
 
@@ -185,13 +207,15 @@ class Salesforce:
     ) -> bool:
         """Add Salesforce Product into Opportunity.
 
-        :param product_name: type of the product in the Pricelist
-        :param quantity: number of products to add
-        :param opportunity_id: identifier of Opportunity, default None
-        :param pricebook_name: name of the pricelist, default None
-        :param custom_total_price: price that overrides quantity and product price,
-            default None
-        :return: True is operation is successful or False
+        Arguments:
+            product_name: type of the product in the Pricelist
+            quantity: number of products to add
+            opportunity_id: identifier of Opportunity, default None
+            pricebook_name: name of the pricelist, default None
+            custom_total_price: price that overrides quantity and product price,
+                                default None
+        Returns:
+            True is operation is successful or False
         """
         self._require_authentication()
         if opportunity_id is None:
@@ -224,12 +248,14 @@ class Salesforce:
     ) -> Any:
         """Create Salesforce Opportunity object.
 
-        :param close_date: closing date for the Opportunity, format 'YYYY-MM-DD'
-        :param opportunity_name: as string
-        :param stage_name: needs to be one of the defined stages,
-            defaults to "Closed Won"
-        :param account_name: by default uses previously set account, defaults to None
-        :return: created opportunity or False
+        Arguments:
+            close_date: closing date for the Opportunity, format 'YYYY-MM-DD'
+            opportunity_name: as string
+            stage_name: needs to be one of the defined stages, defaults to "Closed Won"
+            account_name: by default uses previously set account, defaults to None
+
+        Returns:
+            created opportunity or False
         """
         self._require_authentication()
         # "2020-04-03"
@@ -254,8 +280,11 @@ class Salesforce:
     def read_dictionary_from_file(self, mapping_file: str) -> dict:
         """Read dictionary from file.
 
-        :param mapping_file: path to the file
-        :return: file content as dictionary
+        Arguments:
+            mapping_file: path to the file
+
+        Returns:
+            file content as dictionary
         """
         mapping = None
         with open(mapping_file, "r") as mf:
@@ -292,14 +321,17 @@ class Salesforce:
         Stores operation successes into `Salesforce.dataloader_success` array.
         Stores operation errors into `Salesforce.dataloader_errors`.
 
-        These can be retrieved with keywords `get_dataloader_success_table` and
-        `get_dataloader_error_table` which return corresponding data as
+        These can be retrieved with keywords ``Get Dataloader Success Table`` and
+        ``Get Dataloader Error Table`` which return corresponding data as
         `RPA.Table`.
 
-        :param input_object: filepath or list of dictionaries
-        :param mapping_object: filepath or dictionary
-        :param object_type: Salesforce object type
-        :return: True if operation is successful
+        Arguments:
+            input_object: filepath or list of dictionaries
+            mapping_object: filepath or dictionary
+            object_type: Salesforce object type
+
+        Returns:
+            True if operation is successful
         """
         self._require_authentication()
         if not isinstance(mapping_object, (dict, Table)):
@@ -335,9 +367,12 @@ class Salesforce:
     def get_salesforce_object_by_id(self, object_type: str, object_id: str) -> dict:
         """Get Salesforce object by id and type.
 
-        :param object_type: Salesforce object type
-        :param object_id: Salesforce object id
-        :return: dictionary of object attributes
+        Arguments:
+            object_type: Salesforce object type
+            object_id: Salesforce object id
+
+        Returns:
+            dictionary of object attributes
         """
         self._require_authentication()
         sfobject = SFType(object_type, self.session_id, self.instance)
@@ -346,10 +381,15 @@ class Salesforce:
     def create_salesforce_object(self, object_type: str, object_data: Any) -> dict:
         """Create Salesforce object by type and data.
 
-        :param object_type: Salesforce object type
-        :param object_data: Salesforce object data
-        :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
-        :return: resulting object as dictionary
+        Arguments:
+            object_type: Salesforce object type
+            object_data: Salesforce object data
+
+        Returns:
+            resulting object as dictionary
+
+        Raises:
+            SalesforceDataNotAnDictionary: when `object_data` is not dictionary
         """
         self._require_authentication()
         if not isinstance(object_data, dict):
@@ -363,11 +403,16 @@ class Salesforce:
     ) -> bool:
         """Update Salesfoce object by type, id and data.
 
-        :param object_type: Salesforce object type
-        :param object_id: Salesforce object id
-        :param object_data: Salesforce object data
-        :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
-        :return: True if successful
+        Arguments:
+            object_type: Salesforce object type
+            object_id: Salesforce object id
+            object_data: Salesforce object data
+
+        Returns:
+            True if successful
+
+        Raises:
+            SalesforceDataNotAnDictionary: when `object_data` is not dictionary
         """
         self._require_authentication()
         if not isinstance(object_data, dict):
@@ -381,11 +426,16 @@ class Salesforce:
     ) -> bool:
         """Upsert Salesfoce object by type, id and data.
 
-        :param object_type: Salesforce object type
-        :param object_id: Salesforce object id
-        :param object_data: Salesforce object data
-        :raises SalesforceDataNotAnDictionary: when `object_data` is not dictionary
-        :return: True if successful
+        Arguments:
+            object_type: Salesforce object type
+            object_id: Salesforce object id
+            object_data: Salesforce object data
+
+        Returns:
+            True if successful
+
+        Raises:
+            SalesforceDataNotAnDictionary: when `object_data` is not dictionary
         """
         self._require_authentication()
         if not isinstance(object_data, dict):
@@ -397,9 +447,12 @@ class Salesforce:
     def delete_salesforce_object(self, object_type: str, object_id: str) -> bool:
         """Delete Salesfoce object by type and id.
 
-        :param object_type: Salesforce object type
-        :param object_id: Salesforce object id
-        :return: True if successful
+        Arguments:
+            object_type: Salesforce object type
+            object_id: Salesforce object id
+
+        Returns:
+            True if successful
         """
         self._require_authentication()
         salesforce_object = SFType(object_type, self.session_id, self.instance)
@@ -409,8 +462,11 @@ class Salesforce:
     def get_salesforce_object_metadata(self, object_type: str) -> dict:
         """Get Salesfoce object metadata by type.
 
-        :param object_type: Salesforce object type
-        :return: object metadata as dictionary
+        Arguments:
+            object_type: Salesforce object type
+
+        Returns:
+            object metadata as dictionary
         """
         self._require_authentication()
         salesforce_object = SFType(object_type, self.session_id, self.instance)
@@ -419,8 +475,11 @@ class Salesforce:
     def describe_salesforce_object(self, object_type: str) -> dict:
         """Get Salesfoce object description by type.
 
-        :param object_type: Salesforce object type
-        :return: object description as dictionary
+        Arguments:
+            object_type: Salesforce object type
+
+        Returns:
+            object description as dictionary
         """
         self._require_authentication()
         salesforce_object = SFType(object_type, self.session_id, self.instance)

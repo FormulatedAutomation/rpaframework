@@ -167,10 +167,10 @@ class Images:
     def take_screenshot(self, filename=None, region=None) -> Image:
         """Take a screenshot of the current desktop.
 
-        :param filename:    Save screenshot to filename
-        :param region:      Region to crop screenshot to
+        Arguments:
+            filename:    Save screenshot to filename
+            region:      Region to crop screenshot to
         """
-
         region = to_region(region)
 
         with mss.mss() as sct:
@@ -194,9 +194,10 @@ class Images:
     def crop_image(self, image, region, filename=None):
         """Crop an existing image.
 
-        :param image:       Image to crop
-        :param region:      Region to crop image to
-        :param filename:    Save cropped image to filename
+        Arguments:
+            image:       Image to crop
+            region:      Region to crop image to
+            filename:    Save cropped image to filename
         """
         region = to_region(region)
         image = to_image(image)
@@ -214,13 +215,18 @@ class Images:
     ):
         """Attempt to find the template from the given image.
 
-        :param image:       Path to image or Image instance, used to search from
-        :param template:    Path to image or Image instance, used to search with
-        :param limit:       Limit returned results to maximum of `limit`.
-        :param region:      Area to search from. Can speed up search significantly.
-        :param tolerance:   Tolerance for matching, value between 0.1 and 1.0
-        :return:            List of matching regions
-        :raises ImageNotFoundError: No match was found
+        Arguments:
+            image:       Path to image or Image instance, used to search from
+            template:    Path to image or Image instance, used to search with
+            limit:       Limit returned results to maximum of `limit`.
+            region:      Area to search from. Can speed up search significantly.
+            tolerance:   Tolerance for matching, value between 0.1 and 1.0
+
+        Returns:
+            List of matching regions
+
+        Raises:
+            ImageNotFoundError: No match was found
         """
         # Ensure images are in Pillow format
         image = to_image(image)
@@ -266,7 +272,9 @@ class Images:
         """Wait for template image to appear on current desktop.
         For further argument descriptions, see ``find_template_in_image()``
 
-        :param timeout: Time to wait for template (in seconds)
+        Arguments:
+            template: Path to image or Image instance, used to search with
+            timeout: Time to wait for template (in seconds)
         """
         start_time = time.time()
         while time.time() - start_time < float(timeout):
@@ -279,10 +287,11 @@ class Images:
     def show_region_in_image(self, image, region, color="red", width=5):
         """Draw a rectangle onto the image around the given region.
 
-        :param image:   image to draw onto
-        :param region:  coordinates for region or Region object
-        :param color:   color of rectangle
-        :param width:   line width of rectangle
+        Arguments:
+            image:   image to draw onto
+            region:  coordinates for region or Region object
+            color:   color of rectangle
+            width:   line width of rectangle
         """
         image = to_image(image)
         region = to_region(region)
@@ -294,9 +303,10 @@ class Images:
     def show_region_on_screen(self, region, color="red", width=5):
         """Draw a rectangle around the given region on the current desktop.
 
-        :param region:  coordinates for region or Region object
-        :param color:   color of rectangle
-        :param width:   line width of rectangle
+        Arguments:
+            region:  coordinates for region or Region object
+            color:   color of rectangle
+            width:   line width of rectangle
         """
         image = self.take_screenshot()
         return self.show_region_in_image(image, region, color, width)
@@ -304,8 +314,9 @@ class Images:
     def get_pixel_color_in_image(self, image, point):
         """Get the RGB value of a pixel in the image.
 
-        :param image:   image to get pixel from
-        :param point:   coordinates for pixel or Point object
+        Arguments:
+            image:   image to get pixel from
+            point:   coordinates for pixel or Point object
         """
         point = to_point(point)
         pixel = image.getpixel(point.as_tuple())
@@ -314,7 +325,8 @@ class Images:
     def get_pixel_color_on_screen(self, point):
         """Get the RGB value of a pixel currently on screen.
 
-        :param point:   coordinates for pixel or Point object
+        Arguments:
+            point:   coordinates for pixel or Point object
         """
         return self.get_pixel_color_in_image(self.take_screenshot(), point)
 
@@ -342,11 +354,14 @@ class TemplateMatcher:
     def match(self, image, template, limit=None, tolerance=None):
         """Attempt to find the template in the given image.
 
-        :param image:       image to search from
-        :param template:    image to search with
-        :param limit:       maximum number of returned matches
-        :param tolerance:   minimum correlation factor between template and image
-        :return:            list of regions that match criteria
+        Arguments:
+            image:       image to search from
+            template:    image to search with
+            limit:       maximum number of returned matches
+            tolerance:   minimum correlation factor between template and image
+
+        Returns:
+            list of regions that match criteria
         """
         if self._opencv:
             match_func = self._iter_match_opencv

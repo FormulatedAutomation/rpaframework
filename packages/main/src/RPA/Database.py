@@ -125,23 +125,19 @@ class Database:
     ):
         """Connect to database using DB API 2.0 module.
 
-        :param module_name: database module to use
-        :param database: name of the database
-        :param username: of the user accessing the database
-        :param password: of the user accessing the database
-        :param host: SQL server address
-        :param port: SQL server port
-        :param charset: for example, "utf-8", defaults to None
-        :param config_file: location of configuration file, defaults to "db.cfg"
-
-
         Example:
-
-        .. code-block:: robotframework
-
             Connect To Database  pymysql  database  username  password  host  port
             Connect To Database  ${CURDIR}${/}resources${/}dbconfig.cfg
 
+        Arguments:
+            module_name: database module to use
+            database: name of the database
+            username: of the user accessing the database
+            password: of the user accessing the database
+            host: SQL server address
+            port: SQL server port
+            charset: for example, "utf-8", defaults to None
+            config_file: location of configuration file, defaults to "db.cfg"
         """
         self.config.parse_arguments(
             module_name, database, username, password, host, port, charset, config_file
@@ -268,18 +264,15 @@ class Database:
     def call_stored_procedure(self, name, params=None, sanstran=False):
         """Call stored procedure with name and params.
 
-        :param name: procedure name
-        :param params: parameters for the procedure as a list, defaults to None
-        :param sanstran: run command without an explicit transaction commit or rollback,
-         defaults to False
-
         Example:
-
-        .. code-block:: robotframework
-
             @{params}     Create List   FirstParam   SecondParam   ThirdParam
             @{results}    Call Stored Procedure   mystpr  ${params}
 
+        Arguments:
+            name: procedure name
+            params: parameters for the procedure as a list, defaults to None
+            sanstran: run command without an explicit transaction commit or rollback,
+                      defaults to False
         """
         params = params or []
         cur = None
@@ -307,15 +300,12 @@ class Database:
     def description(self, table):
         """Get description of the SQL table
 
-        :param table: name of the SQL table
-
         Example:
-
-        .. code-block:: robotframework
-
             Connect To Database    pymysql  mydb  user  pass  127.0.0.1
             ${db_description}      Description  mytable
 
+        Arguments:
+            table: name of the SQL table
         """
         try:
             result = self.query("DESCRIBE %s" % table, as_table=True)
@@ -330,13 +320,9 @@ class Database:
         """Close connection to SQL database
 
         Example:
-
-        .. code-block:: robotframework
-
             Connect To Database    pymysql  mydb  user  pass  127.0.0.1
             ${result}              Query   Select firstname, lastname FROM table
             Disconnect From Database
-
         """
         if self._dbconnection:
             self._dbconnection.close()
@@ -345,16 +331,13 @@ class Database:
     def execute_sql_script(self, filename, sanstran=False):  # noqa: C901
         """Execute content of SQL script as SQL commands.
 
-        :param filename: filepath to SQL script to execute
-        :param sanstran: run command without an explicit transaction commit or rollback,
-         defaults to False
-
         Example:
-
-        .. code-block:: robotframework
-
             Execute SQL Script   script.sql
 
+        Arguments:
+            filename: filepath to SQL script to execute
+            sanstran: run command without an explicit transaction commit or rollback,
+                      defaults to False
         """
         sql_script_file = open(filename)
 
@@ -398,18 +381,7 @@ class Database:
     def query(self, statement, assertion=None, sanstran=False, as_table=True):
         """Make a SQL query.
 
-        :param statement: SQL statement to execute
-        :param assertion: assert on query result, row_count or columns.
-         Works only for SELECT statements Defaults to None.
-        :param sanstran: run command without an explicit transaction commit or rollback,
-         defaults to False
-        :param as_table: if result should be instance of ``Table``, defaults to `True`
-         `False` means that return type would be `list`
-
         Example:
-
-        .. code-block:: robotframework
-
             @{res}   Query   Select firstname, lastname FROM table
             FOR  ${row}  IN  @{RES}
                 Log   ${row}
@@ -418,6 +390,14 @@ class Database:
             @{res}   Query  Select * FROM table  'arvo' in columns
             @{res}   Query  Select * FROM table  columns == ['id', 'arvo']
 
+        Arguments:
+            statement: SQL statement to execute
+            assertion: assert on query result, row_count or columns.
+                       Works only for SELECT statements Defaults to None.
+            sanstran: run command without an explicit transaction commit or rollback,
+                      defaults to False
+            as_table: if result should be instance of ``Table``, defaults to `True`
+                      `False` means that return type would be `list`
         """
         rows = None
         columns = None
@@ -470,15 +450,12 @@ class Database:
     def set_auto_commit(self, autocommit=True):
         """Set database auto commit mode.
 
-        :param autocommit: boolean value for auto commit, defaults to True
-
         Example:
-
-        .. code-block:: robotframework
-
             Set Auto Commit             # auto commit is set on
             Set Auto Commit   False     # auto commit is turned off
 
+        Arguments:
+            autocommit: boolean value for auto commit, defaults to True
         """
         self._dbconnection.autocommit = autocommit
 
@@ -486,22 +463,19 @@ class Database:
         """Get rows from table. Columns and conditions can be
         set to filter result.
 
-        :param table: name of the SQL table
-        :param columns: name of columns to return, defaults to `None`
-         means that all columns are returned
-        :param conditions: limiting result by WHERE clause, defaults to `None`
-        :param as_table: if result should be instance of ``Table``, defaults to `True`
-         `False` means that return type would be `list`
-
         Example:
-
-        .. code-block:: robotframework
-
             @{res}   Get Rows  tablename  arvo
             @{res}   Get Rows  tablename  arvo  columns=id,name
             @{res}   Get Rows  tablename  columns=id  conditions=column1='newvalue'
             @{res}   Get Rows  tablename  conditions=column2='updatedvalue'
 
+        Arguments:
+            table: name of the SQL table
+            columns: name of columns to return, defaults to `None`
+                     means that all columns are returned
+            conditions: limiting result by WHERE clause, defaults to `None`
+            as_table: if result should be instance of ``Table``, defaults to `True`
+                      `False` means that return type would be `list`
         """
         columns = columns or "*"
         where_cond = f" WHERE {conditions}" if conditions else ""
@@ -513,16 +487,13 @@ class Database:
         """Get number of rows in a table. Conditions can be given
         as arguments for WHERE clause.
 
-        :param table: name of the SQL table
-        :param conditions: restrictions for selections, defaults to None
-
         Example:
-
-        .. code-block:: robotframework
-
             ${count}   Get Number Of Rows  tablename
             ${count}   Get Number Of Rows  tablename  column1=5 and column2='x'
 
+        Arguments:
+            table: name of the SQL table
+            conditions: restrictions for selections, defaults to None
         """
         where_cond = f" WHERE {conditions}" if conditions else ""
         result = self.query(

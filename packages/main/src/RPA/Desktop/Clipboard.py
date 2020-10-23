@@ -20,7 +20,8 @@ class Clipboard:
     def copy_to_clipboard(self, text):
         """Copy text to clipboard
 
-        :param text: to copy
+        Arguments:
+            text: to copy
         """
         self.logger.debug("copy_to_clipboard")
         if platform.system() == "Windows":
@@ -34,7 +35,8 @@ class Clipboard:
     def paste_from_clipboard(self):
         """Paste text from clipboard
 
-        :return: text
+        Returns:
+            text
         """
         self.logger.debug("paste_from_clipboard")
         if platform.system() == "Windows":

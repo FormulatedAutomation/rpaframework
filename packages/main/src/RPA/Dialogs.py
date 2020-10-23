@@ -277,7 +277,9 @@ class Dialogs:
         """Start a server which will server form html and
         handles form post.
 
-        :param port: server port number, defaults to 8105
+        Arguments:
+            port: server port number, defaults to 8105
+
         """
         if self.server is None:
             self.workdir = tempfile.mkdtemp(suffix="_dialog_server_workdir")
@@ -305,15 +307,12 @@ class Dialogs:
     def create_form(self, title: str = None) -> None:
         """Create new form
 
-        :param title: form title, defaults to None
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form     # form title will be "Requesting response"
             Create Form     title=User Confirmation Form
 
+        Arguments:
+            title: form title, defaults to None
         """
         self.custom_form = OrderedDict()
         self.custom_form["form"] = list()
@@ -327,15 +326,12 @@ class Dialogs:
     def add_title(self, title: str) -> None:
         """Add h3 element into form
 
-        :param title: text for the element
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form     # default form title will be "Requesting response"
             Add Title       User Confirmation Form
 
+        Arguments:
+            title: text for the element
         """
         element = {"type": "title", "value": title}
         self.custom_form["form"].append(element)
@@ -343,16 +339,13 @@ class Dialogs:
     def add_text_input(self, label: str, name: str) -> None:
         """Add text input element
 
-        :param label: input element label
-        :param name: input element name attribute
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add Text Input   what is your firstname ?  fname
 
+        Arguments:
+            label: input element label
+            name: input element name attribute
         """
         element = {"type": "textinput", "label": label, "name": name}
         self.custom_form["form"].append(element)
@@ -360,17 +353,14 @@ class Dialogs:
     def add_hidden_input(self, name: str, value: str) -> None:
         """Add hidden input element
 
-        :param name: input element name attribute
-        :param value: input element value attribute
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             ${uuid}   Evaluate  str(uuid.uuid4())
             Add Hidden Input    form-id   ${uuid}
 
+        Arguments:
+            name: input element name attribute
+            value: input element value attribute
         """
         element = {
             "type": "hiddeninput",
@@ -389,18 +379,9 @@ class Dialogs:
     ) -> None:
         """Add text input element
 
-        :param label: input element label
-        :param element_id: hidden element id attribute
-        :param name: input element name attribute
-        :param filetypes: accepted filetypes for the file upload
-        :param target_directory: where to save uploaded files to
-
         Read more of the filetypes in the library documentation.
 
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add File Input  label=Attachment
             ...             element_id=attachment
@@ -414,6 +395,12 @@ class Dialogs:
             ...             filetypes=application/pdf  # Accept only PDFs
             ...             target_directory=${CURDIR}${/}output
 
+        Arguments:
+            label: input element label
+            element_id: hidden element id attribute
+            name: input element name attribute
+            filetypes: accepted filetypes for the file upload
+            target_directory: where to save uploaded files to
         """
         element = {
             "type": "fileinput",
@@ -431,21 +418,18 @@ class Dialogs:
     ) -> None:
         """Add dropdown element
 
-        :param label: dropdown element label
-        :param element_id: dropdown element id attribute
-        :param options: values for the dropdown
-        :param default: dropdown selected value, defaults to None
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add Dropdown  label=Select task type
             ...           element_id=tasktype
             ...           options=buy,sell,rent
             ...           default=buy
 
+        Arguments:
+            label: dropdown element label
+            element_id: dropdown element id attribute
+            options: values for the dropdown
+            default: dropdown selected value, defaults to None
         """
         if not isinstance(options, list):
             options = options.split(",")
@@ -462,16 +446,13 @@ class Dialogs:
     def add_submit(self, name: str, buttons: str) -> None:
         """Add submit element
 
-        :param name: element name attribute
-        :param buttons: list of buttons
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add Submit    name=direction-to-go  buttons=left,right
 
+        Arguments:
+            name: element name attribute
+            buttons: list of buttons
         """
         if not isinstance(buttons, list):
             buttons = buttons.split(",")
@@ -483,17 +464,14 @@ class Dialogs:
     ) -> None:
         """Add radio button element
 
-        :param element_id: radio button element identifier
-        :param options: values for the radio button
-        :param default: radio button selected value, defaults to None
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add Radio Button   element_id=drone  buttons=Jim,Robert  default=Robert
 
+        Arguments:
+            element_id: radio button element identifier
+            options: values for the radio button
+            default: radio button selected value, defaults to None
         """
         if not isinstance(options, list):
             options = options.split(",")
@@ -511,21 +489,18 @@ class Dialogs:
     ) -> None:
         """Add checkbox element
 
-        :param label: check box element label
-        :param element_id: check box element identifier
-        :param options: values for the check box
-        :param default: check box selected value, defaults to None
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add Checkbox    label=Select your colors
             ...             element_id=colors
             ...             options=green,red,blue,yellow
             ...             default=blue
 
+        Arguments:
+            label: check box element label
+            element_id: check box element identifier
+            options: values for the check box
+            default: check box selected value, defaults to None
         """
         if not isinstance(options, list):
             options = options.split(",")
@@ -544,19 +519,16 @@ class Dialogs:
     ) -> None:
         """Add textarea element
 
-        :param name: textarea element name
-        :param rows: number of rows for the area, defaults to 5
-        :param cols: numnber of columns for the area, defaults to 40
-        :param default: prefilled text for the area, defaults to None
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add Textarea       name=feedback  default=enter feedback here
             Add Textarea       name=texts  rows=40   cols=80
 
+        Arguments:
+            name: textarea element name
+            rows: number of rows for the area, defaults to 5
+            cols: numnber of columns for the area, defaults to 40
+            default: prefilled text for the area, defaults to None
         """
         element = {
             "type": "textarea",
@@ -571,15 +543,12 @@ class Dialogs:
     def add_text(self, value: str) -> None:
         """Add text paragraph element
 
-        :param value: text for the element
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form
             Add Text       ${form_guidance_text}
 
+        Arguments:
+            value: text for the element
         """
         element = {
             "type": "text",
@@ -592,18 +561,17 @@ class Dialogs:
     ) -> dict:
         """Start server and show form. Waits for user response.
 
-        :param formspec: form json specification file, defaults to None
-        :param window_width: window width in pixels, defaults to 600
-        :param window_height: window height in pixels, defaults to 1000
-        :return: form response
-
-        Example.
-
-        .. code-block:: robotframework
-
+        Example:
             Create Form    ${CURDIR}/${/}myform.json
             &{response}    Request Response
 
+        Arguments:
+            formspec: form json specification file, defaults to None
+            window_width: window width in pixels, defaults to 600
+            window_height: window height in pixels, defaults to 1000
+
+        Returns:
+            form response
         """
         self._start_attended_server()
         if self.custom_form is None:

@@ -73,10 +73,11 @@ class Twitter:
     ) -> None:
         """Authorize to Twitter API
 
-        :param consumer_key: app consumer key
-        :param consumer_secret: app consumer secret
-        :param access_token: user access token
-        :param access_token_secret: user access token secret
+        Arguments:
+            consumer_key: app consumer key
+            consumer_secret: app consumer secret
+            access_token: user access token
+            access_token_secret: user access token secret
         """
         if consumer_key is None:
             consumer_key = required_env("TWITTER_CONSUMER_KEY")
@@ -100,7 +101,8 @@ class Twitter:
     def get_me(self) -> dict:
         """Get Twitter profile of authenticated user
 
-        :return: user profile as dictionary or `None`
+        Returns:
+            user profile as dictionary or `None`
         """
         data = self._me._json if self._me else None  # pylint: disable=W0212
         notebook_json(data)
@@ -109,9 +111,12 @@ class Twitter:
     def get_user_tweets(self, username: str = None, count: int = 100) -> list:
         """Get user tweets
 
-        :param username: whose tweets to get
-        :param count: maximum number of tweets, defaults to 100
-        :return: list of user tweets
+        Arguments:
+            username: whose tweets to get
+            count: maximum number of tweets, defaults to 100
+
+        Returns:
+            list of user tweets
         """
         required_param(username, "get_user_tweets")
         tweets = []
@@ -158,19 +163,21 @@ class Twitter:
             - recent : return only the most recent results in the response
             - popular : return only the most popular results in the response
 
-        :param query: search query string of 500 characters maximum,
-            including operators
-        :param count: maximum number of tweets, defaults to 100
-        :param geocode: tweets by users located within a given
-            radius of the given latitude/longitude
-        :param lang: language code of tweets
-        :param locale: language of the query you are sending
-        :param result_type: type of search results you would prefer to receive,
-            default "mixed"
-        :param until: tweets created before the given date
-        :param since_id: Returns only statuses with an ID greater than
-        :param max_id: only statuses with an ID less than
-        :return: list of matching tweets
+        Arguments:
+            query: search query string of 500 characters maximum, including operators
+            count: maximum number of tweets, defaults to 100
+            geocode: tweets by users located within a given radius of the given
+                     latitude/longitude
+            lang: language code of tweets
+            locale: language of the query you are sending
+            result_type: type of search results you would prefer to receive, default
+                         "mixed"
+            until: tweets created before the given date
+            since_id: Returns only statuses with an ID greater than
+            max_id: only statuses with an ID less than
+
+        Returns:
+            list of matching tweets
         """
         required_param(query, "text_search_tweets")
         tweets = []
@@ -210,8 +217,11 @@ class Twitter:
     def get_user_profile(self, username: str = None) -> dict:
         """Get user's Twitter profile
 
-        :param username: whose profile to get
-        :return: profile as dictionary
+        Arguments:
+            username: whose profile to get
+
+        Returns:
+            profile as dictionary
         """
         required_param(username, "get_user_profile")
         try:
@@ -225,7 +235,8 @@ class Twitter:
     def tweet(self, content: str = None) -> None:
         """Make a tweet with content
 
-        :param content: text for the status update
+        Arguments:
+            content: text for the status update
         """
         required_param(content, "tweet")
         self.api.update_status(content)
@@ -233,8 +244,11 @@ class Twitter:
     def like(self, tweet: Tweet = None) -> bool:
         """Like a tweet
 
-        :param tweet: as a class `Tweet`
-        :return: `True` if Tweet was liked, `False` if not
+        Arguments:
+            tweet: as a class `Tweet`
+
+        Returns:
+            `True` if Tweet was liked, `False` if not
         """
         required_param(tweet, "like")
         try:
@@ -251,8 +265,11 @@ class Twitter:
     def unlike(self, tweet: Tweet = None) -> bool:
         """Unlike a tweet
 
-        :param tweet: as a class `Tweet`
-        :return: `True` if Tweet was unliked, `False` if not
+        Arguments:
+            tweet: as a class `Tweet`
+
+        Returns:
+            `True` if Tweet was unliked, `False` if not
         """
         required_param(tweet, "unlike")
         try:
@@ -269,8 +286,11 @@ class Twitter:
     def follow(self, user: str = None) -> bool:
         """Follow Twitter user
 
-        :param user: screen name of the user
-        :return:  `True` if user was followed, `False` if not
+        Arguments:
+            user: screen name of the user
+
+        Returns:
+             `True` if user was followed, `False` if not
         """
         required_param(user, "follow")
         try:
@@ -283,8 +303,11 @@ class Twitter:
     def unfollow(self, user: str = None) -> bool:
         """Unfollow Twitter user
 
-        :param user: screen name of the user
-        :return:  `True` if user was followed, `False` if not
+        Arguments:
+            user: screen name of the user
+
+        Returns:
+             `True` if user was followed, `False` if not
         """
         required_param(user, "unfollow")
         try:

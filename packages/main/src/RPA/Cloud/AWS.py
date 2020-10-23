@@ -54,8 +54,11 @@ class AWSBase:
     def _get_client_for_service(self, service_name: str = None):
         """Return client instance for servive if it has been initialized.
 
-        :param service_name: name of the AWS service
-        :return: client instance
+        Arguments:
+            service_name: name of the AWS service
+
+        Returns:
+            client instance
         """
         if service_name not in self.clients.keys():
             raise KeyError(
@@ -109,7 +112,8 @@ class AWSBase:
     def set_robocloud_vault(self, vault_name):
         """Set Robocloud Vault name
 
-        :param vault_name: Robocloud Vault name
+        Arguments:
+            vault_name: Robocloud Vault name
         """
         if vault_name:
             self.robocloud_vault_name = vault_name
@@ -131,10 +135,11 @@ class ServiceS3(AWSBase):
     ) -> None:
         """Initialize AWS S3 client
 
-        :param aws_key_id: access key ID
-        :param aws_key: secret access key
-        :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        Arguments:
+            aws_key_id: access key ID
+            aws_key: secret access key
+            region: AWS region
+            use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self._init_client("s3", aws_key_id, aws_key, region, use_robocloud_vault)
 
@@ -142,8 +147,11 @@ class ServiceS3(AWSBase):
     def create_bucket(self, bucket_name: str = None) -> bool:
         """Create S3 bucket with name
 
-        :param bucket_name: name for the bucket
-        :return: boolean indicating status of operation
+        Arguments:
+            bucket_name: name for the bucket
+
+        Returns:
+            boolean indicating status of operation
         """
         required_param(bucket_name, "create_bucket")
         client = self._get_client_for_service("s3")
@@ -158,8 +166,11 @@ class ServiceS3(AWSBase):
     def delete_bucket(self, bucket_name: str = None) -> bool:
         """Delete S3 bucket with name
 
-        :param bucket_name: name for the bucket
-        :return: boolean indicating status of operation
+        Arguments:
+            bucket_name: name for the bucket
+
+        Returns:
+            boolean indicating status of operation
         """
         required_param(bucket_name, "delete_bucket")
         client = self._get_client_for_service("s3")
@@ -174,7 +185,8 @@ class ServiceS3(AWSBase):
     def list_buckets(self) -> list:
         """List all buckets for this account
 
-        :return: list of buckets
+        Returns:
+            list of buckets
         """
         client = self._get_client_for_service("s3")
         response = client.list_buckets()
@@ -184,9 +196,12 @@ class ServiceS3(AWSBase):
     def delete_files(self, bucket_name: str = None, files: list = None):
         """Delete files in the bucket
 
-        :param bucket_name: name for the bucket
-        :param files: list of files to delete
-        :return: number of files deleted or `False`
+        Arguments:
+            bucket_name: name for the bucket
+            files: list of files to delete
+
+        Returns:
+            number of files deleted or `False`
         """
         required_param(bucket_name, "delete_files")
         if not files:
@@ -209,8 +224,11 @@ class ServiceS3(AWSBase):
     def list_files(self, bucket_name) -> list:
         """List files in the bucket
 
-        :param bucket_name: name for the bucket
-        :return: list of files
+        Arguments:
+            bucket_name: name for the bucket
+
+        Returns:
+            list of files
         """
         required_param(bucket_name, "list_files")
         client = self._get_client_for_service("s3")
@@ -250,10 +268,13 @@ class ServiceS3(AWSBase):
         If `object_name` is not given then basename of the file is
         used as `object_name`.
 
-        :param bucket_name: name for the bucket
-        :param filename: filepath for the file to be uploaded
-        :param object_name: name of the object in the bucket, defaults to None
-        :return: tuple of upload status and error
+        Arguments:
+            bucket_name: name for the bucket
+            filename: filepath for the file to be uploaded
+            object_name: name of the object in the bucket, defaults to None
+
+        Returns:
+            tuple of upload status and error
         """
         required_param([bucket_name, filename], "upload_file")
         if object_name is None:
@@ -271,9 +292,12 @@ class ServiceS3(AWSBase):
             [{'filepath':'/path/to/file1.txt', 'object_name': 'file1.txt'},
             {'filepath': '/path/to/file2.txt', 'object_name': 'file2.txt'}]
 
-        :param bucket_name: name for the bucket
-        :param files: list of files (2 possible ways, see above)
-        :return: number of files uploaded
+        Arguments:
+            bucket_name: name for the bucket
+            files: list of files (2 possible ways, see above)
+
+        Returns:
+            number of files uploaded
         """
         required_param([bucket_name, files], "upload_files")
         upload_count = 0
@@ -305,11 +329,14 @@ class ServiceS3(AWSBase):
     ) -> list:
         """Download files from bucket to local filesystem
 
-        :param bucket_name: name for the bucket
-        :param files: list of S3 object names
-        :param target_directory: location for the downloaded files, default
+        Arguments:
+            bucket_name: name for the bucket
+            files: list of S3 object names
+            target_directory: location for the downloaded files, default
+
             current directory
-        :return: number of files downloaded
+        Returns:
+            number of files downloaded
         """
         required_param([bucket_name, files, target_directory], "download_files")
         client = self._get_client_for_service("s3")
@@ -348,10 +375,11 @@ class ServiceTextract(AWSBase):
     ):
         """Initialize AWS Textract client
 
-        :param aws_key_id: access key ID
-        :param aws_key: secret access key
-        :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        Arguments:
+            aws_key_id: access key ID
+            aws_key: secret access key
+            region: AWS region
+            use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self._init_client("textract", aws_key_id, aws_key, region, use_robocloud_vault)
 
@@ -361,10 +389,13 @@ class ServiceTextract(AWSBase):
     ) -> bool:
         """Analyzes an input document for relationships between detected items
 
-        :param image_file: filepath (or object name) of image file
-        :param json_file: filepath to resulting json file
-        :param bucket_name: if given then using `image_file` from the bucket
-        :return: analysis response in json
+        Arguments:
+            image_file: filepath (or object name) of image file
+            json_file: filepath to resulting json file
+            bucket_name: if given then using `image_file` from the bucket
+
+        Returns:
+            analysis response in json
         """
         client = self._get_client_for_service("textract")
         if bucket_name:
@@ -444,24 +475,15 @@ class ServiceTextract(AWSBase):
             self.tables[idx] = table
 
     def get_tables(self):
-        """[summary]
-
-        :return: [description]
-        """
+        """Get tables from the document"""
         return self.tables
 
     def get_words(self):
-        """[summary]
-
-        :return: [description]
-        """
+        """Get words from the document"""
         return self.words
 
     def get_cells(self):
-        """[summary]
-
-        :return: [description]
-        """
+        """Get cells from the document"""
         return self.cells
 
     @aws_dependency_required
@@ -470,10 +492,13 @@ class ServiceTextract(AWSBase):
     ) -> bool:
         """Detects text in the input document.
 
-        :param image_file: filepath (or object name) of image file
-        :param json_file: filepath to resulting json file
-        :param bucket_name: if given then using `image_file` from the bucket
-        :return: analysis response in json
+        Arguments:
+            image_file: filepath (or object name) of image file
+            json_file: filepath to resulting json file
+            bucket_name: if given then using `image_file` from the bucket
+
+        Returns:
+            analysis response in json
         """
         client = self._get_client_for_service("textract")
         if bucket_name:
@@ -508,10 +533,11 @@ class ServiceComprehend(AWSBase):
     ):
         """Initialize AWS Comprehend client
 
-        :param aws_key_id: access key ID
-        :param aws_key: secret access key
-        :param region: AWS region
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        Arguments:
+            aws_key_id: access key ID
+            aws_key: secret access key
+            region: AWS region
+            use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self._init_client(
             "comprehend", aws_key_id, aws_key, region, use_robocloud_vault
@@ -521,9 +547,10 @@ class ServiceComprehend(AWSBase):
     def detect_sentiment(self, text: str = None, lang="en") -> dict:
         """Inspects text and returns an inference of the prevailing sentiment
 
-        :param text: A UTF-8 text string. Each string must contain fewer
-            that 5,000 bytes of UTF-8 encoded characters
-        :param lang: language code of the text, defaults to "en"
+        Arguments:
+            text: A UTF-8 text string. Each string must contain fewer
+                  that 5,000 bytes of UTF-8 encoded characters
+            lang: language code of the text, defaults to "en"
         """
         required_param(text, "detect_sentiment")
         client = self._get_client_for_service("comprehend")
@@ -539,9 +566,10 @@ class ServiceComprehend(AWSBase):
     def detect_entities(self, text: str = None, lang="en") -> dict:
         """Inspects text for named entities, and returns information about them
 
-        :param text: A UTF-8 text string. Each string must contain fewer
-            that 5,000 bytes of UTF-8 encoded characters
-        :param lang: language code of the text, defaults to "en"
+        Arguments:
+            text: A UTF-8 text string. Each string must contain fewer
+                  that 5,000 bytes of UTF-8 encoded characters
+            lang: language code of the text, defaults to "en"
         """
         required_param(text, "detect_entities")
         client = self._get_client_for_service("comprehend")
@@ -567,11 +595,12 @@ class ServiceSQS(AWSBase):
     ):
         """Initialize AWS SQS client
 
-        :param aws_key_id: access key ID
-        :param aws_key: secret access key
-        :param region: AWS region
-        :param queue_url: SQS queue url
-        :param use_robocloud_vault: use secret stored into `Robocloud Vault`
+        Arguments:
+            aws_key_id: access key ID
+            aws_key: secret access key
+            region: AWS region
+            queue_url: SQS queue url
+            use_robocloud_vault: use secret stored into `Robocloud Vault`
         """
         self._init_client("sqs", aws_key_id, aws_key, region, use_robocloud_vault)
         self.queue_url = queue_url
@@ -582,9 +611,12 @@ class ServiceSQS(AWSBase):
     ) -> dict:
         """Send message to the queue
 
-        :param message: body of the message
-        :param message_attributes: attributes of the message
-        :return: send message response as dict
+        Arguments:
+            message: body of the message
+            message_attributes: attributes of the message
+
+        Returns:
+            send message response as dict
         """
         required_param(message, "send_message")
         client = self._get_client_for_service("sqs")
@@ -602,7 +634,8 @@ class ServiceSQS(AWSBase):
     def receive_message(self) -> dict:
         """Receive message from queue
 
-        :return: message as dict
+        Returns:
+            message as dict
         """
         client = self._get_client_for_service("sqs")
         response = client.receive_message(
@@ -614,8 +647,11 @@ class ServiceSQS(AWSBase):
     def delete_message(self, receipt_handle: str = None):
         """Delete message in the queue
 
-        :param receipt_handle: message handle to delete
-        :return: delete message response as dict
+        Arguments:
+            receipt_handle: message handle to delete
+
+        Returns:
+            delete message response as dict
         """
         required_param(receipt_handle, "delete_message")
         client = self._get_client_for_service("sqs")
@@ -628,8 +664,11 @@ class ServiceSQS(AWSBase):
     def create_queue(self, queue_name: str = None):
         """Create queue with name
 
-        :param queue_name: [description], defaults to None
-        :return: create queue response as dict
+        Arguments:
+            queue_name: name of the SQS queue, defaults to None
+
+        Returns:
+            create queue response as dict
         """
         required_param(queue_name, "create_queue")
         client = self._get_client_for_service("sqs")
@@ -640,8 +679,11 @@ class ServiceSQS(AWSBase):
     def delete_queue(self, queue_name: str = None):
         """Delete queue with name
 
-        :param queue_name: [description], defaults to None
-        :return: delete queue response as dict
+        Arguments:
+            queue_name: name of the SQS queue, defaults to None
+
+        Returns:
+            delete queue response as dict
         """
         required_param(queue_name, "delete_queue")
         client = self._get_client_for_service("sqs")
@@ -658,7 +700,6 @@ class AWS(ServiceS3, ServiceTextract, ServiceComprehend, ServiceSQS):
         - S3
         - SQS
         - Textract
-
     """
 
     def __init__(self, region: str = DEFAULT_REGION, robocloud_vault_name: str = None):

@@ -113,7 +113,11 @@ class RobocorpAdapter(BaseAdapter):
             return self.handle_error(response)
 
     def save_data(self, data):
-        """Save data payload as JSON."""
+        """Save data payload as JSON.
+
+        Arguments:
+            data: payload content
+        """
         url = self.url("data")
         data = json_dump_safe(data)
         logging.info("Saving work item data: %s", url)
@@ -136,7 +140,8 @@ class RobocorpAdapter(BaseAdapter):
     def get_file(self, name):
         """Download attached file content.
 
-        :param name: Name of file
+        Arguments:
+            name: Name of file
         """
         # Robocorp API returns URL for S3 download
         url = self.url("files", self.file_id(name))
@@ -158,8 +163,9 @@ class RobocorpAdapter(BaseAdapter):
     def add_file(self, name, content):
         """Attach and upload file.
 
-        :param name:    Destination name
-        :param content: Content of file
+        Arguments:
+            name:    Destination name
+            content: Content of file
         """
         # Robocorp API returns pre-signed POST details for S3 upload
         url = self.url("files")
@@ -187,7 +193,8 @@ class RobocorpAdapter(BaseAdapter):
     def remove_file(self, name):
         """Remove attached file.
 
-        :param name: Name of file
+        Arguments:
+            name: Name of file
         """
         url = self.url("files", self.file_id(name))
         logging.info("Removing work item file: %s", url)
@@ -200,7 +207,8 @@ class RobocorpAdapter(BaseAdapter):
     def file_id(self, name):
         """Convert filename to ID used by Robocorp API.
 
-        :param name: Name of file
+        Arguments:
+            name: Name of file
         """
         url = self.url("files")
 
@@ -224,7 +232,11 @@ class RobocorpAdapter(BaseAdapter):
         return matches[-1]["fileId"]
 
     def url(self, *parts):
-        """Create full URL to Robocorp endpoint."""
+        """Create full URL to Robocorp endpoint.
+
+        Arguments:
+            parts: to be attached to a URL
+        """
         return url_join(
             self.host,
             "json-v1",
@@ -238,7 +250,8 @@ class RobocorpAdapter(BaseAdapter):
     def handle_error(self, response):
         """Handle response, and raise errors with human-friendly messages.
 
-        :param response: Response returned by HTTP request
+        Arguments:
+            response: Response returned by HTTP request
         """
         if response.ok:
             return
@@ -279,7 +292,11 @@ class FileAdapter(BaseAdapter):
             return {}
 
     def save_data(self, data):
-        """Save data payload to file."""
+        """Save data payload to file.
+
+        Arguments:
+            data: payload content
+        """
         content = self.read_database()
         content.setdefault(self.workspace_id, {})[self.item_id] = data
 
@@ -299,19 +316,32 @@ class FileAdapter(BaseAdapter):
         return files
 
     def get_file(self, name):
-        """Read file from disk."""
+        """Read file from disk.
+
+        Arguments:
+            name:    Name of file
+        """
         dirname = Path(self.path).parent
         with open(dirname / name, "rb") as infile:
             return infile.read()
 
     def add_file(self, name, content):
-        """Write file to disk."""
+        """Write file to disk.
+
+        Arguments:
+            name:    Destination name
+            content: Content of file
+        """
         dirname = Path(self.path).parent
         with open(dirname / name, "wb") as outfile:
             outfile.write(content)
 
     def remove_file(self, name):
-        """Do not remove local files."""
+        """Do not remove local files.
+
+        Arguments:
+            name:    Name of file
+        """
         del name
 
     def read_database(self):
@@ -417,9 +447,12 @@ class WorkItem:
     def get_file(self, name, path=None):
         """Load an attached file and store it on the local filesystem.
 
-        :param name: Name of attached file
-        :param path: Destination path. Default to current working directory.
-        :returns:    Path to created file
+        Arguments:
+            name: Name of attached file
+            path: Destination path. Default to current working directory.
+
+        Returns:
+            Path to created file
         """
         if name not in self.files:
             raise FileNotFoundError(f"No such file: {name}")
@@ -444,9 +477,10 @@ class WorkItem:
         """Add file to current work item. Does not upload
         until ``save()`` is called.
 
-        :param path: Path to file to upload
-        :param name: Name of file in work item. If not given,
-                     name of file on disk is used.
+        Arguments:
+            path: Path to file to upload
+            name: Name of file in work item. If not given,
+                  name of file on disk is used.
         """
         path = Path(path).resolve()
 
@@ -468,7 +502,9 @@ class WorkItem:
         """Remove file from current work item. Change is not applied
         until ``save()`` is called.
 
-        :param name: Name of attached file
+        Arguments:
+            name: Name of attached file
+            missing_ok: Do not raise exception if file doesn't exist
         """
         if not missing_ok and name not in self.files:
             raise FileNotFoundError(f"No such file: {name}")

@@ -27,7 +27,8 @@ class Graph:
 
     Creates a dot-notation file and rendered graph using graphviz.
 
-    :param suite: Current suite running model
+    Arguments:
+        suite: Current suite running model
     """
 
     # Default render format
@@ -175,8 +176,10 @@ class Schema:
     and evaluating possible schema-defined actions when
     these transitions are triggered.
 
-    :param schema: content of schema JSON file
-    :param names:  names of tasks in the current suite
+    Arguments:
+        schema: content of schema JSON file
+        names:  names of tasks in the current suite
+
     """
 
     def __init__(self, schema, names):
@@ -194,8 +197,9 @@ class Schema:
     def _parse_schema(self, schema, names):
         """Parse schema file and validate contents.
 
-        :param schema: content of schema file
-        :param tasks:  tasks in suite execution
+        Arguments:
+            schema: content of schema file
+            tasks:  tasks in suite execution
         """
         # First pass: Parse names and aliases
         for name, properties in schema.get("tasks", {}).items():
@@ -337,11 +341,12 @@ class Tasks:
     to visualize connected tasks, which is visible in the suite documentation
     field of the test log.
 
-    :param execution_limit: Maximum number of tasks to run in suite,
-                            used to prevent infinite loops
-    :param schema:          Path to optional schema file
-    :param graph:           Render execution result as graph using graphviz
-    :param graph_inline:    Inline graph into log, instead of saving as file
+    Arguments:
+        execution_limit: Maximum number of tasks to run in suite, used to
+                         prevent infinite loops
+        schema:          Path to optional schema file
+        graph:           Render execution result as graph using graphviz
+        graph_inline:    Inline graph into log, instead of saving as file
     """
 
     ROBOT_LIBRARY_SCOPE = "GLOBAL"
@@ -514,7 +519,8 @@ class Tasks:
         """Set the next task to be executed.
         Should be a task in the same suite.
 
-        :param name: Name of next task
+        Arguments:
+            name: Name of next task
         """
         task = self._task_by_name(name)
 
@@ -535,9 +541,10 @@ class Tasks:
         """Set the next task according to the condition.
         If no default is given, does not modify execution order.
 
-        :param condition: Condition expression to evaluate
-        :param name:      Name of next task, if successful
-        :param default:   Name of next task, if unsuccessful
+        Arguments:
+            condition: Condition expression to evaluate
+            name:      Name of next task, if successful
+            default:   Name of next task, if unsuccessful
         """
         is_true = (
             BuiltIn().evaluate(condition)

@@ -32,19 +32,18 @@ class OperatingSystem:
     ) -> str:
         """Get computer boot time in seconds from Epoch or in datetime string.
 
-        :param as_datetime: if True returns datetime string, otherwise seconds,
-            defaults to False
-        :param datetime_format: datetime string format, defaults to "%Y-%m-%d %H:%M:%S"
-        :return: seconds from Epoch or datetime string
-
         Example:
-
-        .. code-block:: robotframework
-
             ${boottime}  Get Boot Time
             ${boottime}  Get Boot Time   as_datetime=True
             ${boottime}  Get Boot Time   as_datetime=True  datetime_format=%d.%m.%Y
 
+        Arguments:
+            as_datetime: if True returns datetime string, otherwise seconds,
+                         defaults to False
+            datetime_format: datetime string format, defaults to "%Y-%m-%d %H:%M:%S"
+
+        Returns:
+            seconds from Epoch or datetime string
         """
         btime = self.boot_time_in_seconds_from_epoch()
         if as_datetime:
@@ -55,42 +54,33 @@ class OperatingSystem:
     def boot_time_in_seconds_from_epoch(self) -> str:
         """Get machine boot time
 
-        :return: boot time in seconds from Epoch
-
         Example:
-
-        .. code-block:: robotframework
-
             ${epoch}  Boot Time In Seconds From Epoch
 
+        Returns:
+            boot time in seconds from Epoch
         """
         return psutil.boot_time()
 
     def get_machine_name(self) -> str:
         """Get machine name
 
-        :return: machine name as string
-
         Example:
-
-        .. code-block:: robotframework
-
             ${machine}  Get Machine Name
 
+        Returns:
+            machine name as string
         """
         return socket.gethostname()
 
     def get_username(self) -> str:
         """Get username of logged in user
 
-        :return: username as string
-
         Example:
-
-        .. code-block:: robotframework
-
             ${user}  Get Username
 
+        Returns:
+            username as string
         """
         return getpass.getuser()
 
@@ -99,11 +89,7 @@ class OperatingSystem:
         """Puts system to sleep mode
 
         Example:
-
-        .. code-block:: robotframework
-
             Put System To Sleep
-
         """
         if platform.system() == "Darwin":
             os.system("pmset sleepnow")
@@ -114,19 +100,18 @@ class OperatingSystem:
     def process_exists(self, process_name: str, strict: bool = True) -> Any:
         """Check if process exists by its name
 
-        :param process_name: search for this process
-        :param strict: defines how match is made, default `True`
-         which means that process name needs to be exact match
-         and `False` does inclusive matching
-        :return: process instance or False
-
         Example:
-
-        .. code-block:: robotframework
-
             ${process}  Process Exists  calc
             ${process}  Process Exists  calc  strict=False
 
+        Arguments:
+            process_name: search for this process
+            strict: defines how match is made, default `True`
+                    which means that process name needs to be exact match
+                    and `False` does inclusive matching
+
+        Returns:
+            process instance or False
         """
         for p in psutil.process_iter():
             p_name = p.name()
@@ -140,16 +125,15 @@ class OperatingSystem:
     def kill_process(self, process_name: str) -> bool:
         """Kill process by name
 
-        :param process_name: name of the process
-        :return: True if succeeds False if not
-
         Example:
-
-        .. code-block:: robotframework
-
             ${process}  Process Exists  calc  strict=False
             ${status}   Kill Process    ${process.name()}
 
+        Arguments:
+            process_name: name of the process
+
+        Returns:
+            `True` if succeeds `False` if not
         """
         p = self.process_exists(process_name)
         if p:
@@ -161,15 +145,12 @@ class OperatingSystem:
     def kill_process_by_pid(self, pid: int) -> None:
         """Kill process by pid
 
-        :param pid: process identifier
-
         Example:
-
-        .. code-block:: robotframework
-
             ${process}  Process Exists  calc  strict=False
             ${status}   Kill Process    ${process.pid}
 
+        Arguments:
+            pid: process identifier
         """
         os.kill(pid, signal.SIGTERM)
 
@@ -178,16 +159,16 @@ class OperatingSystem:
         """Get computer memory stats and return those in bytes
         or in humanized memory format.
 
-        :param humanized: if False returns memory information in bytes, defaults to True
-        :return: memory information in dictionary format
-
         Example:
-
-        .. code-block:: robotframework
-
             &{mem}     Get Memory Stats
             &{mem}     Get Memory Stats   humanized=False
 
+        Arguments:
+            humanized: if `False` returns memory information in bytes,
+                       defaults to `True`
+
+        Returns:
+            memory information in dictionary format
         """
         meminfo = psutil.virtual_memory()
         memdict = meminfo._asdict()

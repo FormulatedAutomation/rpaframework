@@ -53,13 +53,16 @@ class FTP:
     ):
         """Connect to FTP server
 
-        :param host: address of the server
-        :param port: port of the server, defaults to 21
-        :param user: login name, defaults to None
-        :param password: login password, defaults to None
-        :param tls: connect using TLS support, defaults to False
-        :param transfer: mode of the transfer, defaults to "passive"
-        :raises AuthenticationException: on authentication error with the server
+        Arguments:
+            host: address of the server
+            port: port of the server, defaults to 21
+            user: login name, defaults to None
+            password: login password, defaults to None
+            tls: connect using TLS support, defaults to False
+            transfer: mode of the transfer, defaults to "passive"
+
+        Raises:
+            AuthenticationException: on authentication error with the server
         """
         try:
             if tls:
@@ -101,8 +104,9 @@ class FTP:
     def upload(self, localfile: str, remotefile: str) -> bool:
         """Upload file to FTP server
 
-        :param localfile: path to file to upload
-        :param remotefile: name of uploaded file in the server
+        Arguments:
+            localfile: path to file to upload
+            remotefile: name of uploaded file in the server
         """
         cmd = f"STOR {remotefile}"
         self.instance.storbinary(cmd, open(localfile, "rb"))
@@ -110,9 +114,10 @@ class FTP:
     def download(self, remotefile: str, localfile: str = None) -> bool:
         """Download file from FTP server
 
-        :param remotefile: path to remote file on the server
-        :param localfile: name of the downloaded file on the local filesystem,
-            if `None` will have same name as remote file
+        Arguments:
+            remotefile: path to remote file on the server
+            localfile: name of the downloaded file on the local filesystem,
+                       if `None` will have same name as remote file
         """
         if self.instance is None:
             raise FTPException("No FTP connection")
@@ -138,7 +143,8 @@ class FTP:
     def cwd(self, dirname: str) -> bool:
         """Change working directory on the server
 
-        :param dirname: name of the directory
+        Arguments:
+            dirname: name of the directory
         """
         self.instance.cwd(dirname)
 
@@ -151,7 +157,8 @@ class FTP:
     def mkd(self, dirname: str) -> bool:
         """Create a new directory on the server
 
-        :param dirname: name of the directory
+        Arguments:
+            dirname: name of the directory
         """
         self.instance.mkd(dirname)
 
@@ -159,7 +166,8 @@ class FTP:
     def rmd(self, dirname: str) -> bool:
         """Remove directory on the server
 
-        :param dirname: name of the directory
+        Arguments:
+            dirname: name of the directory
         """
         self.instance.rmd(dirname)
 
@@ -167,7 +175,8 @@ class FTP:
     def list_files(self, dirname: str = None) -> dict:
         """List files on the server directory
 
-        :param dirname: name of the directory
+        Arguments:
+            dirname: name of the directory
         """
         try:
             files = list(self.instance.mlsd(path=dirname))
@@ -180,7 +189,8 @@ class FTP:
     def delete(self, filepath: str) -> bool:
         """Delete file on the server
 
-        :param filepath: path to server file
+        Arguments:
+            filepath: path to server file
         """
         self.instance.delete(filepath)
 
@@ -188,8 +198,9 @@ class FTP:
     def rename(self, fromname: str, toname: str) -> bool:
         """Rename file on the server
 
-        :param fromname: current name of the file
-        :param toname: new name for the file
+        Arguments:
+            fromname: current name of the file
+            toname: new name for the file
         """
         self.instance.rename(fromname, toname)
 
@@ -201,7 +212,8 @@ class FTP:
 
         https://en.wikipedia.org/wiki/List_of_FTP_commands
 
-        :param command: name of the command to send
+        Arguments:
+            command: name of the command to send
         """
         return self.instance.sendcmd(command)
 
@@ -209,7 +221,8 @@ class FTP:
     def file_size(self, filepath: str) -> int:
         """Return byte size of the file on the server
 
-        :param filepath: path to server file
+        Arguments:
+            filepath: path to server file
         """
         self.set_binary_mode()
         return self.instance.size(filepath)
@@ -223,7 +236,8 @@ class FTP:
     def get_welcome_message(self) -> str:
         """Get server welcome message
 
-        :return: welcome message
+        Returns:
+            welcome message
         """
         return self.instance.getwelcome()
 
@@ -235,7 +249,8 @@ class FTP:
         1 - moderate amount of debugging
         2+ - higher amount of debugging
 
-        :param level: integer value of debug level, defaults to 0
+        Arguments:
+            level: integer value of debug level, defaults to 0
         """
         if level >= 0:
             self.instance.set_debuglevel(level)

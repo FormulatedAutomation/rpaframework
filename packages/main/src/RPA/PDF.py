@@ -434,8 +434,11 @@ class PDF(FPDF, HTMLMixin):
     def close_pdf_document(self, source_pdf: str = None):
         """Close PDF file descriptor for certain file.
 
-        :param source_pdf: filepath
-        :raises ValueError: if file descriptor for the file is not found
+        Arguments:
+            source_pdf: filepath
+
+        Raises:
+            ValueError: if file descriptor for the file is not found
         """
         if str(source_pdf) not in self.fileobjects.keys():
             raise ValueError('PDF "%s" is not open' % source_pdf)
@@ -450,14 +453,16 @@ class PDF(FPDF, HTMLMixin):
     def set_output_directory(self, outdir: str = ".") -> None:
         """Set output directory where target files are saved to.
 
-        :param outdir: output directory path, default to current directory
+        Arguments:
+            outdir: output directory path, default to current directory
         """
         self.output_directory = Path(outdir)
 
     def get_output_directory(self) -> str:
         """Get output directory where target files are saved to.
 
-        :return: absolute filepath as string
+        Returns:
+            absolute filepath as string
         """
         return str(self.output_directory)
 
@@ -466,8 +471,11 @@ class PDF(FPDF, HTMLMixin):
 
         Also opens file for reading.
 
-        :param source_pdf: filepath to the source pdf
-        :raises ValueError: if PDF is already open
+        Arguments:
+            source_pdf: filepath to the source pdf
+
+        Raises:
+            ValueError: if PDF is already open
         """
         if source_pdf is None:
             raise ValueError("Source PDF is missing")
@@ -485,9 +493,12 @@ class PDF(FPDF, HTMLMixin):
         """Switch library's current fileobject to already open file
         or open file if not opened.
 
-        :param source_pdf: filepath
-        :raises ValueError: if PDF filepath is not given and there are no active
-            file to activate
+        Arguments:
+            source_pdf: filepath
+
+        Raises:
+            ValueError: if PDF filepath is not given and there are no active
+                        file to activate
         """
         if source_pdf is not None and str(source_pdf) not in self.fileobjects.keys():
             self.open_pdf_document(source_pdf)
@@ -507,7 +518,8 @@ class PDF(FPDF, HTMLMixin):
     def add_pages(self, pages: int = 1) -> None:
         """Adds pages into PDF documents.
 
-        :param pages: number of pages to add, defaults to 1
+        Arguments:
+            pages: number of pages to add, defaults to 1
         """
         for _ in range(int(pages)):
             self.add_page()
@@ -517,10 +529,11 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Add empty pages into current source document
 
-        :param pages: number of pages to add, defaults to 1
-        :param source_pdf: filepath to the source pdf
-        :param target_pdf: filename to the target pdf, stored by default
-            to `output_directory`
+        Arguments:
+            pages: number of pages to add, defaults to 1
+            source_pdf: filepath to the source pdf
+            target_pdf: filename to the target pdf, stored by default
+                        to `output_directory`
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -547,12 +560,12 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Use HTML template file to generate PDF file.
 
-        :param template: filepath to HTML template
-        :param filename: filepath where to save PDF document
-        :param variables: dictionary of variables to fill into template, defaults to {}
-        :param create_dirs: directory structure is created if it is missing,
-         default `True`
-        :param exists_ok: file is overwritten if it exists, default `True`
+        Arguments:
+            template: filepath to HTML template
+            filename: filepath where to save PDF document
+            variables: dictionary of variables to fill into template, defaults to {}
+            create_dirs: directory structure is created if it is missing, default `True`
+            exists_ok: file is overwritten if it exists, default `True`
         """
         required_param([template, filename], "template_html_to_pdf")
         variables = variables or {}
@@ -575,12 +588,12 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Use HTML content to generate PDF file.
 
-        :param content: HTML content
-        :param filename: filepath where to save PDF document
-        :param variables: dictionary of variables to fill into template, defaults to {}
-        :param create_dirs: directory structure is created if it is missing,
-         default `True`
-        :param exists_ok: file is overwritten if it exists, default `True`
+        Arguments:
+            content: HTML content
+            filename: filepath where to save PDF document
+            variables: dictionary of variables to fill into template, defaults to {}
+            create_dirs: directory structure is created if it is missing, default `True`
+            exists_ok: file is overwritten if it exists, default `True`
         """
         required_param([content, filename], "html_to_pdf")
         variables = variables or {}
@@ -609,8 +622,11 @@ class PDF(FPDF, HTMLMixin):
     def get_info(self, source_pdf: str = None) -> dict:
         """Get information from PDF document.
 
-        :param source_pdf: filepath to the source pdf
-        :return: dictionary of PDF information
+        Arguments:
+            source_pdf: filepath to the source pdf
+
+        Returns:
+            dictionary of PDF information
         """
         self.switch_to_pdf_document(source_pdf)
         pdf = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -641,11 +657,12 @@ class PDF(FPDF, HTMLMixin):
 
         Page numbers starting from 1.
 
-        :param source_pdf: filepath to the source pdf
-        :param target_pdf: filename to the target pdf, stored by default
-            to `output_directory`
-        :param pages: page numbers to extract from PDF (numbers start from 0)
-            if None then extracts all pages
+        Arguments:
+            source_pdf: filepath to the source pdf
+            target_pdf: filename to the target pdf, stored by defaults
+                        to `output_directory`
+            pages: page numbers to extract from PDF (numbers start from 0)
+                   if None then extracts all pages
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -666,9 +683,12 @@ class PDF(FPDF, HTMLMixin):
 
         PDF needs to be parsed before text can be read.
 
-        :param source_pdf: filepath to the source pdf
-        :param pages: page numbers to get text (numbers start from 0)
-        :return: dictionary of pages and their texts
+        Arguments:
+            source_pdf: filepath to the source pdf
+            pages: page numbers to get text (numbers start from 0)
+
+        Returns:
+            dictionary of pages and their texts
         """
         self.switch_to_pdf_document(source_pdf)
         if self.rpa_pdf_document is None:
@@ -698,12 +718,13 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Rotate pages in source PDF document and save to target PDF document.
 
-        :param source_pdf: filepath to the source pdf
-        :param target_pdf: filename to the target pdf, stored by default
-            to `output_directory`
-        :param pages: page numbers to extract from PDF (numbers start from 0)
-        :param clockwise: directorion that page will be rotated to, default True
-        :param angle: number of degrees to rotate, default 90
+        Arguments:
+            source_pdf: filepath to the source pdf
+            target_pdf: filename to the target pdf, stored by default
+                        to `output_directory`
+            pages: page numbers to extract from PDF (numbers start from 0)
+            clockwise: directorion that page will be rotated to, default True
+            angle: number of degrees to rotate, default 90
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -732,8 +753,11 @@ class PDF(FPDF, HTMLMixin):
 
         Returns True even if PDF was decrypted.
 
-        :param source_pdf: filepath to the source pdf
-        :return: True if file is encrypted
+        Arguments:
+            source_pdf: filepath to the source pdf
+
+        Returns:
+            True if file is encrypted
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -749,14 +773,15 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Encrypt PDF document.
 
-        :param source_pdf: filepath to the source pdf
-        :param target_pdf: filename to the target pdf, stored by default
-            to `output_directory`
-        :param user_pwd: allows opening and reading PDF with restrictions
-        :param owner_pwd: allows opening PDF without any restrictions, by
-            default same `user_pwd`
-        :param use_128bit: whether to 128bit encryption, when false 40bit
-            encryption is used, default True
+        Arguments:
+            source_pdf: filepath to the source pdf
+            target_pdf: filename to the target pdf, stored by default
+                        to `output_directory`
+            user_pwd: allows opening and reading PDF with restrictions
+            owner_pwd: allows opening PDF without any restrictions, by
+                       default same `user_pwd`
+            use_128bit: whether to 128bit encryption, when false 40bit
+                        encryption is used, default True
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -774,11 +799,16 @@ class PDF(FPDF, HTMLMixin):
     ) -> bool:
         """Decrypt PDF with password.
 
-        :param source_pdf: filepath to the source pdf
-        :param target_pdf: filepath to the decrypted pdf
-        :param password: password as a string
-        :return: True if decrypt was successful, else False or Exception
-        :raises ValueError: on decryption errors
+        Arguments:
+            source_pdf: filepath to the source pdf
+            target_pdf: filepath to the decrypted pdf
+            password: password as a string
+
+        Returns:
+            True if decrypt was successful, else False or Exception
+
+        Raises:
+            ValueError: on decryption errors
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -814,8 +844,11 @@ class PDF(FPDF, HTMLMixin):
     def get_number_of_pages(self, source_pdf: str = None) -> int:
         """Get number of pages in the document.
 
-        :param source_pdf: filepath to the source pdf
-        :raises PdfReadError: if file is encrypted or other restrictions are in place
+        Arguments:
+            source_pdf: filepath to the source pdf
+
+        Raises:
+            PdfReadError: if file is encrypted or other restrictions are in place
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -825,7 +858,8 @@ class PDF(FPDF, HTMLMixin):
         """Parse source PDF into entities which can be
         used for text searches for example.
 
-        :param source_pdf: source
+        Arguments:
+            source_pdf: source
         """
         if source_pdf is not None:
             self.switch_to_pdf_document(source_pdf)
@@ -874,9 +908,10 @@ class PDF(FPDF, HTMLMixin):
     ) -> None:
         """Update field values in PDF if it has fields.
 
-        :param source_pdf: source PDF with fields to update
-        :param target_pdf: updated target PDF
-        :param newvals: dictionary with key values to update
+        Arguments:
+            source_pdf: source PDF with fields to update
+            target_pdf: updated target PDF
+            newvals: dictionary with key values to update
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject, strict=False)
@@ -924,10 +959,13 @@ class PDF(FPDF, HTMLMixin):
 
         Parameter `replace_none_value` is for convience to visualize fields.
 
-        :param source_pdf: source filepath, defaults to None
-        :param replace_none_value: if value is None replace it with key name,
-            defaults to False
-        :return: dictionary of input key values or `None`
+        Arguments:
+            source_pdf: source filepath, defaults to None
+            replace_none_value: if value is None replace it with key name,
+                                defaults to False
+
+        Returns:
+            dictionary of input key values or `None`
         """
         record_fields = {}
         if source_pdf is None and self.active_fields:
@@ -982,8 +1020,11 @@ class PDF(FPDF, HTMLMixin):
 
         PDF needs to be parsed before elements can be found.
 
-        :param locator: element to search for
-        :return: True if element was found
+        Arguments:
+            locator: element to search for
+
+        Returns:
+            True if element was found
         """
         self.logger.info("Set anchor to element: ('locator=%s')", locator)
         if self.rpa_pdf_document is None:
@@ -1033,14 +1074,17 @@ class PDF(FPDF, HTMLMixin):
 
         PDF needs to be parsed before elements can be found.
 
-        :param locator: element to set anchor to
-        :param pagenum: page number where search if performed on, default 1 (first)
-        :param direction: in which direction to search for text,
-            directions  'top', 'bottom', 'left' or 'right', defaults to 'right'
-        :param strict: if element margins should be used for matching points,
-            used when direction is 'top' or 'bottom', default `False`
-        :param regexp: expected format of value to match, defaults to None
-        :return: closest matching text or `None`
+        Arguments:
+            locator: element to set anchor to
+            pagenum: page number where search if performed on, default 1 (first)
+            direction: in which direction to search for text, directions
+                       'top', 'bottom', 'left' or 'right', defaults to 'right'
+            strict: if element margins should be used for matching points,
+                    used when direction is 'top' or 'bottom', default `False`
+            regexp: expected format of value to match, defaults to None
+
+        Returns:
+            closest matching text or `None`
         """
         self.logger.debug(
             "get_value_from_anchor: ('locator=%s', 'direction=%s', 'regexp=%s')",
@@ -1134,7 +1178,8 @@ class PDF(FPDF, HTMLMixin):
 
         PDF needs to be parsed before elements can be found.
 
-        :return: dictionary of figures divided into pages
+        Returns:
+            dictionary of figures divided into pages
         """
         if self.rpa_pdf_document is None:
             raise ValueError("PDF has not been parsed yet")
@@ -1148,11 +1193,15 @@ class PDF(FPDF, HTMLMixin):
 
         Tries to match on field identifier and its label.
 
-        Exception is thrown if field can't be found or more than 1 field matches
-        the given `field_name`.
+        Exception is thrown i.
 
-        :param field_name: field to update
-        :param value: new value for the field
+        Arguments:
+            field_name: field to update
+            value: new value for the field
+
+        Raises:
+            ValueError: if field can't be found or more than 1 field matches
+                        the given `field_name`
         """
         if not self.active_fields:
             self.get_input_fields()
@@ -1188,8 +1237,9 @@ class PDF(FPDF, HTMLMixin):
         """Replace text content with something else in the PDF.
 
 
-        :param text: this text will be replaced
-        :param replace: used to replace `text`
+        Arguments:
+            text: this text will be replaced
+            replace: used to replace `text`
         """
         if self.rpa_pdf_document is None:
             self.parse_pdf()
@@ -1206,12 +1256,15 @@ class PDF(FPDF, HTMLMixin):
         Result will be always written to `target_pdf` so that needs
         to be given for the keyword.
 
-        :param imagefile: filepath to image file to add into PDF
-        :param source: filepath to source, if not given add image to currently
-            active PDF
-        :param target: filepath of target PDF
-        :param coverage: [description], defaults to 0.2
-        :raises ValueError: [description]
+        Arguments:
+            imagefile: filepath to image file to add into PDF
+            source: filepath to source, if not given add image to currently active PDF
+            target: filepath of target PDF
+            coverage: proportion of the page width to cover with image,
+                      defaults to 0.2 (max 1.0)
+
+        Raises:
+            ValueError: if PDF does not exist
         """
         if target is None:
             raise ValueError("Target PDF needs to be set")
@@ -1254,10 +1307,11 @@ class PDF(FPDF, HTMLMixin):
     ):
         """Save current over itself or to `target_pdf`
 
-        :param source: filepath to source PDF
-        :param target: filepath to target PDF
-        :param use_modified_reader: needs to be set to `True` if
-            using modified PDF reader
+        Arguments:
+            source: filepath to source PDF
+            target: filepath to target PDF
+            use_modified_reader: needs to be set to `True` if
+                                 using modified PDF reader
         """
         if not use_modified_reader:
             self.get_input_fields(source)
@@ -1290,8 +1344,11 @@ class PDF(FPDF, HTMLMixin):
     def dump_pdf_as_xml(self, source_pdf: str = None):
         """Get PDFMiner format XML dump of the PDF
 
-        :param source_pdf: filepath
-        :return: XML content
+        Arguments:
+            source_pdf: filepath
+
+        Returns:
+            XML content
         """
         self.switch_to_pdf_document(source_pdf)
         if self.rpa_pdf_document is None:

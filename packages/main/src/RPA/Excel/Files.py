@@ -95,8 +95,9 @@ class Files:
     def create_workbook(self, path=None, fmt="xlsx"):
         """Create and open a new Excel workbook.
 
-        :param path: Default save path for workbook
-        :param fmt:  Format of workbook, i.e. xlsx or xls
+        Arguments:
+            path: Default save path for workbook
+            fmt:  Format of workbook, i.e. xlsx or xls
         """
         if self.workbook:
             self.close_workbook()
@@ -115,7 +116,8 @@ class Files:
     def open_workbook(self, path):
         """Open an existing Excel workbook.
 
-        :param path: path to Excel file
+        Arguments:
+            path: path to Excel file
         """
         if self.workbook:
             self.close_workbook()
@@ -134,8 +136,8 @@ class Files:
     def save_workbook(self, path=None):
         """Save the active workbook.
 
-        :param path: Path to save to. If not given, uses path given
-                     when opened or created.
+        Arguments:
+            path: Path to save to. If not given, uses path given when opened or created.
         """
         assert self.workbook, "No active workbook"
 
@@ -163,7 +165,11 @@ class Files:
         return self.workbook.sheetnames
 
     def worksheet_exists(self, name):
-        """Return True if worksheet with given name is in workbook."""
+        """Return True if worksheet with given name is in workbook.
+
+        Arguments:
+            name: Name of worksheet
+        """
         assert self.workbook, "No active workbook"
         return bool(str(name) in self.list_worksheets())
 
@@ -175,7 +181,8 @@ class Files:
     def set_active_worksheet(self, value):
         """Set the active worksheet.
 
-        :param value: Index or name of worksheet
+        Arguments:
+            value: Index or name of worksheet
         """
         assert self.workbook, "No active workbook"
         self.workbook.active = value
@@ -183,9 +190,10 @@ class Files:
     def create_worksheet(self, name, content=None, exist_ok=False):
         """Create a new worksheet in the current workbook.
 
-        :param name:     Name of new worksheet
-        :param content:  Optional content for worksheet
-        :param exist_ok: If `False`, raise an error if name is already in use
+        Arguments:
+            name:     Name of new worksheet
+            content:  Optional content for worksheet
+            exist_ok: If `False`, raise an error if name is already in use
         """
         assert self.workbook, "No active workbook"
         if name in self.workbook.sheetnames and not exist_ok:
@@ -201,9 +209,11 @@ class Files:
         Each key in the dictionary will be either values from the header row,
         or Excel-style column letters.
 
-        :param name:   Name of worksheet to read
-        :param header: If `True`, use the first row of the worksheet
-                       as headers for the rest of the rows.
+        Arguments:
+            name:   Name of worksheet to read
+            header: If `True`, use the first row of the worksheet
+                    as headers for the rest of the rows.
+            start: Row index to start reading data from (1-indexed)
         """
         assert self.workbook, "No active workbook"
         return self.workbook.read_worksheet(name, header, start)
@@ -212,11 +222,12 @@ class Files:
         """Read the content of a worksheet into a Table container. Allows
         sorting/filtering/manipulating using the `RPA.Tables` library.
 
-        :param name:   Name of worksheet to read
-        :param header: If `True`, use the first row of the worksheet
-                       as headers for the rest of the rows.
-        :param trim:   Remove all empty rows from the end of the worksheet
-        :param start:  Row index to start reading data from (1-indexed)
+        Arguments:
+            name:   Name of worksheet to read
+            header: If `True`, use the first row of the worksheet
+                    as headers for the rest of the rows.
+            trim:   Remove all empty rows from the end of the worksheet
+            start:  Row index to start reading data from (1-indexed)
         """
         tables = Tables()
         sheet = self.read_worksheet(name, header, start)
@@ -225,10 +236,11 @@ class Files:
     def append_rows_to_worksheet(self, content, name=None, header=False, start=None):
         """Append values to the end of the worksheet.
 
-        :param content: Rows of values to append
-        :param name:    Name of worksheet to append to
-        :param header:  Set rows according to existing header row
-        :param start:   Start of data, NOTE: Only required when headers is True
+        Arguments:
+            content: Rows of values to append
+            name:    Name of worksheet to append to
+            header:  Set rows according to existing header row
+            start:   Start of data, NOTE: Only required when ``header`` is True
         """
         assert self.workbook, "No active workbook"
         return self.workbook.append_worksheet(name, content, header, start)
@@ -236,7 +248,8 @@ class Files:
     def remove_worksheet(self, name=None):
         """Remove a worksheet from the active workbook.
 
-        :param name: Name of worksheet to remove
+        Arguments:
+            name: Name of worksheet to remove
         """
         assert self.workbook, "No active workbook"
         self.workbook.remove_worksheet(name)
@@ -244,8 +257,9 @@ class Files:
     def rename_worksheet(self, src_name, dst_name):
         """Rename an existing worksheet in the active workbook.
 
-        :param src_name: Current name of worksheet
-        :param dst_name: Future name of worksheet
+        Arguments:
+            src_name: Current name of worksheet
+            dst_name: Future name of worksheet
         """
         assert self.workbook, "No active workbook"
         self.workbook.rename_worksheet(dst_name, src_name)
@@ -253,7 +267,8 @@ class Files:
     def find_empty_row(self, name=None):
         """Find the first empty row after existing content.
 
-        :param name:    Name of worksheet
+        Arguments:
+            name:    Name of worksheet
         """
         assert self.workbook, "No active workbook"
         return self.workbook.find_empty_row(name)
@@ -261,10 +276,11 @@ class Files:
     def set_worksheet_value(self, row, column, value, name=None):
         """Set a cell value in the given worksheet.
 
-        :param row:     Index of row to write, e.g. 3
-        :param column:  Name or index of column, e.g. C or 7
-        :param value:   New value of cell
-        :param name:    Name of worksheet
+        Arguments:
+            row:     Index of row to write, e.g. 3
+            column:  Name or index of column, e.g. C or 7
+            value:   New value of cell
+            name:    Name of worksheet
         """
         assert self.workbook, "No active workbook"
         self.workbook.set_cell_value(row, column, value, name)

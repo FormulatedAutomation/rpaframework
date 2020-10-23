@@ -31,9 +31,11 @@ class Secret(collections.abc.Mapping):
     multiple key-value pairs. Immutable and avoids logging
     internal values when possible.
 
-    :param name:        Name of secret
-    :param description: Human-friendly description for secret
-    :param values:      Dictionary of key-value pairs stored in secret
+    Arguments:
+        name:        Name of secret
+        description: Human-friendly description for secret
+        values:      Dictionary of key-value pairs stored in secret
+
     """
 
     def __init__(self, name, description, values):
@@ -106,7 +108,11 @@ class FileSecrets(BaseSecretManager):
         self.data = self.load(self.path)
 
     def load(self, path):
-        """Load secrets file."""
+        """Load secrets file.
+
+        Arguments:
+            path: Name of file
+        """
         try:
             with open(path) as fd:
                 data = json.load(fd)
@@ -122,9 +128,14 @@ class FileSecrets(BaseSecretManager):
     def get_secret(self, secret_name):
         """Get secret defined with given name from file.
 
-        :param secret_name: Name of secret to fetch
-        :returns:           Secret object
-        :raises KeyError:   No secret with given name
+        Arguments:
+            secret_name: Name of secret to fetch
+
+        Returns:
+            Secret object
+
+        Raises:
+            KeyError:   No secret with given name
         """
         values = self.data.get(secret_name)
         if values is None:
@@ -201,9 +212,14 @@ class RobocloudVault(BaseSecretManager):
     def get_secret(self, secret_name):
         """Get secret defined with given name from Robocloud Vault.
 
-        :param secret_name:             Name of secret to fetch
-        :returns:                       Secret object
-        :raises RobocloudVaultError:    Error with API request or response payload
+        Arguments:
+            secret_name:             Name of secret to fetch
+
+        Returns:
+            Secret object
+
+        Raises:
+            RobocloudVaultError:    Error with API request or response payload
         """
         url = self.create_url(secret_name)
 
@@ -268,7 +284,9 @@ class Secrets:
 
     All other library arguments are passed to the adapter.
 
-    :param default_adapter: Override default secret adapter
+    Arguments:
+        default_adapter: Override default secret adapter
+
     """
 
     def __init__(self, *args, **kwargs):
@@ -310,6 +328,7 @@ class Secrets:
         """Read a secret from the configured source, e.g. Robocloud Vault,
         and return it as a ``Secret`` object.
 
-        :param secret_name: Name of secret
+        Arguments:
+            secret_name: Name of secret
         """
         return self.adapter.get_secret(secret_name)

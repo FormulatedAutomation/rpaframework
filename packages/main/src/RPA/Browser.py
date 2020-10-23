@@ -1197,9 +1197,9 @@ class Browser(SeleniumLibrary):
     def open_user_browser(self, url: str, tab=True) -> None:
         """Open URL with user's default browser
 
-        :param url: URL to open
-        :param tab: defines is url is opened in a tab (default `True`) or
-         in new window (`False`)
+        ``url`` URL to open
+        ``tab`` defines is url is opened in a tab (default `True`) or in
+                new window (`False`)
 
         Example:
             | Open User Browser  | https://www.google.com?q=rpa |
