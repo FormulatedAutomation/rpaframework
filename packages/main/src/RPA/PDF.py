@@ -435,7 +435,7 @@ class PDF(FPDF, HTMLMixin):
         """Close PDF file descriptor for certain file.
 
         Arguments:
-            source_pdf: filepath
+            source_pdf (str): filepath
 
         Raises:
             ValueError: if file descriptor for the file is not found
@@ -454,7 +454,7 @@ class PDF(FPDF, HTMLMixin):
         """Set output directory where target files are saved to.
 
         Arguments:
-            outdir: output directory path, default to current directory
+            outdir (str): output directory path, default to current directory
         """
         self.output_directory = Path(outdir)
 
@@ -472,7 +472,7 @@ class PDF(FPDF, HTMLMixin):
         Also opens file for reading.
 
         Arguments:
-            source_pdf: filepath to the source pdf
+            source_pdf (str): filepath to the source pdf
 
         Raises:
             ValueError: if PDF is already open
@@ -494,7 +494,7 @@ class PDF(FPDF, HTMLMixin):
         or open file if not opened.
 
         Arguments:
-            source_pdf: filepath
+            source_pdf (str): filepath
 
         Raises:
             ValueError: if PDF filepath is not given and there are no active
@@ -519,7 +519,7 @@ class PDF(FPDF, HTMLMixin):
         """Adds pages into PDF documents.
 
         Arguments:
-            pages: number of pages to add, defaults to 1
+            pages (int): number of pages to add, defaults to 1
         """
         for _ in range(int(pages)):
             self.add_page()
@@ -530,10 +530,10 @@ class PDF(FPDF, HTMLMixin):
         """Add empty pages into current source document
 
         Arguments:
-            pages: number of pages to add, defaults to 1
-            source_pdf: filepath to the source pdf
-            target_pdf: filename to the target pdf, stored by default
-                        to `output_directory`
+            pages (int): number of pages to add, defaults to 1
+            source_pdf (str): filepath to the source pdf
+            target_pdf (str): filename to the target pdf, stored by default
+                              to `output_directory`
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -561,11 +561,13 @@ class PDF(FPDF, HTMLMixin):
         """Use HTML template file to generate PDF file.
 
         Arguments:
-            template: filepath to HTML template
-            filename: filepath where to save PDF document
-            variables: dictionary of variables to fill into template, defaults to {}
-            create_dirs: directory structure is created if it is missing, default `True`
-            exists_ok: file is overwritten if it exists, default `True`
+            template (str): filepath to HTML template
+            filename (str): filepath where to save PDF document
+            variables (dict): dictionary of variables to fill into template,
+                              defaults to {}
+            create_dirs (bool): directory structure is created if it is missing,
+                                default `True`
+            exists_ok (bool): file is overwritten if it exists, default `True`
         """
         required_param([template, filename], "template_html_to_pdf")
         variables = variables or {}
@@ -589,11 +591,13 @@ class PDF(FPDF, HTMLMixin):
         """Use HTML content to generate PDF file.
 
         Arguments:
-            content: HTML content
-            filename: filepath where to save PDF document
-            variables: dictionary of variables to fill into template, defaults to {}
-            create_dirs: directory structure is created if it is missing, default `True`
-            exists_ok: file is overwritten if it exists, default `True`
+            content (str): HTML content
+            filename (str): filepath where to save PDF document
+            variables (dict): dictionary of variables to fill into template,
+                              defaults to {}
+            create_dirs (bool): directory structure is created if it is missing,
+                                default `True`
+            exists_ok (bool): file is overwritten if it exists, default `True`
         """
         required_param([content, filename], "html_to_pdf")
         variables = variables or {}
@@ -623,7 +627,7 @@ class PDF(FPDF, HTMLMixin):
         """Get information from PDF document.
 
         Arguments:
-            source_pdf: filepath to the source pdf
+            source_pdf (str): filepath to the source pdf
 
         Returns:
             dictionary of PDF information
@@ -658,10 +662,10 @@ class PDF(FPDF, HTMLMixin):
         Page numbers starting from 1.
 
         Arguments:
-            source_pdf: filepath to the source pdf
-            target_pdf: filename to the target pdf, stored by defaults
+            source_pdf (str): filepath to the source pdf
+            target_pdf (str): filename to the target pdf, stored by defaults
                         to `output_directory`
-            pages: page numbers to extract from PDF (numbers start from 0)
+            pages (Any): page numbers to extract from PDF (numbers start from 0)
                    if None then extracts all pages
         """
         self.switch_to_pdf_document(source_pdf)
@@ -684,8 +688,8 @@ class PDF(FPDF, HTMLMixin):
         PDF needs to be parsed before text can be read.
 
         Arguments:
-            source_pdf: filepath to the source pdf
-            pages: page numbers to get text (numbers start from 0)
+            source_pdf (str): filepath to the source pdf
+            pages (Any): page numbers to get text (numbers start from 0)
 
         Returns:
             dictionary of pages and their texts
@@ -719,12 +723,12 @@ class PDF(FPDF, HTMLMixin):
         """Rotate pages in source PDF document and save to target PDF document.
 
         Arguments:
-            source_pdf: filepath to the source pdf
-            target_pdf: filename to the target pdf, stored by default
-                        to `output_directory`
-            pages: page numbers to extract from PDF (numbers start from 0)
-            clockwise: directorion that page will be rotated to, default True
-            angle: number of degrees to rotate, default 90
+            pages (int): page numbers to extract from PDF (numbers start from 0)
+            source_pdf (str): filepath to the source pdf
+            target_pdf (str): filename to the target pdf, stored by default
+                              to `output_directory`
+            clockwise (bool): directorion that page will be rotated to, default True
+            angle (int): number of degrees to rotate, default 90
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -754,7 +758,7 @@ class PDF(FPDF, HTMLMixin):
         Returns True even if PDF was decrypted.
 
         Arguments:
-            source_pdf: filepath to the source pdf
+            source_pdf (str): filepath to the source pdf
 
         Returns:
             True if file is encrypted
@@ -774,14 +778,14 @@ class PDF(FPDF, HTMLMixin):
         """Encrypt PDF document.
 
         Arguments:
-            source_pdf: filepath to the source pdf
-            target_pdf: filename to the target pdf, stored by default
-                        to `output_directory`
-            user_pwd: allows opening and reading PDF with restrictions
-            owner_pwd: allows opening PDF without any restrictions, by
+            source_pdf (str): filepath to the source pdf
+            target_pdf (str): filename to the target pdf, stored by default
+                              to `output_directory`
+            user_pwd (str): allows opening and reading PDF with restrictions
+            owner_pwd (str): allows opening PDF without any restrictions, by
                        default same `user_pwd`
-            use_128bit: whether to 128bit encryption, when false 40bit
-                        encryption is used, default True
+            use_128bit (bool): whether to 128bit encryption, when false 40bit
+                               encryption is used, default True
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject)
@@ -800,9 +804,9 @@ class PDF(FPDF, HTMLMixin):
         """Decrypt PDF with password.
 
         Arguments:
-            source_pdf: filepath to the source pdf
-            target_pdf: filepath to the decrypted pdf
-            password: password as a string
+            source_pdf (str): filepath to the source pdf
+            target_pdf (str): filepath to the decrypted pdf
+            password (str): password as a string
 
         Returns:
             True if decrypt was successful, else False or Exception
@@ -845,7 +849,7 @@ class PDF(FPDF, HTMLMixin):
         """Get number of pages in the document.
 
         Arguments:
-            source_pdf: filepath to the source pdf
+            source_pdf (str): filepath to the source pdf
 
         Raises:
             PdfReadError: if file is encrypted or other restrictions are in place
@@ -859,7 +863,7 @@ class PDF(FPDF, HTMLMixin):
         used for text searches for example.
 
         Arguments:
-            source_pdf: source
+            source_pdf (str): source
         """
         if source_pdf is not None:
             self.switch_to_pdf_document(source_pdf)
@@ -909,9 +913,9 @@ class PDF(FPDF, HTMLMixin):
         """Update field values in PDF if it has fields.
 
         Arguments:
-            source_pdf: source PDF with fields to update
-            target_pdf: updated target PDF
-            newvals: dictionary with key values to update
+            source_pdf (str): source PDF with fields to update
+            target_pdf (str): updated target PDF
+            newvals (dict): key values to update
         """
         self.switch_to_pdf_document(source_pdf)
         reader = PyPDF2.PdfFileReader(self.active_fileobject, strict=False)
@@ -960,9 +964,9 @@ class PDF(FPDF, HTMLMixin):
         Parameter `replace_none_value` is for convience to visualize fields.
 
         Arguments:
-            source_pdf: source filepath, defaults to None
-            replace_none_value: if value is None replace it with key name,
-                                defaults to False
+            source_pdf (str): source filepath, defaults to None
+            replace_none_value (bool): if value is None replace it with key name,
+                                       defaults to False
 
         Returns:
             dictionary of input key values or `None`
@@ -1021,7 +1025,7 @@ class PDF(FPDF, HTMLMixin):
         PDF needs to be parsed before elements can be found.
 
         Arguments:
-            locator: element to search for
+            locator (str): element to search for
 
         Returns:
             True if element was found
@@ -1075,13 +1079,13 @@ class PDF(FPDF, HTMLMixin):
         PDF needs to be parsed before elements can be found.
 
         Arguments:
-            locator: element to set anchor to
-            pagenum: page number where search if performed on, default 1 (first)
-            direction: in which direction to search for text, directions
-                       'top', 'bottom', 'left' or 'right', defaults to 'right'
-            strict: if element margins should be used for matching points,
-                    used when direction is 'top' or 'bottom', default `False`
-            regexp: expected format of value to match, defaults to None
+            locator (str): element to set anchor to
+            pagenum (int): page number where search if performed on, default 1 (first)
+            direction (str): in which direction to search for text, directions
+                             'top', 'bottom', 'left' or 'right', defaults to 'right'
+            strict (bool): if element margins should be used for matching points,
+                           used when direction is 'top' or 'bottom', default `False`
+            regexp (str): expected format of value to match, defaults to None
 
         Returns:
             closest matching text or `None`
@@ -1196,8 +1200,9 @@ class PDF(FPDF, HTMLMixin):
         Exception is thrown i.
 
         Arguments:
-            field_name: field to update
-            value: new value for the field
+            field_name (str): field to update
+            value (Any): new value for the field
+            save (bool): if True then field value will be updated, default False
 
         Raises:
             ValueError: if field can't be found or more than 1 field matches
@@ -1238,8 +1243,8 @@ class PDF(FPDF, HTMLMixin):
 
 
         Arguments:
-            text: this text will be replaced
-            replace: used to replace `text`
+            text (str): this text will be replaced
+            replace (str): used to replace `text`
         """
         if self.rpa_pdf_document is None:
             self.parse_pdf()
@@ -1250,17 +1255,24 @@ class PDF(FPDF, HTMLMixin):
                     return
         self.logger.info("Did not find any matching text")
 
-    def add_image_to_pdf(self, imagefile, source=None, target=None, coverage=0.2):
+    def add_image_to_pdf(
+        self,
+        imagefile: str,
+        source: str = None,
+        target: str = None,
+        coverage: float = 0.2,
+    ):
         """Add image to PDF which can be new or existing PDF.
 
         Result will be always written to `target_pdf` so that needs
         to be given for the keyword.
 
         Arguments:
-            imagefile: filepath to image file to add into PDF
-            source: filepath to source, if not given add image to currently active PDF
-            target: filepath of target PDF
-            coverage: proportion of the page width to cover with image,
+            imagefile (str): filepath to image file to add into PDF
+            source (str): filepath to source, if not given add image to
+                          currently active PDF
+            target (str): filepath of target PDF
+            coverage (float): proportion of the page width to cover with image,
                       defaults to 0.2 (max 1.0)
 
         Raises:
@@ -1308,10 +1320,10 @@ class PDF(FPDF, HTMLMixin):
         """Save current over itself or to `target_pdf`
 
         Arguments:
-            source: filepath to source PDF
-            target: filepath to target PDF
-            use_modified_reader: needs to be set to `True` if
-                                 using modified PDF reader
+            source (str): filepath to source PDF
+            target (str): filepath to target PDF
+            use_modified_reader (bool): needs to be set to `True` if
+                                        using modified PDF reader
         """
         if not use_modified_reader:
             self.get_input_fields(source)
@@ -1345,7 +1357,7 @@ class PDF(FPDF, HTMLMixin):
         """Get PDFMiner format XML dump of the PDF
 
         Arguments:
-            source_pdf: filepath
+            source_pdf (str): filepath
 
         Returns:
             XML content

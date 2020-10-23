@@ -33,9 +33,9 @@ def write_element_info_as_json(
     """Write list of elements into json file
 
     Arguments:
-        elements: list of elements to write
-        filename: output file name
-        path: output directory, defaults to "output/json"
+        elements (Any): list of elements to write
+        filename (str): output file name
+        path (str): output directory, defaults to "output/json"
     """
     elements = elements if isinstance(elements, list) else [elements]
     filename = Path(f"{path}/{filename}.json")
@@ -96,7 +96,7 @@ class Windows(OperatingSystem):
             Open Executable   calc.exe  Calculator
 
         Arguments:
-            backend: name of the backend to use
+            backend (str): name of the backend to use
         """
         if backend and backend.lower() in SUPPORTED_BACKENDS:
             self._backend = backend.lower()
@@ -149,7 +149,7 @@ class Windows(OperatingSystem):
             Switch To Application   ${app1}
 
         Arguments:
-            app_id: application's id
+            app_id (int): application's id
 
         Raises:
             ValueError: if application is not found by given id
@@ -189,7 +189,7 @@ class Windows(OperatingSystem):
             &{appdetails}  Get App   ${app1}
 
         Arguments:
-            app_id: id of the application to get, defaults to None
+            app_id (int): id of the application to get, defaults to None
 
         Returns:
             application object
@@ -210,7 +210,7 @@ class Windows(OperatingSystem):
             ${app2}    Open Application   Word
 
         Arguments:
-            application: name of the application as `str`
+            application (str): name of the application as `str`
 
         Returns:
             application instance id
@@ -235,7 +235,7 @@ class Windows(OperatingSystem):
             ${app1}    Open File   /path/to/myfile.txt
 
         Arguments:
-            filename: path to file
+            filename (str): path to file
 
         Returns:
             True if application is opened, False if not
@@ -268,11 +268,11 @@ class Windows(OperatingSystem):
             ${app1}    Open Executable   calc.exe  Calculator
 
         Arguments:
-            executable: name of the executable
-            windowtitle: name of the window
-            backend: set Windows backend, default None means using
-                     library default value
-            work_dir: path to working directory, default None
+            executable (str): name of the executable
+            windowtitle (str): name of the window
+            backend (str): set Windows backend, default None means using
+                           library default value
+            work_dir (str): path to working directory, default None
 
         Returns:
             application instance id
@@ -300,8 +300,8 @@ class Windows(OperatingSystem):
             ${app1}    Open Using Run Dialog  notepad  Untitled - Notepad
 
         Arguments:
-            executable: name of the executable
-            windowtitle: name of the window
+            executable (str): name of the executable
+            windowtitle (str): name of the window
 
         Returns:
             application instance id
@@ -325,8 +325,8 @@ class Windows(OperatingSystem):
             ${app1}    Open From Search  calculator  Calculator
 
         Arguments:
-            executable: name of the executable
-            windowtitle: name of the window
+            executable (str): name of the executable
+            windowtitle (str): name of the window
 
         Returns:
             application instance id
@@ -343,7 +343,7 @@ class Windows(OperatingSystem):
         self._apps[app_instance]["startkeyword"] = "Open From Search"
         return app_instance
 
-    def get_spaced_string(self, text):
+    def get_spaced_string(self, text: str):
         """Replace spaces in a text with `pywinauto.keyboard`
         space characters `{VK_SPACE}`
 
@@ -352,7 +352,7 @@ class Windows(OperatingSystem):
             # ${txt} = My{VK_SPACE}name{VK_SPACE}is{VK_SPACE}Bond
 
         Arguments:
-            text: replace spaces in this string
+            text (str): replace spaces in this string
         """
         return text.replace(" ", "{VK_SPACE}")
 
@@ -375,10 +375,10 @@ class Windows(OperatingSystem):
             Send Keys To Input  {VK_SPACE}-{VK_SPACE}END   enter_delay=5.0
 
         Arguments:
-            keys_to_type: keys to type into Windows
-            with_enter: send ENTER if `with_enter` is True
-            send_delay: delay after send_keys
-            enter_delay: delay after ENTER
+            keys_to_type (str): keys to type into Windows
+            with_enter (bool): send ENTER if `with_enter` is True
+            send_delay (float): delay after send_keys
+            enter_delay (float): delay after ENTER
         """
         # Set keyboard layout for Windows platform
         if platform.system() == "Windows":
@@ -400,8 +400,8 @@ class Windows(OperatingSystem):
             Minimize Dialog    Calculator
 
         Arguments:
-            windowtitle: name of the window, default `None` means that
-                         active window is going to be minimized
+            windowtitle (str): name of the window, default `None` means that
+                               active window is going to be minimized
         """
         windowtitle = (
             windowtitle or self._apps[self._active_app_instance]["windowtitle"]
@@ -422,8 +422,8 @@ class Windows(OperatingSystem):
             Restore Dialog    Untitled - Notepad
 
         Arguments:
-            windowtitle: name of the window, default `None` means that
-                         active window is going to be restored
+            windowtitle (str): name of the window, default `None` means that
+                               active window is going to be restored
         """
         windowtitle = (
             windowtitle or self._apps[self._active_app_instance]["windowtitle"]
@@ -455,11 +455,11 @@ class Windows(OperatingSystem):
             Open Dialog       Untitled - Notepad   highlight=True   timeout=5
 
         Arguments:
-            windowtitle: name of the window, defaults to active window if None
-            highlight: draw outline for window if True, defaults to False
-            timeout: time to wait for dialog to appear
-            existing_app: if already open application's dialog should be opened,
-                          defaults to False
+            windowtitle (str): name of the window, defaults to active window if None
+            highlight (bool): draw outline for window if True, defaults to False
+            timeout (int): time to wait for dialog to appear
+            existing_app (bool): if already open application's dialog should be opened,
+                                 defaults to False
         """
         self.logger.info("Open dialog: '%s', '%s'", windowtitle, highlight)
 
@@ -491,7 +491,8 @@ class Windows(OperatingSystem):
             ${appid}  Connect By PID  3231
 
         Arguments:
-            app_pid: process id of the application
+            app_pid (str): process id of the application
+            windowtitle (str): title of the window
         """
         self.logger.info("Connect to application pid: %s", app_pid)
         window_list = self.get_window_list()
@@ -513,7 +514,10 @@ class Windows(OperatingSystem):
             ${appid}  Connect By Handle  88112
 
         Arguments:
-            handle: handle of the application
+            handle (str): handle of the application
+            windowtitle (str): title of the window
+            existing_app (bool): whether to connect to already opened app,
+                                 default to False
         """
         self.logger.info("Connect to application handle: %s", handle)
         app_instance = None
@@ -553,8 +557,8 @@ class Windows(OperatingSystem):
             Quit Application  ${app1}
 
         Arguments:
-            app_id: application_id, defaults to None
-            send_keys: quit application with `F4` if True, defaults to False
+            app_id (str): application_id, defaults to None
+            send_keys (bool): quit application with `F4` if True, defaults to False
         """
         app = self.get_app(app_id)
         self.logger.info("Quit application: %s (%s)", app_id, app)
@@ -580,7 +584,7 @@ class Windows(OperatingSystem):
             Type Keys   My text
 
         Arguments:
-            keys: list of keys to type
+            keys (str): list of keys to type
         """
         self.logger.info("Type keys: %s", keys)
         if self.dlg is None:
@@ -596,10 +600,10 @@ class Windows(OperatingSystem):
             Type Into        CalculatorResults  22  empty_field=True
 
         Arguments:
-            locator: element locator
-            keys: list of keys to type
-            empty_field: True if field should be emptied before typing,
-                         defaults to False
+            locator (str): element locator
+            keys (str): list of keys to type
+            empty_field (bool): True if field should be emptied before typing,
+                                defaults to False
         """
         elements, _ = self.find_element(locator)
         if elements and len(elements) == 1:
@@ -618,7 +622,7 @@ class Windows(OperatingSystem):
             Send Keys        2{+}3=
 
         Arguments:
-            keys: list of keys to send
+            keys (str): list of keys to send
         """
         self.logger.info("Send keys: %s", keys)
         pywinauto.keyboard.send_keys(keys)
@@ -633,7 +637,7 @@ class Windows(OperatingSystem):
             &{val}       Get Text   CalculatorResults
 
         Arguments:
-            locator: element locator
+            locator (str): element locator
         """
         elements, _ = self.find_element(locator)
         element_text = {}
@@ -685,18 +689,18 @@ class Windows(OperatingSystem):
             Mouse Click  method=image  image=myimage.png  tolerance=0.8
 
         Arguments:
-            locator: element locator on active window
-            x: coordinate x on desktop
-            y: coordinate y on desktop
-            off_x: offset x (used for locator and image clicks)
-            off_y: offset y (used for locator and image clicks)
-            image: image to click on desktop
-            method: one of the available methods to mouse click, default "locator"
-            ctype: type of mouse click
-            **kwargs: these keyword arguments can be used to pass arguments
-                      to underlying `Images` library to finetune image template matching,
-                      for example. `tolerance=0.5` would adjust image tolerance for the image
-                      matching
+            locator (str): element locator on active window
+            x (int): coordinate x on desktop
+            y (int): coordinate y on desktop
+            off_x (int): offset x (used for locator and image clicks)
+            off_y (int): offset y (used for locator and image clicks)
+            image (str): image to click on desktop
+            method (str): one of the available methods to mouse click, default "locator"
+            ctype (str): type of mouse click
+            **kwargs (dict): these keyword arguments can be used to pass arguments
+                             to underlying `Images` library to finetune image template matching,
+                             for example. `tolerance=0.5` would adjust image tolerance for the image
+                             matching
         """  # noqa: E501
         self.logger.info("Mouse click: %s", locator)
 
@@ -727,14 +731,14 @@ class Windows(OperatingSystem):
             Mouse Click  image=myimage.png  tolerance=0.8
 
         Arguments:
-            image: image to click on desktop
-            off_x: horizontal offset from top left corner to click on
-            off_y: vertical offset from top left corner to click on
-            ctype: type of mouse click
-            **kwargs: these keyword arguments can be used to pass arguments
-                      to underlying `Images` library to finetune image template matching,
-                      for example. `tolerance=0.5` would adjust image tolerance for the image
-                      matching
+            image (str): image to click on desktop
+            off_x (int): horizontal offset from top left corner to click on
+            off_y (int): vertical offset from top left corner to click on
+            ctype (str): type of mouse click
+            **kwargs (dict): these keyword arguments can be used to pass arguments
+                             to underlying `Images` library to finetune image template matching,
+                             for example. `tolerance=0.5` would adjust image tolerance for the image
+                             matching
         """  # noqa: E501
         matches = Images().find_template_on_screen(template, limit=1, **kwargs)
 
@@ -754,10 +758,10 @@ class Windows(OperatingSystem):
             Mouse Click Coords  x=450  y=100  delay_time=5.0
 
         Arguments:
-            x: horizontal coordinate on the windows to click
-            y: vertical coordinate on the windows to click
-            ctype: click type "click", "right" or "double", defaults to "click"
-            delay_time: delay in seconds after, default is no delay
+            x (int): horizontal coordinate on the windows to click
+            y (int): vertical coordinate on the windows to click
+            ctype (str): click type "click", "right" or "double", defaults to "click"
+            delay_time (float): delay in seconds after, default is no delay
         """
         self.click_type(x, y, ctype)
         if delay_time:
@@ -771,8 +775,8 @@ class Windows(OperatingSystem):
             ${element}  Get Element  Result      screenshot=True
 
         Arguments:
-            locator: name of the locator
-            screenshot: takes element screenshot if True, defaults to False
+            locator (str): name of the locator
+            screenshot (bool): takes element screenshot if True, defaults to False
 
         Returns:
             element if element was identified, else False
@@ -824,7 +828,7 @@ class Windows(OperatingSystem):
             ${text}  Get Element Rich Text  CalculatorResults
 
         Arguments:
-            locator: element locator
+            locator (str): element locator
 
         Returns:
             `rich_text` value if found, else False
@@ -851,8 +855,8 @@ class Windows(OperatingSystem):
             Log  top=${coords.top} left=${coords.left}
 
         Arguments:
-            locator: element locator
-            as_dict: return values in a dictionary, default `False`
+            locator (str): element locator
+            as_dict (bool): return values in a dictionary, default `False`
 
         Returns:
             (left, top, right, bottom) values if found, else False
@@ -883,7 +887,7 @@ class Windows(OperatingSystem):
             ${res}=   Is Element Visible  CalculatorResults
 
         Arguments:
-            locator: element locator
+            locator (str): element locator
 
         Returns:
             True if visible, else False
@@ -898,7 +902,7 @@ class Windows(OperatingSystem):
             ${res}=   Is Element Enabled  CalculatorResults
 
         Arguments:
-            locator: element locator
+            locator (str): element locator
 
         Returns:
             True if enabled, else False
@@ -914,7 +918,7 @@ class Windows(OperatingSystem):
             Menu Select             File->Print
 
         Arguments:
-            menuitem: name of the menu item
+            menuitem (str): name of the menu item
         """
         self.logger.info("Menu select: %s", menuitem)
         if self.dlg is None:
@@ -943,12 +947,12 @@ class Windows(OperatingSystem):
             @{elements}  Wait For Element  Results   timeout=10  interval=1.5
 
         Arguments:
-            locator: name of the locator
-            search_criteria: criteria by which element is matched
-            timeout: defines how long to wait for element to appear,
-                     defaults to 30.0 seconds
-            interval: how often to poll for element,
-                      defaults to 2.0 seconds (minimum is 0.5 seconds)
+            locator (str): name of the locator
+            search_criteria (str): criteria by which element is matched
+            timeout (float): defines how long to wait for element to appear,
+                             defaults to 30.0 seconds
+            interval (float): how often to poll for element,
+                              defaults to 2.0 seconds (minimum is 0.5 seconds)
         """
         end_time = time.time() + float(timeout)
         interval = max([0.5, interval])
@@ -979,8 +983,8 @@ class Windows(OperatingSystem):
             Log Many  ${elements[1]}     # list of all available locators
 
         Arguments:
-            locator: name of the locator
-            search_criteria: criteria by which element is matched
+            locator (str): name of the locator
+            search_criteria (str): criteria by which element is matched
 
         Returns:
             list of matching elements and locators that were found on the window
@@ -1020,7 +1024,7 @@ class Windows(OperatingSystem):
             - any (if none was defined)
 
         Arguments:
-            locator: name of the locator
+            locator (str): name of the locator
 
         Returns:
             criteria and locator
@@ -1082,10 +1086,10 @@ class Windows(OperatingSystem):
         or `criteria` field in the window items.
 
         Arguments:
-            itemDict: dictionary of element items
-            locator: name of the locator
-            criteria: criteria on which to match element
-            wildcard: whether to do reg exp match or not, default False
+            itemDict (dict): element items
+            locator (str): name of the locator
+            criteria (str): criteria on which to match element
+            wildcard (bool): whether to do reg exp match or not, default False
 
         Returns:
             True if element is matching locator and criteria, False if not
@@ -1103,8 +1107,8 @@ class Windows(OperatingSystem):
             Log  top=${coords.top} left=${coords.left}
 
         Arguments:
-            ctrl: name of the window control object, defaults to None
-            as_dict: True if return should be dictionary, default is 4 values
+            ctrl (Any): name of the window control object, defaults to None
+            as_dict (bool): True if return should be dictionary, default is 4 values
 
         Returns:
             coordinates: left, top, right, bottom
@@ -1134,7 +1138,7 @@ class Windows(OperatingSystem):
             ${x}  ${y}=  Get Element Center  ${elements[0][0]}
 
         Arguments:
-            element: dictionary of element items
+            element (dict): dictionary of element items
 
         Returns:
             coordinates, x and y
@@ -1154,9 +1158,9 @@ class Windows(OperatingSystem):
             Click Type  x=450  y=100  click_type=double
 
         Arguments:
-            x: horizontal coordinate for click, defaults to None
-            y: vertical coordinate for click, defaults to None
-            click_type: "click", "right" or "double", defaults to "click"
+            x (int): horizontal coordinate for click, defaults to None
+            y (int): vertical coordinate for click, defaults to None
+            click_type (str): "click", "right" or "double", defaults to "click"
 
         Raises:
             ValueError: if coordinates are not valid
@@ -1188,9 +1192,9 @@ class Windows(OperatingSystem):
             @{elements}   Get Window Elements  screenshot=True  element_json=True  outline=True
 
         Arguments:
-            screenshot: save element screenshot if True, defaults to False
-            element_json: save element json if True, defaults to False
-            outline: highlight elements if True, defaults to False
+            screenshot (bool): save element screenshot if True, defaults to False
+            element_json (bool): save element json if True, defaults to False
+            outline (bool): highlight elements if True, defaults to False
 
         Returns:
             all controls and all elements
@@ -1236,7 +1240,7 @@ class Windows(OperatingSystem):
         """Get element coordinates from pywinauto object.
 
         Arguments:
-            rectangle: item containing rectangle information
+            rectangle (Any): item containing rectangle information
 
         Returns:
             coordinates: left, top, right, bottom
@@ -1286,11 +1290,11 @@ class Windows(OperatingSystem):
             Screenshot   desktop.png   desktop=True  overwrite=True
 
         Arguments:
-            filename: name of the file
-            element: take element screenshot, defaults to None
-            ctrl: take control screenshot, defaults to None
-            desktop: take desktop screenshot if True, defaults to False
-            overwrite: file is overwritten if True, defaults to False
+            filename (str): name of the file
+            element (dict): take element screenshot, defaults to None
+            ctrl (Any): take control screenshot, defaults to None
+            desktop (bool): take desktop screenshot if True, defaults to False
+            overwrite (bool): file is overwritten if True, defaults to False
         """
         if desktop:
             region = None
@@ -1323,7 +1327,7 @@ class Windows(OperatingSystem):
         """Return filtered element dictionary for an element.
 
         Arguments:
-            element: should contain `element_info` attribute
+            element (dict): should contain `element_info` attribute
 
         Returns:
             dictionary containing element attributes
@@ -1412,9 +1416,9 @@ class Windows(OperatingSystem):
             Log In  username=myname  password=mypassword  domain=company
 
         Arguments:
-            username: name of the user
-            password: password of the user
-            domain: windows domain for the user, defaults to "."
+            username (str): name of the user
+            password (str): password of the user
+            domain (str): windows domain for the user, defaults to "."
 
         Returns:
             handle
@@ -1507,13 +1511,13 @@ class Windows(OperatingSystem):
             Drag And Drop   ${app1}   ${app1}   regexp:testfile_\\d.txt  name:subdir  handle_ctrl_key=${True}
 
         Arguments:
-            src: application object or instance id
-            target: application object or instance id
-            src_locator: elements to move
-            target_locator: to which element drag should end to
-            handle_ctrl_key: True if keyword should press CTRL down dragging
-            drop_delay: how many seconds to wait until releasing mouse drop,
-                        default 2.0
+            src (Any): application object or instance id
+            target (Any): application object or instance id
+            src_locator (str): elements to move
+            target_locator (str): to which element drag should end to
+            handle_ctrl_key (bool): True if keyword should press CTRL down dragging
+            drop_delay (float): how many seconds to wait until releasing mouse drop,
+                                default 2.0
 
         Raises:
             ValueError: on validation errors
@@ -1585,7 +1589,7 @@ class Windows(OperatingSystem):
             ${x}  ${y}=     Calculate Rectangle Center   ${rect}
 
         Arguments:
-            rectangle: element rectangle coordinates
+            rectangle (Any): element rectangle coordinates
 
         Returns:
             x and y coordinates of rectangle center
