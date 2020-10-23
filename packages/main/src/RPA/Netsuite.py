@@ -57,11 +57,11 @@ class Netsuite:
         Arguments are not logged into Robot Framework log.
 
         Arguments:
-            account: parameter or environment variable `NS_ACCOUNT`
-            consumer_key:  parameter or environment variable `NS_CONSUMER_KEY`
-            consumer_secret: parameter or environment variable `NS_CONSUMER_SECRET`
-            token_key: parameter or environment variable `NS_TOKEN_KEY`
-            token_secret: parameter or environment variable `NS_TOKEN_SECRET`
+            account (str): parameter or environment variable `NS_ACCOUNT`
+            consumer_key (str):  parameter or environment variable `NS_CONSUMER_KEY`
+            consumer_secret (str): parameter or environment variable `NS_CONSUMER_SECRET`
+            token_key (str): parameter or environment variable `NS_TOKEN_KEY`
+            token_secret (str): parameter or environment variable `NS_TOKEN_SECRET`
         """
         if account is None:
             self.account = required_env("NS_ACCOUNT")
@@ -93,11 +93,11 @@ class Netsuite:
         Arguments are not logged into Robot Framework log.
 
         Arguments:
-            account: parameter or environment variable `NS_ACCOUNT`
-            email: parameter or environment variable `NS_EMAIL`
-            password: parameter or environment variable `NS_PASSWORD`
-            role: parameter or environment variable `NS_ROLE`
-            appid: parameter or environment variable `NS_APPID`
+            account (str): parameter or environment variable `NS_ACCOUNT`
+            email (str): parameter or environment variable `NS_EMAIL`
+            password (str): parameter or environment variable `NS_PASSWORD`
+            role (str): parameter or environment variable `NS_ROLE`
+            appid (str): parameter or environment variable `NS_APPID`
         """
         if account is None:
             account = required_env("NS_ACCOUNT", self.account)
@@ -124,9 +124,9 @@ class Netsuite:
         """Get all records of given type and internalId and/or externalId.
 
         Arguments:
-            record_type: type of Netsuite record to get
-            internal_id: internalId of the type, default None
-            external_id: external_id of the type, default None
+            record_type (str): type of Netsuite record to get
+            internal_id (str): internalId of the type, default None
+            external_id (str): external_id of the type, default None
 
         Returns:
             records as a list or None
@@ -154,7 +154,7 @@ class Netsuite:
         """Get all records of given type.
 
         Arguments:
-            record_type: type of Netsuite record to get
+            record_type (str): type of Netsuite record to get
 
         Returns:
             records as a list or None
@@ -179,10 +179,10 @@ class Netsuite:
         `contains`.
 
         Arguments:
-            type_name: search target type name
-            search_value: what to search for within type
-            operator: name of the operation, defaults to "contains"
-            page_size: result items within one page, defaults to 5
+            type_name (str): search target type name
+            search_value (str): what to search for within type
+            operator (str): name of the operation, defaults to "contains"
+            page_size (int): result items within one page, defaults to 5
 
         Returns:
             paginated search object
@@ -208,8 +208,8 @@ class Netsuite:
         """Search Netsuite for a type results.
 
         Arguments:
-            type_name: search target type name
-            page_size: result items within one page, defaults to 5
+            type_name (str): search target type name
+            page_size (int): result items within one page, defaults to 5
 
         Returns:
             paginated search object
@@ -224,9 +224,9 @@ class Netsuite:
         """Get Accounts of any type or specified type.
 
         Arguments:
-            count: number of Accounts to return, defaults to 100
-            account_type: if None returns all account types, example. "_expense",
-                          defaults to None
+            count (int): number of Accounts to return, defaults to 100
+            account_type (str): if None returns all account types, example. "_expense",
+                                defaults to None
 
         Returns:
             accounts
@@ -243,7 +243,7 @@ class Netsuite:
         """Get all a Netsuite Currency by its ID
 
         Arguments:
-            currency_id: ID of the currency to get
+            currency_id (str): ID of the currency to get
 
         Returns:
             currency
@@ -291,7 +291,7 @@ class Netsuite:
         """Get list of vendors
 
         Arguments:
-            count: number of vendors to return, defaults to 10
+            count (int): number of vendors to return, defaults to 10
 
         Returns:
             list of vendors
@@ -303,7 +303,7 @@ class Netsuite:
         """Get list of vendor bills
 
         Arguments:
-            count: number of vendor bills to return, defaults to 10
+            count (int): number of vendor bills to return, defaults to 10
 
         Returns:
             list of vendor bills

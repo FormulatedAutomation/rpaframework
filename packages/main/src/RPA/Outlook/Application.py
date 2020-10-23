@@ -33,8 +33,8 @@ class Application:
         """Open the Outlook application.
 
         Arguments:
-            visible: show window after opening
-            display_alerts: show alert popups
+            visible (bool): show window after opening
+            display_alerts (bool): show alert popups
         """
         self.app = win32com.client.gencache.EnsureDispatch("Outlook.Application")
 
@@ -49,7 +49,7 @@ class Application:
         """Close the active document (if open).
 
         Arguments:
-            save_changes: if changes should be saved on close, default False
+            save_changes (bool): if changes should be saved on close, default False
         """
         if self.app is not None:
             self.app.ActiveDocument.Close(save_changes)
@@ -58,7 +58,7 @@ class Application:
         """Quit the application.
 
         Arguments:
-            save_changes: if changes should be saved on quit, default False
+            save_changes (bool): if changes should be saved on quit, default False
         """
         if self.app is not None:
             self.close_document(save_changes)
@@ -76,11 +76,11 @@ class Application:
         """Send message with Outlook
 
         Arguments:
-            recipients: list of addresses
-            subject: email subject
-            body: email body
-            html_body: True if body contains HTML, defaults to False
-            attachments: list of filepaths to include in the email, defaults to []
+            recipients (Any): list of addresses
+            subject (str): email subject
+            body (str): email body
+            html_body (bool): True if body contains HTML, defaults to False
+            attachments (Any): list of filepaths to include in the email, defaults to []
 
         Returns:
             True if there were no errors
@@ -177,9 +177,9 @@ class Application:
             Wait For Message  SUBJECT:rpa task calling   timeout=300  interval=10
 
         Arguments:
-            criterion: message filter to wait for, defaults to ""
-            timeout: total time in seconds to wait for email, defaults to 5.0
-            interval: time in seconds for new check, defaults to 1.0
+            criterion (str): message filter to wait for, defaults to ""
+            timeout (float): total time in seconds to wait for email, defaults to 5.0
+            interval (float): time in seconds for new check, defaults to 1.0
 
         Returns:
             list of messages or False

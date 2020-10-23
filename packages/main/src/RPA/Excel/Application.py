@@ -29,8 +29,8 @@ class Application:
         """Open the Excel application.
 
         Arguments:
-            visible: show window after opening
-            display_alerts: show alert popups
+            visible (bool): show window after opening
+            display_alerts (bool): show alert popups
         """
         self.app = win32com.client.gencache.EnsureDispatch("Excel.Application")
 
@@ -45,7 +45,7 @@ class Application:
         """Close the active document (if open).
 
         Arguments:
-            save_changes: if changes should be saved on close, default False
+            save_changes (bool): if changes should be saved on close, default False
         """
         if self.app is not None and hasattr(self.app, "ActiveDocument"):
             self.app.ActiveDocument.Close(save_changes)
@@ -54,7 +54,7 @@ class Application:
         """Quit the application.
 
         Arguments:
-            save_changes: if changes should be saved on quit, default False
+            save_changes (bool): if changes should be saved on quit, default False
         """
         if self.app is not None:
             self.close_document(save_changes)
@@ -69,7 +69,7 @@ class Application:
         """Open Excel by filename
 
         Arguments:
-            filename: path to filename
+            filename (str): path to filename
         """
         if self.app is None:
             self.open_application()
@@ -85,8 +85,8 @@ class Application:
         """Set active worksheet by either its sheet number or name
 
         Arguments:
-            sheetname: name of Excel sheet, defaults to None
-            sheetnumber: index of Excel sheet, defaults to None
+            sheetname (str): name of Excel sheet, defaults to None
+            sheetnumber (int): index of Excel sheet, defaults to None
         """
         if sheetnumber:
             self.active_worksheet = self.workbook.Worksheets(int(sheetnumber))
@@ -100,9 +100,9 @@ class Application:
         it does not exist.
 
         Arguments:
-            sheetname: name for sheet
-            tabname: name for tab, defaults to None
-            create_workbook: create workbook if True, defaults to True
+            sheetname (str): name for sheet
+            tabname (str): name for tab, defaults to None
+            create_workbook (bool): create workbook if True, defaults to True
 
         Raises:
             ValueError: error is raised if workbook does not exist and
@@ -123,9 +123,9 @@ class Application:
         """Find first available free row and cell
 
         Arguments:
-            worksheet: worksheet to handle, defaults to active worksheet if None
-            row: starting row for search, defaults to 1
-            column: starting column for search, defaults to 1
+            worksheet (Any): worksheet to handle, defaults to active worksheet if None
+            row (int): starting row for search, defaults to 1
+            column (int): starting column for search, defaults to 1
 
         Returns:
             tuple (row, column) or (None, None) if not found
@@ -153,12 +153,12 @@ class Application:
         """Write value, number_format and/or formula into cell.
 
         Arguments:
-            worksheet: worksheet to handle, defaults to active worksheet if None
-            row: target row, defaults to None
-            column: target row, defaults to None
-            value: possible value to set, defaults to None
-            number_format: possible number format to set, defaults to None
-            formula: possible format to set, defaults to None
+            worksheet (Any): worksheet to handle, defaults to active worksheet if None
+            row (int): target row, defaults to None
+            column (int): target row, defaults to None
+            value (str): possible value to set, defaults to None
+            number_format (str): possible number format to set, defaults to None
+            formula (str): possible format to set, defaults to None
 
         Raises:
             ValueError: if cell is not given
@@ -185,9 +185,9 @@ class Application:
         """Read value from cell.
 
         Arguments:
-            worksheet: worksheet to handle, defaults to active worksheet if None
-            row: target row, defaults to None
-            column: target row, defaults to None
+            worksheet (Any): worksheet to handle, defaults to active worksheet if None
+            row (int): target row, defaults to None
+            column (int): target row, defaults to None
 
         Raises:
             ValueError: if cell is not given
@@ -209,8 +209,8 @@ class Application:
         """Save Excel with name if workbook is open
 
         Arguments:
-            filename: where to save file
-            autofit: autofit cell widths if True, defaults to False
+            filename (str): where to save file
+            autofit (bool): autofit cell widths if True, defaults to False
         """
         if self.workbook:
             if autofit:
@@ -223,7 +223,7 @@ class Application:
         """Run Excel macro with given name
 
         Arguments:
-            macro_name: macro to run
+            macro_name (str): macro to run
         """
         if self.app is None:
             raise ValueError(

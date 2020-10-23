@@ -50,9 +50,9 @@ class Salesforce:
         and password creating instance.
 
         Arguments:
-            username: Salesforce API username
-            password: Salesforce API password
-            api_token: Salesforce API security token
+            username (str): Salesforce API username
+            password (str): Salesforce API password
+            api_token (str): Salesforce API security token
         """
         self.session = requests.Session()
         self.sf = SimpleSalesforce(
@@ -68,7 +68,7 @@ class Salesforce:
         """Perform SQL query.
 
         Arguments:
-            sql_string: SQL clause to perform
+            sql_string (str): SQL clause to perform
 
         Returns:
             result of the SQL query
@@ -80,7 +80,7 @@ class Salesforce:
         """Perform SQL query and return result as `RPA.Table`.
 
         Arguments:
-            sql_string: SQL clause to perform
+            sql_string (str): SQL clause to perform
 
         Returns:
             result of the SQL query as Table
@@ -99,8 +99,8 @@ class Salesforce:
             - ``Create New Opportunity``
 
         Arguments:
-            account_name: string, defaults to ""
-            account_id: string, defaults to ""
+            account_name (str): string, defaults to ""
+            account_id (str): string, defaults to ""
 
         Returns:
             True if account was found from Salesforce, else False
@@ -130,7 +130,7 @@ class Salesforce:
         """Get ID of an Opportunity linked to set account.
 
         Arguments:
-            opportunity_name: opportunity to query
+            opportunity_name (str): opportunity to query
 
         Returns:
             Id of the opportunity or False
@@ -150,10 +150,8 @@ class Salesforce:
     def get_pricebook_id(self, pricebook_name: str) -> Any:
         """Get ID of a pricelist.
 
-        Returns False if unique Id is not found.
-
         Arguments:
-            pricebook_name: pricelist to query
+            pricebook_name (str): pricelist to query
 
         Returns:
             Id of the pricelist or False
@@ -169,7 +167,7 @@ class Salesforce:
         """Get all products in a pricelist.
 
         Arguments:
-            pricebook_name: pricelist to query
+            pricebook_name (str): pricelist to query
 
         Returns:
             products in dictionary
@@ -193,7 +191,7 @@ class Salesforce:
         """Sets Pricebook to be used in Salesforce operations.
 
         Arguments:
-            pricebook_name: pricelist to use
+            pricebook_name (str): pricelist to use
         """
         self.pricebook_name = pricebook_name
 
@@ -208,12 +206,12 @@ class Salesforce:
         """Add Salesforce Product into Opportunity.
 
         Arguments:
-            product_name: type of the product in the Pricelist
-            quantity: number of products to add
-            opportunity_id: identifier of Opportunity, default None
-            pricebook_name: name of the pricelist, default None
-            custom_total_price: price that overrides quantity and product price,
-                                default None
+            product_name (str): type of the product in the Pricelist
+            quantity (int): number of products to add
+            opportunity_id (str): identifier of Opportunity, default None
+            pricebook_name (str): name of the pricelist, default None
+            custom_total_price (str): price that overrides quantity and product price,
+                                      default None
         Returns:
             True is operation is successful or False
         """
@@ -249,10 +247,11 @@ class Salesforce:
         """Create Salesforce Opportunity object.
 
         Arguments:
-            close_date: closing date for the Opportunity, format 'YYYY-MM-DD'
-            opportunity_name: as string
-            stage_name: needs to be one of the defined stages, defaults to "Closed Won"
-            account_name: by default uses previously set account, defaults to None
+            close_date (str): closing date for the Opportunity, format 'YYYY-MM-DD'
+            opportunity_name (str): as string
+            stage_name (str): needs to be one of the defined stages,
+                              defaults to "Closed Won"
+            account_name (str): by default uses previously set account, defaults to None
 
         Returns:
             created opportunity or False
@@ -281,7 +280,7 @@ class Salesforce:
         """Read dictionary from file.
 
         Arguments:
-            mapping_file: path to the file
+            mapping_file (str): path to the file
 
         Returns:
             file content as dictionary
@@ -326,9 +325,9 @@ class Salesforce:
         `RPA.Table`.
 
         Arguments:
-            input_object: filepath or list of dictionaries
-            mapping_object: filepath or dictionary
-            object_type: Salesforce object type
+            input_object (Any): filepath or list of dictionaries
+            mapping_object (Any): filepath or dictionary
+            object_type (str): Salesforce object type
 
         Returns:
             True if operation is successful
@@ -368,8 +367,8 @@ class Salesforce:
         """Get Salesforce object by id and type.
 
         Arguments:
-            object_type: Salesforce object type
-            object_id: Salesforce object id
+            object_type (str): Salesforce object type
+            object_id (str): Salesforce object id
 
         Returns:
             dictionary of object attributes
@@ -382,8 +381,8 @@ class Salesforce:
         """Create Salesforce object by type and data.
 
         Arguments:
-            object_type: Salesforce object type
-            object_data: Salesforce object data
+            object_type (str): Salesforce object type
+            object_data (Any): Salesforce object data
 
         Returns:
             resulting object as dictionary
@@ -404,9 +403,9 @@ class Salesforce:
         """Update Salesfoce object by type, id and data.
 
         Arguments:
-            object_type: Salesforce object type
-            object_id: Salesforce object id
-            object_data: Salesforce object data
+            object_type (str): Salesforce object type
+            object_id (str): Salesforce object id
+            object_data (Any): Salesforce object data
 
         Returns:
             True if successful
@@ -427,9 +426,9 @@ class Salesforce:
         """Upsert Salesfoce object by type, id and data.
 
         Arguments:
-            object_type: Salesforce object type
-            object_id: Salesforce object id
-            object_data: Salesforce object data
+            object_type (str): Salesforce object type
+            object_id (str): Salesforce object id
+            object_data (Any): Salesforce object data
 
         Returns:
             True if successful
@@ -448,8 +447,8 @@ class Salesforce:
         """Delete Salesfoce object by type and id.
 
         Arguments:
-            object_type: Salesforce object type
-            object_id: Salesforce object id
+            object_type (str): Salesforce object type
+            object_id (str): Salesforce object id
 
         Returns:
             True if successful
@@ -463,7 +462,7 @@ class Salesforce:
         """Get Salesfoce object metadata by type.
 
         Arguments:
-            object_type: Salesforce object type
+            object_type (str): Salesforce object type
 
         Returns:
             object metadata as dictionary
@@ -476,7 +475,7 @@ class Salesforce:
         """Get Salesfoce object description by type.
 
         Arguments:
-            object_type: Salesforce object type
+            object_type (str): Salesforce object type
 
         Returns:
             object description as dictionary

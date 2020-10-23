@@ -36,8 +36,8 @@ class Application:
         """Open the Word application.
 
         Arguments:
-            visible: show window after opening
-            display_alerts: show alert popups
+            visible (bool): show window after opening
+            display_alerts (bool): show alert popups
         """
         self.app = win32com.client.gencache.EnsureDispatch("Word.Application")
 
@@ -52,7 +52,7 @@ class Application:
         """Close the active document (if open).
 
         Arguments:
-            save_changes: if changes should be saved on close, default False
+            save_changes (bool): if changes should be saved on close, default False
         """
         if self.app is not None:
             self.app.ActiveDocument.Close(save_changes)
@@ -61,7 +61,7 @@ class Application:
         """Quit the application.
 
         Arguments:
-            save_changes: if changes should be saved on quit, default False
+            save_changes (bool): if changes should be saved on quit, default False
         """
         if self.app is not None:
             self.close_document(save_changes)
@@ -72,7 +72,7 @@ class Application:
         """Open Word document with filename.
 
         Arguments:
-            filename: Word document filepath, defaults to None
+            filename (str): Word document filepath, defaults to None
         """
         if filename is not None:
             word_filepath = str(Path(filename).resolve())
@@ -93,7 +93,7 @@ class Application:
         """Export active document into PDF file.
 
         Arguments:
-            filename: name of source PDF to export
+            filename (str): name of source PDF to export
         """
         absolute_filepath = str(Path(filename).resolve())
         self.app.ActiveDocument.ExportAsFixedFormat(
@@ -104,8 +104,8 @@ class Application:
         """Writes given text at the end of the document
 
         Arguments:
-            text: string to write
-            newline: write text to newline if True, default to True
+            text (str): string to write
+            newline (bool): write text to newline if True, default to True
         """
         self.app.Selection.EndKey(Unit=constants.wdStory)
         if newline:
@@ -117,8 +117,8 @@ class Application:
         """Replace text in active document
 
         Arguments:
-            find: text to replace
-            replace: new text
+            find (str): text to replace
+            replace (str): new text
         """
         self.app.ActiveDocument.Content.Find.Execute(FindText=find, ReplaceWith=replace)
 
@@ -126,7 +126,7 @@ class Application:
         """Set header for the active document
 
         Arguments:
-            text: header text to set
+            text (str): header text to set
         """
         for section in self.app.ActiveDocument.Sections:
             for header in section.Headers:
@@ -136,7 +136,7 @@ class Application:
         """Set footer for the active document
 
         Arguments:
-            text: footer text to set
+            text (str): footer text to set
         """
         for section in self.app.ActiveDocument.Sections:
             for footer in section.Footers:
@@ -155,8 +155,8 @@ class Application:
         """Save document with filename and optionally with given fileformat
 
         Arguments:
-            filename: where to save document
-            fileformat: see `@FILEFORMATS` dictionary for possible format,
+            filename (str): where to save document
+            fileformat (str): see `@FILEFORMATS` dictionary for possible format,
                         defaults to None
         """
         absolute_filepath = str(Path(filename).resolve())

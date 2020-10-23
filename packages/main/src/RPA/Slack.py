@@ -20,11 +20,11 @@ class Slack:
         """Send message to Slack channel using webhook.
 
         Arguments:
-            webhook_url: needs to be configured for the Slack server
-            channel: channel needs to exist in the Slack server
-            sender: shown in the message post as sender
-            text: text for the message post
-            icon_emoji: icon for the message post, defaults to None
+            webhook_url (str): needs to be configured for the Slack server
+            channel (str): channel needs to exist in the Slack server
+            sender (str): shown in the message post as sender
+            text (str): text for the message post
+            icon_emoji (str): icon for the message post, defaults to None
         """
         headers = {"Content-Type": "application/json"}
         payload = {

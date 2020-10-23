@@ -30,7 +30,7 @@ class RobotLogListener:
         """Register keywords that are allowed only INFO level logging
 
         Arguments:
-            names: list of keywords to protect
+            names (Any): list of keywords to protect
         """
         required_param(names, "only_info_level")
         if not isinstance(names, list):
@@ -44,7 +44,7 @@ class RobotLogListener:
         """Register keywords that are not going to be logged into Robot Framework logs.
 
         Arguments:
-            names: list of keywords to protect
+            names (Any): list of keywords to protect
         """
         required_param(names, "register_protected_keywords")
         if not isinstance(names, list):
@@ -74,9 +74,9 @@ class RobotLogListener:
         default behaviour for a set of keywords.
 
         Arguments:
-            keywords: list of keywords to mute
-            optional_keyword_to_run: name of the keyword to execute
-                                     if keyword defined by `keywords` fail
+            keywords (Any): list of keywords to mute
+            optional_keyword_to_run (str): name of the keyword to execute
+                                           if keyword defined by `keywords` fail
         """
         required_param(keywords, "mute_run_on_failure")
         if not isinstance(keywords, list):
@@ -141,7 +141,7 @@ class RobotLogListener:
         Keyword is lowercased and spaces are replaced by underscores.
 
         Arguments:
-            kw_name: keyword name to robotize
+            kw_name (str): keyword name to robotize
 
         Returns:
             robotized keyword

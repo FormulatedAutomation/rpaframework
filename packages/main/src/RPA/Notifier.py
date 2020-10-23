@@ -19,10 +19,10 @@ class Notifier:
         """Notify using Pushover service
 
         Arguments:
-            message: notification message
-            user: target user for the notification
-            token: service token
-            kwargs: other arguments to pass to notify method
+            message (str): notification message
+            user (str): target user for the notification
+            token (str): service token
+            kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -40,10 +40,10 @@ class Notifier:
         """Notify using Slack service
 
         Arguments:
-            message: notification message
-            channel: target channel for the notification
-            webhook_url: Slack webhook url
-            kwargs: other arguments to pass to notify method
+            message (str): notification message
+            channel (str): target channel for the notification
+            webhook_url (str): Slack webhook url
+            kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -67,10 +67,10 @@ class Notifier:
         """Notify using Telegram service
 
         Arguments:
-            message: notification message
-            chat_id: target chat id for the notification
-            token: service token
-            kwargs: other arguments to pass to notify method
+            message (str): notification message
+            chat_id (str): target chat id for the notification
+            token (str): service token
+            kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -91,11 +91,11 @@ class Notifier:
         """Notify using Gmail service
 
         Arguments:
-            message: notification message
-            to: target of email message
-            username: GMail service username
-            password: GMail service password
-            kwargs: other arguments to pass to notify method
+            message (str): notification message
+            to (str): target of email message
+            username (str): GMail service username
+            password (str): GMail service password
+            kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -121,11 +121,11 @@ class Notifier:
         """Notify using email service
 
         Arguments:
-            message: notification message
-            to: target of email message
-            username: email service username
-            password: email service password
-            kwargs: other arguments to pass to notify method
+            message (str): notification message
+            to (str): target of email message
+            username (str): email service username
+            password (str): email service password
+            kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not
@@ -152,12 +152,12 @@ class Notifier:
         """Notify using Twilio service
 
         Arguments:
-            message: notification message
-            number_from: number where the message comes from
-            number_to: number where the messages goes to
-            account_sid: Twilio account SID
-            token: Twilio account token
-            kwargs: other arguments to pass to notify method
+            message (str): notification message
+            number_from (str): number where the message comes from
+            number_to (str): number where the messages goes to
+            account_sid (str): Twilio account SID
+            token (str): Twilio account token
+            kwargs (dict): other arguments to pass to notify method
 
         Returns:
             True is notification was success, False if not

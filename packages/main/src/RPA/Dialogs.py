@@ -278,7 +278,7 @@ class Dialogs:
         handles form post.
 
         Arguments:
-            port: server port number, defaults to 8105
+            port (int): server port number, defaults to 8105
 
         """
         if self.server is None:
@@ -312,7 +312,7 @@ class Dialogs:
             Create Form     title=User Confirmation Form
 
         Arguments:
-            title: form title, defaults to None
+            title (str): form title, defaults to None
         """
         self.custom_form = OrderedDict()
         self.custom_form["form"] = list()
@@ -331,7 +331,7 @@ class Dialogs:
             Add Title       User Confirmation Form
 
         Arguments:
-            title: text for the element
+            title (str): text for the element
         """
         element = {"type": "title", "value": title}
         self.custom_form["form"].append(element)
@@ -344,8 +344,8 @@ class Dialogs:
             Add Text Input   what is your firstname ?  fname
 
         Arguments:
-            label: input element label
-            name: input element name attribute
+            label (str): input element label
+            name (str): input element name attribute
         """
         element = {"type": "textinput", "label": label, "name": name}
         self.custom_form["form"].append(element)
@@ -359,8 +359,8 @@ class Dialogs:
             Add Hidden Input    form-id   ${uuid}
 
         Arguments:
-            name: input element name attribute
-            value: input element value attribute
+            name (str): input element name attribute
+            value (str): input element value attribute
         """
         element = {
             "type": "hiddeninput",
@@ -396,11 +396,11 @@ class Dialogs:
             ...             target_directory=${CURDIR}${/}output
 
         Arguments:
-            label: input element label
-            element_id: hidden element id attribute
-            name: input element name attribute
-            filetypes: accepted filetypes for the file upload
-            target_directory: where to save uploaded files to
+            label (str): input element label
+            element_id (str): hidden element id attribute
+            name (str): input element name attribute
+            filetypes (str): accepted filetypes for the file upload
+            target_directory (str): where to save uploaded files to
         """
         element = {
             "type": "fileinput",
@@ -426,10 +426,10 @@ class Dialogs:
             ...           default=buy
 
         Arguments:
-            label: dropdown element label
-            element_id: dropdown element id attribute
-            options: values for the dropdown
-            default: dropdown selected value, defaults to None
+            label (str): dropdown element label
+            element_id (str): dropdown element id attribute
+            options (Any): values for the dropdown
+            default (str): dropdown selected value, defaults to None
         """
         if not isinstance(options, list):
             options = options.split(",")
@@ -451,8 +451,8 @@ class Dialogs:
             Add Submit    name=direction-to-go  buttons=left,right
 
         Arguments:
-            name: element name attribute
-            buttons: list of buttons
+            name (str): element name attribute
+            buttons (str): list of buttons
         """
         if not isinstance(buttons, list):
             buttons = buttons.split(",")
@@ -469,9 +469,9 @@ class Dialogs:
             Add Radio Button   element_id=drone  buttons=Jim,Robert  default=Robert
 
         Arguments:
-            element_id: radio button element identifier
-            options: values for the radio button
-            default: radio button selected value, defaults to None
+            element_id (str): radio button element identifier
+            options (str): values for the radio button
+            default (str): radio button selected value, defaults to None
         """
         if not isinstance(options, list):
             options = options.split(",")
@@ -497,10 +497,10 @@ class Dialogs:
             ...             default=blue
 
         Arguments:
-            label: check box element label
-            element_id: check box element identifier
-            options: values for the check box
-            default: check box selected value, defaults to None
+            label (str): check box element label
+            element_id (str): check box element identifier
+            options (str): values for the check box
+            default (str): check box selected value, defaults to None
         """
         if not isinstance(options, list):
             options = options.split(",")
@@ -525,10 +525,10 @@ class Dialogs:
             Add Textarea       name=texts  rows=40   cols=80
 
         Arguments:
-            name: textarea element name
-            rows: number of rows for the area, defaults to 5
-            cols: numnber of columns for the area, defaults to 40
-            default: prefilled text for the area, defaults to None
+            name (str): textarea element name
+            rows (int): number of rows for the area, defaults to 5
+            cols (int): numnber of columns for the area, defaults to 40
+            default (str): prefilled text for the area, defaults to None
         """
         element = {
             "type": "textarea",
@@ -548,7 +548,7 @@ class Dialogs:
             Add Text       ${form_guidance_text}
 
         Arguments:
-            value: text for the element
+            value (str): text for the element
         """
         element = {
             "type": "text",
@@ -566,9 +566,9 @@ class Dialogs:
             &{response}    Request Response
 
         Arguments:
-            formspec: form json specification file, defaults to None
-            window_width: window width in pixels, defaults to 600
-            window_height: window height in pixels, defaults to 1000
+            formspec (str): form json specification file, defaults to None
+            window_width (int): window width in pixels, defaults to 600
+            window_height (int): window height in pixels, defaults to 1000
 
         Returns:
             form response

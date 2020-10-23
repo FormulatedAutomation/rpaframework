@@ -81,12 +81,12 @@ class Archive:
             Archive Folder With Zip  ${CURDIR}               bzipped.zip      compression=bzip2
 
         Arguments:
-            folder: name of the folder to archive
-            archive_name: filename of the archive
-            recursive: should sub directories be included, defaults is False
-            include: define file pattern to include in the package, defaults to None (means all files)
-            exclude: define file pattern to exclude from the package, defaults is None
-            compression: type of package compression method, defaults to "stored"
+            folder (str): name of the folder to archive
+            archive_name (str): filename of the archive
+            recursive (bool): should sub directories be included, defaults is False
+            include (str): define file pattern to include in the package, defaults to None (means all files)
+            exclude (str): define file pattern to exclude from the package, defaults is None
+            compression (str): type of package compression method, defaults to "stored"
         """  # noqa: E501
         if compression == "stored":
             comp_method = zipfile.ZIP_STORED
@@ -136,11 +136,11 @@ class Archive:
             Archive Folder With TAR  ${CURDIR}${/}documents  documents.tar  recursive=True
 
         Arguments:
-            folder: name of the folder to archive
-            archive_name: filename of the archive
-            recursive: should sub directories be included, defaults is False
-            include: define file pattern to include in the package, defaults to None (means all files)
-            exclude: define file pattern to exclude from the package, defaults is None
+            folder (str): name of the folder to archive
+            archive_name (str): filename of the archive
+            recursive (bool): should sub directories be included, defaults is False
+            include (str): define file pattern to include in the package, defaults to None (means all files)
+            exclude (str): define file pattern to exclude from the package, defaults is None
         """  # noqa: E501
         filelist = list_files_in_directory(folder, recursive, include, exclude)
         if len(filelist) == 0:
@@ -168,9 +168,10 @@ class Archive:
             Add To Archive  ${files}       files.tar
 
         Arguments:
-            files: name of the file, or list of files, to add
-            archive_name: filename of the archive
-            folder: name of the folder for added file (relative path in the archive)
+            files (Any): name of the file, or list of files, to add
+            archive_name (str): filename of the archive
+            folder (str): name of the folder for added file, relative path
+                          in the archive
         """
         files_to_add = []
 
@@ -215,7 +216,7 @@ class Archive:
             END
 
         Arguments:
-            archive_name: filename of the archive
+            archive_name (str): filename of the archive
         """
         filelist = []
         if zipfile.is_zipfile(archive_name):
@@ -259,7 +260,7 @@ class Archive:
             &{archiveinfo}   Get Archive Info    myfiles.zip
 
         Arguments:
-            archive_name: filename of the archive
+            archive_name (str): filename of the archive
         """
         archive_info = None
         st = os.stat(archive_name)
@@ -300,9 +301,9 @@ class Archive:
             Extract Archive    archive.tar   C:${/}myfiles${/}  ${files}
 
         Arguments:
-            archive_name: filename of the archive
-            path: filepath to extract file into, default is current working directory
-            members: list of files to extract from, default is None (all files in archive are extracted)
+            archive_name (str): filename of the archive
+            path (str): filepath to extract file into, default is current working directory
+            members (Any): list of files to extract from, default is None (all files in archive are extracted)
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
         if members and not isinstance(members, list):
@@ -336,9 +337,9 @@ class Archive:
             Extract File From Archive    background.png  images.tar.gz  ${CURDIR}${/}extracted
 
         Arguments:
-            filename: name of the file to extract
-            archive_name: filename of the archive
-            path: filepath to extract file into, default is current working directory
+            filename (str): name of the file to extract
+            archive_name (str): filename of the archive
+            path (str): filepath to extract file into, default is current working directory
         """  # noqa: E501
         root = Path(path) if path else Path.cwd()
         if zipfile.is_zipfile(archive_name):

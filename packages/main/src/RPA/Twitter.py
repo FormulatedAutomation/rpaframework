@@ -74,10 +74,10 @@ class Twitter:
         """Authorize to Twitter API
 
         Arguments:
-            consumer_key: app consumer key
-            consumer_secret: app consumer secret
-            access_token: user access token
-            access_token_secret: user access token secret
+            consumer_key (str): app consumer key
+            consumer_secret (str): app consumer secret
+            access_token (str): user access token
+            access_token_secret (str): user access token secret
         """
         if consumer_key is None:
             consumer_key = required_env("TWITTER_CONSUMER_KEY")
@@ -112,8 +112,8 @@ class Twitter:
         """Get user tweets
 
         Arguments:
-            username: whose tweets to get
-            count: maximum number of tweets, defaults to 100
+            username (str): whose tweets to get
+            count (int): maximum number of tweets, defaults to 100
 
         Returns:
             list of user tweets
@@ -164,17 +164,18 @@ class Twitter:
             - popular : return only the most popular results in the response
 
         Arguments:
-            query: search query string of 500 characters maximum, including operators
-            count: maximum number of tweets, defaults to 100
-            geocode: tweets by users located within a given radius of the given
-                     latitude/longitude
-            lang: language code of tweets
-            locale: language of the query you are sending
-            result_type: type of search results you would prefer to receive, default
-                         "mixed"
-            until: tweets created before the given date
-            since_id: Returns only statuses with an ID greater than
-            max_id: only statuses with an ID less than
+            query (str): search query string of 500 characters maximum, including
+                         operators
+            count (int): maximum number of tweets, defaults to 100
+            geocode (str): tweets by users located within a given radius of the given
+                           latitude/longitude
+            lang (str): language code of tweets
+            locale (str): language of the query you are sending
+            result_type (str): type of search results you would prefer to receive,
+                               default "mixed"
+            until (str): tweets created before the given date
+            since_id (str): Returns only statuses with an ID greater than
+            max_id (str): only statuses with an ID less than
 
         Returns:
             list of matching tweets
@@ -218,7 +219,7 @@ class Twitter:
         """Get user's Twitter profile
 
         Arguments:
-            username: whose profile to get
+            username (str): whose profile to get
 
         Returns:
             profile as dictionary
@@ -236,7 +237,7 @@ class Twitter:
         """Make a tweet with content
 
         Arguments:
-            content: text for the status update
+            content (str): text for the status update
         """
         required_param(content, "tweet")
         self.api.update_status(content)
@@ -245,10 +246,10 @@ class Twitter:
         """Like a tweet
 
         Arguments:
-            tweet: as a class `Tweet`
+            tweet (Tweet): as a class `Tweet`
 
         Returns:
-            `True` if Tweet was liked, `False` if not
+            True if Tweet was liked, False if not
         """
         required_param(tweet, "like")
         try:
@@ -266,10 +267,10 @@ class Twitter:
         """Unlike a tweet
 
         Arguments:
-            tweet: as a class `Tweet`
+            tweet (Tweet): as a class `Tweet`
 
         Returns:
-            `True` if Tweet was unliked, `False` if not
+            True if Tweet was unliked, False if not
         """
         required_param(tweet, "unlike")
         try:
@@ -287,10 +288,10 @@ class Twitter:
         """Follow Twitter user
 
         Arguments:
-            user: screen name of the user
+            user (str): screen name of the user
 
         Returns:
-             `True` if user was followed, `False` if not
+             True if user was followed, False if not
         """
         required_param(user, "follow")
         try:
@@ -304,10 +305,10 @@ class Twitter:
         """Unfollow Twitter user
 
         Arguments:
-            user: screen name of the user
+            user (str): screen name of the user
 
         Returns:
-             `True` if user was followed, `False` if not
+             True if user was followed, False if not
         """
         required_param(user, "unfollow")
         try:

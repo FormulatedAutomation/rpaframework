@@ -170,11 +170,11 @@ class AzureBase:
         if image_url is None and image_file is None:
             raise KeyError("Parameter 'image_url' or 'image_file' must be given.")
 
-    def set_robocloud_vault(self, vault_name):
+    def set_robocloud_vault(self, vault_name: str):
         """Set Robocloud Vault name
 
         Arguments:
-            vault_name: Robocloud Vault name
+            vault_name (str): Robocloud Vault name
         """
         if vault_name:
             self.robocloud_vault_name = vault_name
@@ -195,8 +195,8 @@ class ServiceTextAnalytics(AzureBase):
         """Initialize Azure Text Analyticts
 
         Arguments:
-            region: identifier for service region
-            use_robocloud_vault: use secret stored into `Robocloud Vault`
+            region (str): identifier for service region
+            use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -208,9 +208,9 @@ class ServiceTextAnalytics(AzureBase):
         """Analyze sentiments in the given text
 
         Arguments:
-            text: A UTF-8 text string
-            language: if input language is known
-            json_file: filepath to write results into
+            text (str): A UTF-8 text string
+            language (str): if input language is known
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -229,8 +229,8 @@ class ServiceTextAnalytics(AzureBase):
         """Detect languages in the given text
 
         Arguments:
-            text: A UTF-8 text string
-            json_file: filepath to write results into
+            text (str): A UTF-8 text string
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -248,9 +248,9 @@ class ServiceTextAnalytics(AzureBase):
         """Detect key phrases in the given text
 
         Arguments:
-            text: A UTF-8 text string
-            language: if input language is known
-            json_file: filepath to write results into
+            text (str): A UTF-8 text string
+            language (str): if input language is known
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -268,9 +268,9 @@ class ServiceTextAnalytics(AzureBase):
         """Detect entities in the given text
 
         Arguments:
-            text: A UTF-8 text string
-            language: if input language is known
-            json_file: filepath to write results into
+            text (str): A UTF-8 text string
+            language (str): if input language is known
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -299,8 +299,8 @@ class ServiceFace(AzureBase):
         """Initialize Azure Face
 
         Arguments:
-            region: identifier for service region
-            use_robocloud_vault: use secret stored into `Robocloud Vault`
+            region (str): identifier for service region
+            use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -335,15 +335,16 @@ class ServiceFace(AzureBase):
             - nouse
 
         Arguments:
-            image_file: filepath of image file
-            image_url: URI to image, if given will be used instead of `image_file`
-            face_attributes: comma separated list of attributes,
-                             for example. "age,gender,smile"
-            face_landmarks: return face landmarks of the detected faces
-                            or not. The default value is `False`
-            recognition_model: model used by Azure to detech faces, options
-                               are "recognition_01" or "recognition_02", default is "recognition_02"
-            json_file: filepath to write results into
+            image_file (str): filepath of image file
+            image_url (str): URI to image, if given will be used instead of `image_file`
+            face_attributes (str): comma separated list of attributes,
+                                   for example. "age,gender,smile"
+            face_landmarks (bool): return face landmarks of the detected faces
+                                   or not. The default value is `False`
+            recognition_model (str): model used by Azure to detech faces, options are
+                                     "recognition_01" or "recognition_02", default
+                                     is "recognition_02"
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -381,8 +382,8 @@ class ServiceComputerVision(AzureBase):
         """Initialize Azure Computer Vision
 
         Arguments:
-            region: identifier for service region
-            use_robocloud_vault: use secret stored into `Robocloud Vault`
+            region (str): identifier for service region
+            use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.{self.COGNITIVE_API}"
@@ -411,11 +412,11 @@ class ServiceComputerVision(AzureBase):
             - Tags
 
         Arguments:
-            image_file: filepath of image file
-            image_url: URI to image, if given will be used instead of `image_file`
-            visual_features: comma separated list of features,
-                             for example. "Categories,Description,Color"
-            json_file: filepath to write results into
+            image_file (str): filepath of image file
+            image_url (str): URI to image, if given will be used instead of `image_file`
+            visual_features (str): comma separated list of features,
+                                   for example. "Categories,Description,Color"
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -439,9 +440,9 @@ class ServiceComputerVision(AzureBase):
         """Describe image with tags and captions
 
         Arguments:
-            image_file: filepath of image file
-            image_url: URI to image, if given will be used instead of `image_file`
-            json_file: filepath to write results into
+            image_file (str): filepath of image file
+            image_url (str): URI to image, if given will be used instead of `image_file`
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -460,9 +461,9 @@ class ServiceComputerVision(AzureBase):
         """Optical Character Recognition (OCR) detects text in an image
 
         Arguments:
-            image_file: filepath of image file
-            image_url: URI to image, if given will be used instead of `image_file`
-            json_file: filepath to write results into
+            image_file (str): filepath of image file
+            image_url (str): URI to image, if given will be used instead of `image_file`
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -481,9 +482,9 @@ class ServiceComputerVision(AzureBase):
         """Detect objects in the image
 
         Arguments:
-            image_file: filepath of image file
-            image_url: URI to image, if given will be used instead of `image_file`
-            json_file: filepath to write results into
+            image_file (str): filepath of image file
+            image_url (str): URI to image, if given will be used instead of `image_file`
+            json_file (str): filepath to write results into
 
         Returns:
             analysis in json format
@@ -514,8 +515,8 @@ class ServiceSpeech(AzureBase):
         """Initialize Azure Speech
 
         Arguments:
-            region: identifier for service region
-            use_robocloud_vault: use secret stored into `Robocloud Vault`
+            region (str): identifier for service region
+            use_robocloud_vault (bool): use secret stored into `Robocloud Vault`
         """
         self.__region = region if region else self.region
         self.__base_url = f"https://{self.__region}.tts.speech.microsoft.com"
@@ -537,15 +538,15 @@ class ServiceSpeech(AzureBase):
         East US, South East Asia, and West Europe regions.
 
         Arguments:
-            text: input text to synthesize
-            language: voice language, defaults to "en-US"
-            name: voice name, defaults to "en-US-AriaRUS"
-            gender: voice gender, defaults to "FEMALE"
-            encoding: result encoding type, defaults to "MP3"
-            neural_voice_style: if given then neural voice is used,
-                                example style. "cheerful"
-            target_file: save synthesized output to file,
-                         defaults to "synthesized.mp3"
+            text (str): input text to synthesize
+            language (str): voice language, defaults to "en-US"
+            name (str): voice name, defaults to "en-US-AriaRUS"
+            gender (str): voice gender, defaults to "FEMALE"
+            encoding (str): result encoding type, defaults to "MP3"
+            neural_voice_style (Any): if given then neural voice is used,
+                                      example style. "cheerful"
+            target_file (str): save synthesized output to file,
+                               defaults to "synthesized.mp3"
 
         Returns:
             synthesized output in bytes
@@ -606,10 +607,11 @@ class ServiceSpeech(AzureBase):
         Available voice selection might differ between regions.
 
         Arguments:
-            locale: list only voices specific to locale, by default return all voices
-            neural_only: `True` if only neural voices should be returned,
-                         `False` by default
-            json_file: filepath to write results into
+            locale (str): list only voices specific to locale, by default return
+                          all voices
+            neural_only (bool): `True` if only neural voices should be returned,
+                                `False` by default
+            json_file (str): filepath to write results into
 
         Returns:
             voices in json

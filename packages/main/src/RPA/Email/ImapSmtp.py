@@ -112,8 +112,8 @@ class ImapSmtp:
             Authorize
 
         Arguments:
-            account: user account as string, defaults to None
-            password: user password as string, defaults to None
+            account (str): user account as string, defaults to None
+            password (str): user password as string, defaults to None
         """
         if account:
             self.account = account
@@ -137,10 +137,10 @@ class ImapSmtp:
             Authorize SMTP    ${username}   ${password}  smtp.gmail.com  587
 
         Arguments:
-            account: SMTP account name, defaults to None
-            password: SMTP account password, defaults to None
-            smtp_server: SMTP server address, defaults to None
-            smtp_port: SMTP server port, defaults to None (587 for SMTP)
+            account (str): SMTP account name, defaults to None
+            password (str): SMTP account password, defaults to None
+            smtp_server (str): SMTP server address, defaults to None
+            smtp_port (int): SMTP server port, defaults to None (587 for SMTP)
         """
         if account is None and password is None:
             account = self.account
@@ -188,10 +188,10 @@ class ImapSmtp:
             Authorize IMAP    ${username}   ${password}  imap.gmail.com  993
 
         Arguments:
-            account: IMAP account name, defaults to None
-            password: IMAP account password, defaults to None
-            imap_server: IMAP server address, defaults to None
-            imap_port: IMAP server port, defaults to None
+            account (str): IMAP account name, defaults to None
+            password (str): IMAP account password, defaults to None
+            imap_server (str): IMAP server address, defaults to None
+            imap_port (int): IMAP server port, defaults to None
         """
         if account is None and password is None:
             account = self.account
@@ -232,12 +232,12 @@ class ImapSmtp:
             Authorize    ${username}   ${password}  smtp_server=smtp.gmail.com  smtp_port=587
 
         Arguments:
-            account: user account as string, defaults to None
-            password: user password as string, defaults to None
-            smtp_server: SMTP server address, defaults to None
-            imap_server: IMAP server address, defaults to None
-            smtp_port: SMTP server port, defaults to None (587 for SMTP)
-            imap_port: IMAP server port, defaults to None
+            account (str): user account as string, defaults to None
+            password (str): user password as string, defaults to None
+            smtp_server (str): SMTP server address, defaults to None
+            imap_server (str): IMAP server address, defaults to None
+            smtp_port (int): SMTP server port, defaults to None (587 for SMTP)
+            imap_port (int): IMAP server port, defaults to None
         """  # noqa: E501
         self.authorize_smtp(account, password, smtp_server, smtp_port)
         self.authorize_imap(account, password, imap_server, imap_port)
@@ -279,13 +279,13 @@ class ImapSmtp:
             ...           attachments:${CURDIR}${/}report.pdf
 
         Arguments:
-            sender: who is sending, ie. 'from'
-            recipients: who is receiving, ie. 'to'
-            subject: mail subject field
-            body: mail body content
-            attachments: list of filepaths to attach, defaults to []
-            html: if message content is in HTML, default `False`
-            images: list of filepaths for inline use, defaults to []
+            sender (str): who is sending, ie. 'from'
+            recipients (str): who is receiving, ie. 'to'
+            subject (str): mail subject field
+            body (str): mail body content
+            attachments (str): list of filepaths to attach, defaults to None
+            html (bool): if message content is in HTML, default `False`
+            images (str): list of filepaths for inline use, defaults to None
         """
         add_charset("utf-8", QP, QP, "utf-8")
         recipients, attachments, images = self._handle_message_parameters(
@@ -492,7 +492,7 @@ class ImapSmtp:
             Delete Message  SUBJECT \"Greetings RPA developer\"
 
         Arguments:
-            criterion: filter messages based on this, defaults to ""
+            criterion (str): filter messages based on this, defaults to ""
 
         Returns:
             True if success, False if not
@@ -518,7 +518,7 @@ class ImapSmtp:
             Delete Messages  SUBJECT Greetings
 
         Arguments:
-            criterion: filter messages based on this, defaults to ""
+            criterion (str): filter messages based on this, defaults to ""
 
         Returns:
             True if success, False if not
@@ -540,8 +540,8 @@ class ImapSmtp:
             Save Messages  SUBJECT Important message  target_folder=${USERDIR}${/}messages
 
         Arguments:
-            criterion: filter messages based on this, defaults to ""
-            target_folder: path to folder where message are saved, defaults to None
+            criterion (str) filter messages based on this, defaults to ""
+            target_folder (str): path to folder where message are saved, defaults to None
 
         Returns:
             True if success, False if not
@@ -574,7 +574,7 @@ class ImapSmtp:
             END
 
         Arguments:
-            criterion: list emails matching this, defaults to ""
+            criterion (str): list emails matching this, defaults to ""
 
         Returns:
             list of messages or False
@@ -596,10 +596,10 @@ class ImapSmtp:
             ...          target_folder=${CURDIR}${/}messages  overwrite=True
 
         Arguments:
-            criterion: attachments are saved for mails matching this, defaults to ""
-            target_folder: local folder for saving attachments to (needs to exist),
+            criterion (str): attachments are saved for mails matching this, defaults to ""
+            target_folder (str): local folder for saving attachments to (needs to exist),
                            defaults to user's home directory if None
-            overwrite: overwrite existing file is True, defaults to False
+            overwrite (bool): overwrite existing file is True, defaults to False
 
         Returns:
             list of saved attachments or False
@@ -612,7 +612,9 @@ class ImapSmtp:
             )
         return attachments_saved if len(attachments_saved) > 0 else False
 
-    def save_attachment(self, message, target_folder, overwrite):
+    def save_attachment(
+        self, message: Any, target_folder: str = None, overwrite: bool = False
+    ):
         # pylint: disable=C0301
         """Save mail attachment into local folder
 
@@ -624,10 +626,10 @@ class ImapSmtp:
             END
 
         Arguments:
-            message: message item
-            target_folder: local folder for saving attachments to (needs to exist),
-                           defaults to user's home directory if None
-            overwrite: overwrite existing file is True, defaults to False
+            message (Any): message item
+            target_folder (str): local folder for saving attachments to (needs to exist),
+                                 defaults to user's home directory if None
+            overwrite (bool): overwrite existing file is True, defaults to False
         """  # noqa: E501
         if target_folder is None:
             target_folder = os.path.expanduser("~")
@@ -656,9 +658,9 @@ class ImapSmtp:
             @{emails}  Wait For Message  SUBJECT \"rpa task\"  timeout=300  interval=10
 
         Arguments:
-            criterion: message filter to wait for, defaults to ""
-            timeout: total time in seconds to wait for email, defaults to 5.0
-            interval: time in seconds for new check, defaults to 1.0
+            criterion (str): message filter to wait for, defaults to ""
+            timeout (float): total time in seconds to wait for email, defaults to 5.0
+            interval (float): time in seconds for new check, defaults to 1.0
 
         Returns:
             list of messages or False
@@ -698,8 +700,8 @@ class ImapSmtp:
             @{folders}  Get Folder List  subdirectory=sub
 
         Arguments:
-            subdirectory: list subdirectories for this folder
-            pattern: list folders matching this pattern
+            subdirectory (str): list subdirectories for this folder
+            pattern (str): list folders matching this pattern
 
         Returns:
             list of folders
@@ -728,7 +730,7 @@ class ImapSmtp:
             ${msg_count}  Select Folder   subfolder
 
         Arguments:
-            folder_name: name of the folder to select
+            folder_name (str): name of the folder to select
 
         Returns:
             message count in the selected folder
@@ -751,9 +753,9 @@ class ImapSmtp:
             Rename Folder   subfolder   filtered
 
         Arguments:
-            oldname: current folder name
-            newname: new name for the folder
-            suppress_error: to silence warning message, defaults to False
+            oldname (str): current folder name
+            newname (str): new name for the folder
+            suppress_error (bool): to silence warning message, defaults to False
 
         Returns:
             True if operation was successful, False if not
@@ -783,7 +785,7 @@ class ImapSmtp:
             ${status}  Delete Folder   filtered
 
         Arguments:
-            folder_name: current folder name
+            folder_name (str): current folder name
 
         Returns:
             True if operation was successful, False if not
@@ -811,7 +813,7 @@ class ImapSmtp:
             ${status}  Create Folder   filtered
 
         Arguments:
-            folder_name: name for the new folder
+            folder_name (str): name for the new folder
 
         Returns:
             True if operation was successful, False if not
@@ -840,8 +842,8 @@ class ImapSmtp:
             ${unflagged}  ${oftotal}  Flag Messages   SUBJECT rpa  unflag=True
 
         Arguments:
-            criterion: mark messages matching criterion
-            unflag: to mark messages as not `flagged`
+            criterion (str): mark messages matching criterion
+            unflag (bool): to mark messages as not `flagged`
 
         Returns:
             successful operations (int), matching messages (int)
@@ -866,7 +868,7 @@ class ImapSmtp:
             ${unflagged}  ${oftotal}  Unflag Messages   SUBJECT rpa
 
         Arguments:
-            criterion: mark messages matching criterion
+            criterion (str): mark messages matching criterion
 
         Returns:
             successful operations (int), matching messages (int)
@@ -881,8 +883,8 @@ class ImapSmtp:
             ${read}  ${oftotal}  Mark As Read   SUBJECT rpa
 
         Arguments:
-            criterion: mark messages matching criterion
-            unread: to mark messages as not `read`
+            criterion (str): mark messages matching criterion
+            unread (bool): to mark messages as not `read`
 
         Returns:
             successful operations (int), matching messages (int)
@@ -907,7 +909,7 @@ class ImapSmtp:
             ${unread}  ${oftotal}  Mark As Unread   SUBJECT rpa
 
         Arguments:
-            criterion: mark messages matching criterion
+            criterion (str): mark messages matching criterion
 
         Returns:
             successful operations (int), matching messages (int)

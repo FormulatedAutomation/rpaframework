@@ -54,12 +54,12 @@ class FTP:
         """Connect to FTP server
 
         Arguments:
-            host: address of the server
-            port: port of the server, defaults to 21
-            user: login name, defaults to None
-            password: login password, defaults to None
-            tls: connect using TLS support, defaults to False
-            transfer: mode of the transfer, defaults to "passive"
+            host (str): address of the server
+            port (int): port of the server, defaults to 21
+            user (str): login name, defaults to None
+            password (str): login password, defaults to None
+            tls (bool): connect using TLS support, defaults to False
+            transfer (str): mode of the transfer, defaults to "passive"
 
         Raises:
             AuthenticationException: on authentication error with the server
@@ -105,8 +105,8 @@ class FTP:
         """Upload file to FTP server
 
         Arguments:
-            localfile: path to file to upload
-            remotefile: name of uploaded file in the server
+            localfile (str): path to file to upload
+            remotefile (str): name of uploaded file in the server
         """
         cmd = f"STOR {remotefile}"
         self.instance.storbinary(cmd, open(localfile, "rb"))
@@ -115,9 +115,9 @@ class FTP:
         """Download file from FTP server
 
         Arguments:
-            remotefile: path to remote file on the server
-            localfile: name of the downloaded file on the local filesystem,
-                       if `None` will have same name as remote file
+            remotefile (str): path to remote file on the server
+            localfile (str): name of the downloaded file on the local filesystem,
+                             if `None` will have same name as remote file
         """
         if self.instance is None:
             raise FTPException("No FTP connection")
@@ -144,7 +144,7 @@ class FTP:
         """Change working directory on the server
 
         Arguments:
-            dirname: name of the directory
+            dirname (str): name of the directory
         """
         self.instance.cwd(dirname)
 
@@ -158,7 +158,7 @@ class FTP:
         """Create a new directory on the server
 
         Arguments:
-            dirname: name of the directory
+            dirname (str): name of the directory
         """
         self.instance.mkd(dirname)
 
@@ -167,7 +167,7 @@ class FTP:
         """Remove directory on the server
 
         Arguments:
-            dirname: name of the directory
+            dirname (str): name of the directory
         """
         self.instance.rmd(dirname)
 
@@ -176,7 +176,7 @@ class FTP:
         """List files on the server directory
 
         Arguments:
-            dirname: name of the directory
+            dirname (str): name of the directory
         """
         try:
             files = list(self.instance.mlsd(path=dirname))
@@ -190,7 +190,7 @@ class FTP:
         """Delete file on the server
 
         Arguments:
-            filepath: path to server file
+            filepath (str): path to server file
         """
         self.instance.delete(filepath)
 
@@ -199,8 +199,8 @@ class FTP:
         """Rename file on the server
 
         Arguments:
-            fromname: current name of the file
-            toname: new name for the file
+            fromname (str): current name of the file
+            toname (str): new name for the file
         """
         self.instance.rename(fromname, toname)
 
@@ -213,7 +213,7 @@ class FTP:
         https://en.wikipedia.org/wiki/List_of_FTP_commands
 
         Arguments:
-            command: name of the command to send
+            command (str): name of the command to send
         """
         return self.instance.sendcmd(command)
 
@@ -222,7 +222,7 @@ class FTP:
         """Return byte size of the file on the server
 
         Arguments:
-            filepath: path to server file
+            filepath (str): path to server file
         """
         self.set_binary_mode()
         return self.instance.size(filepath)
@@ -250,7 +250,7 @@ class FTP:
         2+ - higher amount of debugging
 
         Arguments:
-            level: integer value of debug level, defaults to 0
+            level (int): integer value of debug level, defaults to 0
         """
         if level >= 0:
             self.instance.set_debuglevel(level)

@@ -40,13 +40,13 @@ class Exchange:
         """Connect to Exchange account
 
         Arguments:
-            username: account username
-            password: account password
-            autodiscover: use autodiscover or set it off
-            access_type: default "DELEGATE", other option "IMPERSONATION"
-            server: required for configuration options
-            primary_smtp_address: by default set to username, but can be
-                                  set to be different than username
+            username (str): account username
+            password (str): account password
+            autodiscover (bool): use autodiscover or set it off
+            access_type (str): default "DELEGATE", other option "IMPERSONATION"
+            server (str): required for configuration options
+            primary_smtp_address (str): by default set to username, but can be
+                                        set to be different than username
         """
         kwargs = {}
         kwargs["autodiscover"] = autodiscover
@@ -70,8 +70,8 @@ class Exchange:
         received time.
 
         Arguments:
-            folder_name: target folder
-            count: number of messages to list
+            folder_name (str): target folder
+            count (int): number of messages to list
         """
         # pylint: disable=no-member
         messages = []
@@ -114,16 +114,16 @@ class Exchange:
         Recipients is ``required`` parameter.
 
         Arguments:
-            recipients: list of email addresses, defaults to []
-            subject: message subject, defaults to ""
-            body: message body, defaults to ""
-            attachments: list of filepaths to attach, defaults to []
-            html: if message content is in HTML, default `False`
-            images: list of filepaths for inline use, defaults to []
-            cc: list of email addresses, defaults to []
-            bcc: list of email addresses, defaults to []
-            save: is sent message saved to Sent messages folder or not,
-                  defaults to False
+            recipients (str): list of email addresses, defaults to []
+            subject (str): message subject, defaults to ""
+            body (str): message body, defaults to ""
+            attachments (str): list of filepaths to attach, defaults to []
+            html (bool): if message content is in HTML, default `False`
+            images (str): list of filepaths for inline use, defaults to []
+            cc (str): list of email addresses, defaults to []
+            bcc (str): list of email addresses, defaults to []
+            save (bool): is sent message saved to Sent messages folder or not,
+                         defaults to False
         """
         recipients, cc, bcc, attachments, images = self._handle_message_parameters(
             recipients, cc, bcc, attachments, images
@@ -211,8 +211,8 @@ class Exchange:
         """Create email folder
 
         Arguments:
-            folder_name: name for the new folder
-            parent_folder: name for the parent folder, by default INBOX
+            folder_name (str): name for the new folder
+            parent_folder (str): name for the parent folder, by default INBOX
 
         Returns:
             True if operation was successful, False if not
@@ -234,8 +234,8 @@ class Exchange:
         """Delete email folder
 
         Arguments:
-            folder_name: current folder name
-            parent_folder: name for the parent folder, by default INBOX
+            folder_name (str): current folder name
+            parent_folder (str): name for the parent folder, by default INBOX
 
         Returns:
             True if operation was successful, False if not
@@ -258,9 +258,9 @@ class Exchange:
         """Rename email folder
 
         Arguments:
-            oldname: current folder name
-            newname: new name for the folder
-            parent_folder: name for the parent folder, by default INBOX
+            oldname (str): current folder name
+            newname (str): new name for the folder
+            parent_folder (str): name for the parent folder, by default INBOX
 
         Returns:
             True if operation was successful, False if not
@@ -292,9 +292,9 @@ class Exchange:
         """Empty email folder of all items
 
         Arguments:
-            folder_name: current folder name
-            parent_folder: name for the parent folder, by default INBOX
-            delete_sub_folders: delete sub folders or not, by default False
+            folder_name (str): current folder name
+            parent_folder (str): name for the parent folder, by default INBOX
+            delete_sub_folders (bool): delete sub folders or not, by default False
 
         Returns:
             True if operation was successful, False if not
@@ -324,11 +324,12 @@ class Exchange:
             - sender:sender@domain.com
 
         Arguments:
-            criterion: move messages matching this criterion
-            source: source folder
-            target: target folder
-            contains: if matching should be done using `contains` matching and not
-                      `equals` matching, default `False` is means `equals` matching
+            criterion (str): move messages matching this criterion
+            source (str): source folder
+            target (str): target folder
+            contains (bool): if matching should be done using `contains` matching and
+                             not `equals` matching, default `False` is means `equals`
+                             matching
 
         Returns:
             boolean result of operation, True if 1+ items were moved else False
@@ -382,11 +383,12 @@ class Exchange:
         """Wait for email matching `criterion` to arrive into INBOX.
 
         Arguments:
-            criterion: wait for message matching criterion
-            timeout: total time in seconds to wait for email, defaults to 5.0
-            interval: time in seconds for new check, defaults to 1.0
-            contains: if matching should be done using `contains` matching and not
-                      `equals` matching, default `False` is means `equals` matching
+            criterion (str): wait for message matching criterion
+            timeout (float): total time in seconds to wait for email, defaults to 5.0
+            interval (float): time in seconds for new check, defaults to 1.0
+            contains (bool): if matching should be done using `contains` matching and
+                             not `equals` matching, default `False` is means `equals`
+                             matching
 
         Returns:
             list of messages

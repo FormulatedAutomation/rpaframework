@@ -57,7 +57,7 @@ class GoogleBase:
         """Return client instance for servive if it has been initialized.
 
         Arguments:
-            service_name: name of the AWS service
+            service_name (str): name of the AWS service
 
         Returns:
             client instance
@@ -116,12 +116,12 @@ class GoogleBase:
             client = client_object()
             self._set_service(service_name, client)
 
-    def set_robocloud_vault(self, vault_name, vault_secret_key):
+    def set_robocloud_vault(self, vault_name: str, vault_secret_key: str):
         """Set Robocloud Vault name and secret key name
 
         Arguments:
-            vault_name: Robocloud Vault name
-            vault_secret_key: Rococloud Vault secret key name
+            vault_name (str): Robocloud Vault name
+            vault_secret_key (str): Rococloud Vault secret key name
         """
         if vault_name:
             self.robocloud_vault_name = vault_name
@@ -153,8 +153,8 @@ class ServiceVision(GoogleBase):
         """Initialize Google Cloud Vision client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             vision.ImageAnnotatorClient,
@@ -176,8 +176,8 @@ class ServiceVision(GoogleBase):
         """Detect labels in the image
 
         Arguments:
-            image_file: source image file
-            json_file: json target to save result, defaults to None
+            image_file (str): source image file
+            json_file (str): json target to save result, defaults to None
 
         Returns:
             detection response
@@ -193,8 +193,8 @@ class ServiceVision(GoogleBase):
         """Detect text in the image
 
         Arguments:
-            image_file: source image file
-            json_file: json target to save result, defaults to None
+            image_file (str): source image file
+            json_file (str): json target to save result, defaults to None
 
         Returns:
             detection response
@@ -210,8 +210,8 @@ class ServiceVision(GoogleBase):
         """Detect document
 
         Arguments:
-            image_file: source image file
-            json_file: json target to save result, defaults to None
+            image_file (str): source image file
+            json_file (str): json target to save result, defaults to None
 
         Returns:
             detection response
@@ -227,8 +227,8 @@ class ServiceVision(GoogleBase):
         """Annotate image
 
         Arguments:
-            image_file: source image file
-            json_file: json target to save result, defaults to None
+            image_file (str): source image file
+            json_file (str): json target to save result, defaults to None
 
         Returns:
             detection response
@@ -245,8 +245,8 @@ class ServiceVision(GoogleBase):
         """Detect faces
 
         Arguments:
-            image_uri: Google Cloud Storage URI
-            json_file: json target to save result, defaults to None
+            image_uri (str): Google Cloud Storage URI
+            json_file (str): json target to save result, defaults to None
 
         Returns:
             detection response
@@ -279,8 +279,8 @@ class ServiceNaturalLanguage(GoogleBase):
         """Initialize Google Cloud Natural Language client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             language_v1.LanguageServiceClient,
@@ -291,14 +291,24 @@ class ServiceNaturalLanguage(GoogleBase):
 
     @google_dependency_required
     def analyze_sentiment(
-        self, text_file: str, file_type: str = "text", json_file: str = None, lang=None
+        self,
+        text_file: str,
+        file_type: str = "text",
+        json_file: str = None,
+        lang: str = None,
     ) -> dict:
         """Analyze sentiment in a text file
 
+        Available file types:
+
+        - text
+        - html
+
         Arguments:
-            text_file: source text file
-            json_file: json target to save result, defaults to None
-            lang: language code of the source, defaults to None
+            text_file (str): source text file
+            file_type (str): format of the text file, default to `text`
+            json_file (str): json target to save result, defaults to None
+            lang (str): language code of the source, defaults to None
 
         Returns:
             analysis response
@@ -324,13 +334,13 @@ class ServiceNaturalLanguage(GoogleBase):
         return response
 
     @google_dependency_required
-    def classify_text(self, text_file, json_file, lang=None):
+    def classify_text(self, text_file: str, json_file: str, lang: str = None):
         """Classify text
 
         Arguments:
-            text_file: source text file
-            json_file: json target to save result, defaults to None
-            lang: language code of the source, defaults to None
+            text_file (str): source text file
+            json_file (str): json target to save result, defaults to None
+            lang (str): language code of the source, defaults to None
 
         Returns:
             classify response
@@ -379,8 +389,8 @@ class ServiceVideoIntelligence(GoogleBase):
         """Initialize Google Cloud Video Intelligence client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             videointelligence.VideoIntelligenceServiceClient,
@@ -413,11 +423,11 @@ class ServiceVideoIntelligence(GoogleBase):
         If `video_uri` is given then that is used even if `video_file` is None.
 
         Arguments:
-            video_uri: Google Cloud Storage URI
-            video_file: filepath to video
-            json_file: json target to save result, defaults to None
-            features: list of annotation features to detect,
-                      defaults to ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
+            video_uri (str): Google Cloud Storage URI
+            video_file (str): filepath to video
+            json_file (str): json target to save result, defaults to None
+            features (list): list of annotation features to detect,
+                             defaults to ["LABEL_DETECTION", "SHOT_CHANGE_DETECTION"]
 
         Returns:
             annotate result
@@ -465,9 +475,9 @@ class ServiceTranslation(GoogleBase):
         """Initialize Google Cloud Translation client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            project_identifier: identifier for Translation project
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            project_identifier (str): identifier for Translation project
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             translate_v3.TranslationServiceClient,
@@ -484,9 +494,9 @@ class ServiceTranslation(GoogleBase):
         """Translate text
 
         Arguments:
-            text: text to translate
-            source_language: language code, defaults to None
-            target_language: language code, defaults to None
+            text (str): text to translate
+            source_language (str): language code, defaults to None
+            target_language (str): language code, defaults to None
 
         Returns:
             translated text
@@ -528,8 +538,8 @@ class ServiceTextToSpeech(GoogleBase):
         """Initialize Google Cloud Text to Speech client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             texttospeech_v1.TextToSpeechClient,
@@ -543,7 +553,7 @@ class ServiceTextToSpeech(GoogleBase):
         """List supported voices for the speech
 
         Arguments:
-            language_code: voice languages to list, defaults to None (all)
+            language_code (str): voice languages to list, defaults to None (all)
 
         Returns:
             list of supported voices
@@ -558,23 +568,23 @@ class ServiceTextToSpeech(GoogleBase):
     @google_dependency_required
     def synthesize_speech(
         self,
-        text,
-        language="en-US",
-        name="en-US-Standard-B",
-        gender="MALE",
-        encoding="MP3",
-        target_file="synthesized.mp3",
+        text: str,
+        language: str = "en-US",
+        name: str = "en-US-Standard-B",
+        gender: str = "MALE",
+        encoding: str = "MP3",
+        target_file: str = "synthesized.mp3",
     ):
         """Synthesize speech synchronously
 
         Arguments:
-            text: input text to synthesize
-            language: voice language, defaults to "en-US"
-            name: voice name, defaults to "en-US-Standard-B"
-            gender: voice gender, defaults to "MALE"
-            encoding: result encoding type, defaults to "MP3"
-            target_file: save synthesized output to file,
-                         defaults to "synthesized.mp3"
+            text (str): input text to synthesize
+            language (str): voice language, defaults to "en-US"
+            name (str): voice name, defaults to "en-US-Standard-B"
+            gender (str): voice gender, defaults to "MALE"
+            encoding (str): result encoding type, defaults to "MP3"
+            target_file (str): save synthesized output to file,
+                               defaults to "synthesized.mp3"
 
         Returns:
             synthesized output in bytes
@@ -641,8 +651,8 @@ class ServiceSpeechToText(GoogleBase):
         """Initialize Google Cloud Speech to Text client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             speech.SpeechClient,
@@ -654,15 +664,18 @@ class ServiceSpeechToText(GoogleBase):
     @google_dependency_required
     def recognize(
         self,
-        audio_file_uri,
+        audio_file_uri: str,
         encoding: str = "FLAC",
         language_code: str = "en_US",
-        audio_channel_count=2,
+        audio_channel_count: int = 2,
     ):
         """Recognize text in the audio file
 
         Arguments:
-            audio_file_uri: Google Cloud Storage URI
+            audio_file_uri (str): Google Cloud Storage URI
+            encoding (str): result encoding type, defaults to "FLAC"
+            language_code (str): voice language, defaults to "en_US"
+            audio_channel_count (int): channel count in the audio
 
         Returns:
             recognized texts
@@ -714,8 +727,8 @@ class ServiceStorage(GoogleBase):
         """Initialize Google Cloud Storage client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         self._init_service(
             storage.Client,
@@ -729,7 +742,7 @@ class ServiceStorage(GoogleBase):
         """Create Google Cloud Storage bucket
 
         Arguments:
-            bucket_name: name as string
+            bucket_name (str): name as string
 
         Returns:
             bucket
@@ -745,7 +758,7 @@ class ServiceStorage(GoogleBase):
         Bucket needs to be empty before it can be deleted.
 
         Arguments:
-            bucket_name: name as string
+            bucket_name (str): name as string
         """
         bucket = self.get_bucket(bucket_name)
         try:
@@ -758,7 +771,7 @@ class ServiceStorage(GoogleBase):
         """Get Google Cloud Storage bucket
 
         Arguments:
-            bucket_name: name as string
+            bucket_name (str): name as string
 
         Returns:
             bucket
@@ -787,8 +800,8 @@ class ServiceStorage(GoogleBase):
         Files need to be object name in the bucket.
 
         Arguments:
-            bucket_name: name as string
-            files: single file, list of files or comma separated list of files
+            bucket_name (str): name as string
+            files (Any): single file, list of files or comma separated list of files
 
         Returns:
             list of files which could not be deleted, or `True` if all were deleted
@@ -813,7 +826,7 @@ class ServiceStorage(GoogleBase):
         """List files in the bucket
 
         Arguments:
-            bucket_name: name as string
+            bucket_name (str): name as string
 
         Returns:
             list of object names in the bucket
@@ -829,9 +842,9 @@ class ServiceStorage(GoogleBase):
         """Upload a file into a bucket
 
         Arguments:
-            bucket_name: name as string
-            filename: filepath to upload file
-            target_name: target object name
+            bucket_name (str): name as string
+            filename (str): filepath to upload file
+            target_name (str): target object name
         """
         if not bucket_name or not filename or not target_name:
             raise KeyError(
@@ -850,8 +863,8 @@ class ServiceStorage(GoogleBase):
         files = {"mytestimg": "image1.png", "mydoc": "google.pdf"}
 
         Arguments:
-            bucket_name: name as string
-            files: dictionary of object names and filepaths
+            bucket_name (str): name as string
+            files (dict): dictionary of object names and filepaths
         """
         if not bucket_name or not files:
             raise KeyError("bucket_name and files are required for kw: upload_files")
@@ -870,8 +883,9 @@ class ServiceStorage(GoogleBase):
         files = {"mytestimg": "image1.png", "mydoc": "google.pdf
 
         Arguments:
-            bucket_name: name as string
-            files: list of object names or dictionary of object names and target files
+            bucket_name (str): name as string
+            files (Any): list of object names or dictionary of object names
+                         and target files
 
         Returns:
             list of files which could not be downloaded, or `True`
@@ -945,8 +959,8 @@ class ServiceSheets(GoogleBase):
         """Initialize Google Sheets client
 
         Arguments:
-            service_credentials_file: filepath to credentials JSON
-            use_robocloud_vault: use json stored into `Robocloud Vault`
+            service_credentials_file (str): filepath to credentials JSON
+            use_robocloud_vault (bool): use json stored into `Robocloud Vault`
         """
         service_account_file = None
         client = None
@@ -972,7 +986,7 @@ class ServiceSheets(GoogleBase):
         """Create empty sheet with a title
 
         Arguments:
-            title: name as string
+            title (str): name as string
 
         Returns:
             created `sheet_id`
@@ -999,12 +1013,12 @@ class ServiceSheets(GoogleBase):
         """Insert values into sheet cells
 
         Arguments:
-            sheet_id: target sheet
-            sheet_range: target sheet range
-            values: list of values to insert into sheet
-            major_dimension: major dimension of the values, default `COLUMNS`
-            value_input_option: controls whether input strings are parsed or not,
-                                default `USER_ENTERED`
+            sheet_id (str): target sheet
+            sheet_range (str): target sheet range
+            values (list): list of values to insert into sheet
+            major_dimension (str): major dimension of the values, default `COLUMNS`
+            value_input_option (str): controls whether input strings are parsed or not,
+                                      default `USER_ENTERED`
         """
         if not sheet_id or not sheet_range:
             raise KeyError(
@@ -1036,13 +1050,13 @@ class ServiceSheets(GoogleBase):
         """Get values from the range in the sheet
 
         Arguments:
-            sheet_id: target sheet
-            sheet_range: target sheet range
-            value_render_option: how values should be represented
-                                 in the output defaults to "UNFORMATTED_VALUE"
-            datetime_render_option: how dates, times, and durations should be
-                                    represented in the output, defaults to
-                                    "FORMATTED_STRING"
+            sheet_id (str): target sheet
+            sheet_range (str): target sheet range
+            value_render_option (str): how values should be represented
+                                       in the output defaults to "UNFORMATTED_VALUE"
+            datetime_render_option (str): how dates, times, and durations should be
+                                          represented in the output, defaults to
+                                          "FORMATTED_STRING"
         """
         client = self._get_client_for_service(self.__service_name)
         values = (
@@ -1062,8 +1076,8 @@ class ServiceSheets(GoogleBase):
         """Clear cell values for range of cells within a sheet
 
         Arguments:
-            sheet_id: target sheet
-            sheet_range: target sheet range
+            sheet_id (str): target sheet
+            sheet_range (str): target sheet range
         """
         client = self._get_client_for_service(self.__service_name)
         client.spreadsheets().values().clear(

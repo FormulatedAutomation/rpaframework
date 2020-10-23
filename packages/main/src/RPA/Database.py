@@ -114,14 +114,14 @@ class Database:
     # pylint: disable=R0915
     def connect_to_database(  # noqa: C901
         self,
-        module_name=None,
-        database=None,
-        username=None,
-        password=None,
-        host=None,
-        port=None,
-        charset=None,
-        config_file="db.cfg",
+        module_name: str = None,
+        database: str = None,
+        username: str = None,
+        password: str = None,
+        host: str = None,
+        port: str = None,
+        charset: str = None,
+        config_file: str = "db.cfg",
     ):
         """Connect to database using DB API 2.0 module.
 
@@ -130,14 +130,14 @@ class Database:
             Connect To Database  ${CURDIR}${/}resources${/}dbconfig.cfg
 
         Arguments:
-            module_name: database module to use
-            database: name of the database
-            username: of the user accessing the database
-            password: of the user accessing the database
-            host: SQL server address
-            port: SQL server port
-            charset: for example, "utf-8", defaults to None
-            config_file: location of configuration file, defaults to "db.cfg"
+            module_name (str): database module to use
+            database (str): name of the database
+            username (str): of the user accessing the database
+            password (str): of the user accessing the database
+            host (str): SQL server address
+            port (str): SQL server port
+            charset (str): for example, "utf-8", defaults to None
+            config_file (str): location of configuration file, defaults to "db.cfg"
         """
         self.config.parse_arguments(
             module_name, database, username, password, host, port, charset, config_file
@@ -261,7 +261,9 @@ class Database:
             self.logger.info(self.config.get_connection_parameters_as_string(conf))
             self._dbconnection = dbmodule.connect(**conf)
 
-    def call_stored_procedure(self, name, params=None, sanstran=False):
+    def call_stored_procedure(
+        self, name: str, params: list = None, sanstran: bool = False
+    ):
         """Call stored procedure with name and params.
 
         Example:
@@ -269,10 +271,10 @@ class Database:
             @{results}    Call Stored Procedure   mystpr  ${params}
 
         Arguments:
-            name: procedure name
-            params: parameters for the procedure as a list, defaults to None
-            sanstran: run command without an explicit transaction commit or rollback,
-                      defaults to False
+            name (str): procedure name
+            params (list): parameters for the procedure as a list, defaults to None
+            sanstran (bool): run command without an explicit transaction commit or
+                             rollback, defaults to False
         """
         params = params or []
         cur = None
@@ -297,7 +299,7 @@ class Database:
                 if not sanstran:
                     self._dbconnection.rollback()
 
-    def description(self, table):
+    def description(self, table: str):
         """Get description of the SQL table
 
         Example:
@@ -305,7 +307,7 @@ class Database:
             ${db_description}      Description  mytable
 
         Arguments:
-            table: name of the SQL table
+            table (str): name of the SQL table
         """
         try:
             result = self.query("DESCRIBE %s" % table, as_table=True)
@@ -328,16 +330,16 @@ class Database:
             self._dbconnection.close()
 
     # pylint: disable=R0912
-    def execute_sql_script(self, filename, sanstran=False):  # noqa: C901
+    def execute_sql_script(self, filename: str, sanstran: bool = False):  # noqa: C901
         """Execute content of SQL script as SQL commands.
 
         Example:
             Execute SQL Script   script.sql
 
         Arguments:
-            filename: filepath to SQL script to execute
-            sanstran: run command without an explicit transaction commit or rollback,
-                      defaults to False
+            filename (str): filepath to SQL script to execute
+            sanstran (bool): run command without an explicit transaction commit or
+                             rollback, defaults to False
         """
         sql_script_file = open(filename)
 
@@ -378,7 +380,13 @@ class Database:
                 if not sanstran:
                     self._dbconnection.rollback()
 
-    def query(self, statement, assertion=None, sanstran=False, as_table=True):
+    def query(
+        self,
+        statement: str,
+        assertion: str = None,
+        sanstran: bool = False,
+        as_table: bool = True,
+    ):
         """Make a SQL query.
 
         Example:
@@ -391,13 +399,13 @@ class Database:
             @{res}   Query  Select * FROM table  columns == ['id', 'arvo']
 
         Arguments:
-            statement: SQL statement to execute
-            assertion: assert on query result, row_count or columns.
-                       Works only for SELECT statements Defaults to None.
-            sanstran: run command without an explicit transaction commit or rollback,
-                      defaults to False
-            as_table: if result should be instance of ``Table``, defaults to `True`
-                      `False` means that return type would be `list`
+            statement (str): SQL statement to execute
+            assertion (str): assert on query result, row_count or columns.
+                             Works only for SELECT statements Defaults to None.
+            sanstran (bool): run command without an explicit transaction commit or
+                             rollback, defaults to False
+            as_table (bool): if result should be instance of ``Table``, defaults to
+                             `True`. `False` means that return type would be `list`
         """
         rows = None
         columns = None
@@ -447,7 +455,7 @@ class Database:
     def __execute_sql(self, cursor, sqlStatement):
         return cursor.execute(sqlStatement)
 
-    def set_auto_commit(self, autocommit=True):
+    def set_auto_commit(self, autocommit: bool = True):
         """Set database auto commit mode.
 
         Example:
@@ -455,11 +463,17 @@ class Database:
             Set Auto Commit   False     # auto commit is turned off
 
         Arguments:
-            autocommit: boolean value for auto commit, defaults to True
+            autocommit (bool): should there be auto commit, defaults to True
         """
         self._dbconnection.autocommit = autocommit
 
-    def get_rows(self, table, columns=None, conditions=None, as_table=True):
+    def get_rows(
+        self,
+        table: str,
+        columns: str = None,
+        conditions: str = None,
+        as_table: bool = True,
+    ):
         """Get rows from table. Columns and conditions can be
         set to filter result.
 
@@ -470,12 +484,12 @@ class Database:
             @{res}   Get Rows  tablename  conditions=column2='updatedvalue'
 
         Arguments:
-            table: name of the SQL table
-            columns: name of columns to return, defaults to `None`
-                     means that all columns are returned
-            conditions: limiting result by WHERE clause, defaults to `None`
-            as_table: if result should be instance of ``Table``, defaults to `True`
-                      `False` means that return type would be `list`
+            table (str): name of the SQL table
+            columns (str): name of columns to return, defaults to `None`
+                           means that all columns are returned
+            conditions (str): limiting result by WHERE clause, defaults to `None`
+            as_table (bool): if result should be instance of ``Table``, defaults to `True`
+                             `False` means that return type would be `list`
         """
         columns = columns or "*"
         where_cond = f" WHERE {conditions}" if conditions else ""
@@ -483,7 +497,7 @@ class Database:
             "SELECT %s FROM %s%s" % (columns, table, where_cond), as_table=as_table
         )
 
-    def get_number_of_rows(self, table, conditions=None):
+    def get_number_of_rows(self, table: str, conditions: str = None):
         """Get number of rows in a table. Conditions can be given
         as arguments for WHERE clause.
 
@@ -492,8 +506,8 @@ class Database:
             ${count}   Get Number Of Rows  tablename  column1=5 and column2='x'
 
         Arguments:
-            table: name of the SQL table
-            conditions: restrictions for selections, defaults to None
+            table (str): name of the SQL table
+            conditions (str): restrictions for selections, defaults to None
         """
         where_cond = f" WHERE {conditions}" if conditions else ""
         result = self.query(

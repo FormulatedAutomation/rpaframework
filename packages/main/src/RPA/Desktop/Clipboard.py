@@ -17,11 +17,11 @@ class Clipboard:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-    def copy_to_clipboard(self, text):
+    def copy_to_clipboard(self, text: str):
         """Copy text to clipboard
 
         Arguments:
-            text: to copy
+            text (str): to copy
         """
         self.logger.debug("copy_to_clipboard")
         if platform.system() == "Windows":
