@@ -491,7 +491,10 @@ class Docgen:
             args = []
             for arg in keyword.args:
                 name, _, default = arg.partition("=")
-                fields = {"name": name, "default": default}
+                name, _, hint = name.partition(":")
+                name, hint, default = name.strip(), hint.strip(), default.strip()
+
+                fields = {"name": name, "type": hint, "default": default}
 
                 for arg in doc["args"]:
                     if name == arg["name"]:
